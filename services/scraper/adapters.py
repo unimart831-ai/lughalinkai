@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+import os
 import time
 from abc import ABC, abstractmethod
 from datetime import datetime
@@ -10,6 +11,11 @@ import httpx
 from bs4 import BeautifulSoup
 
 from services.models import RawScrapedItem, ScrapeConfig, SourceRecord
+
+
+def _ssl_verify() -> bool:
+    """Set SCRAPER_SSL_VERIFY=false in .env if Windows SSL certs block gov sites."""
+    return os.getenv("SCRAPER_SSL_VERIFY", "true").lower() not in {"0", "false", "no"}
 
 
 class BaseAdapter(ABC):
@@ -31,7 +37,7 @@ class GenericHtmlAdapter(BaseAdapter):
         self._check_robots(source, config.listing_url)
         items: list[RawScrapedItem] = []
 
-        with httpx.Client(timeout=30, follow_redirects=True) as client:
+        with httpx.Client(timeout=30, follow_redirects=True, verify=_ssl_verify()) as client:
             listing_html = client.get(config.listing_url).text
             soup = BeautifulSoup(listing_html, "lxml")
             links = self._extract_article_links(soup, config, config.listing_url)

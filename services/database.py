@@ -1,4 +1,5 @@
 from typing import Optional
+import hashlib
 import json
 import re
 import sqlite3
