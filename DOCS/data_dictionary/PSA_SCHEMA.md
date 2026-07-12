@@ -56,7 +56,7 @@ Required by DSA 4020 submission:
 | `translated_text` | string | Output text |
 | `method` | enum | `human`, `nllb_zero_shot`, `nllb_finetuned`, `mt5` |
 | `confidence` | float | Model confidence if applicable |
-| `verified` | bool | Native speaker approved |
+| `verified` | bool | Team member has manually checked this record (`false` by default) |
 | `reviewer_id` | FK | Optional user reference |
 
 ## Domain Taxonomy
