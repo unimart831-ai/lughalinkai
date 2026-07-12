@@ -52,6 +52,8 @@ See [docs/architecture/PRODUCT1_WEEK1.md](docs/architecture/PRODUCT1_WEEK1.md) f
 
 **Team roster:** [docs/TEAM_ROSTER.md](docs/TEAM_ROSTER.md) — names, branches, source ownership.
 
+**Data collection guide (start here):** [docs/DATA_COLLECTION_RUNBOOK.md](docs/DATA_COLLECTION_RUNBOOK.md) — clone to export, commands per user, troubleshooting.
+
 ## Quick Start
 
 ```bash

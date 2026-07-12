@@ -59,6 +59,8 @@ main                              ← stable (Iranzi merges only)
 
 ## Clone & checkout your branch
 
+**Full guide:** [DATA_COLLECTION_RUNBOOK.md](DATA_COLLECTION_RUNBOOK.md) — step-by-step from clone to export.
+
 ```powershell
 git clone https://github.com/unimart831-ai/lughalinkai.git
 cd lughalinkai

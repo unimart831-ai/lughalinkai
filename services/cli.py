@@ -5,8 +5,11 @@ from datetime import datetime
 from pathlib import Path
 
 import typer
+from dotenv import load_dotenv
 from rich.console import Console
 from rich.table import Table
+
+load_dotenv()
 
 from services.database import (
     PROJECT_ROOT,
