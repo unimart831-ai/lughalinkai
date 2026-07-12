@@ -17,14 +17,14 @@ LughaLink AI is a Public Information Translation Platform — not a semester tra
 
 ## Course Alignment (DSA 4020)
 
-This project satisfies Dr. Ombui's requirements while building startup-grade infrastructure:
+Mapped to the project brief in `DOCS/DSA4020 Summer2026 Project.pdf`:
 
-- ≥5,000 sentences per language pair (via EN/SW collection + NLLB seeding + human validation)
+- ≥5,000 sentences per language pair — Week 1: collect EN/SW PSAs; Week 2+: NLLB seeding for low-resource targets
 - ≥10 reliable sources with documented scraping
 - Structured dataset with required columns
-- Few-shot cross-lingual transfer (NLLB, mT5, mBART)
-- Evaluation beyond BLEU + human review
-- Deployable digital public good
+- Few-shot cross-lingual transfer (NLLB, mT5, mBART) — Week 3
+- Automatic + manual evaluation — Week 4 (no native-speaker pipeline in place yet)
+- Deployable digital public good — Week 4
 
 ## Repository Layout
 
@@ -69,15 +69,16 @@ python -m services.cli validate-sources
 python -m services.cli scrape --source moh_kenya
 ```
 
-## Team Roles
+## Team
 
-| Role | Owner | Week 1 Deliverable |
-|------|-------|-------------------|
-| Product Lead | TBD | Roadmap, GitHub, Week 1 report |
-| Data Engineer | TBD | Scraper adapters, cleaning pipeline |
-| ML Engineer | TBD | PSA classifier rules, language detection |
-| Backend Engineer | TBD | Database schema, ingestion CLI |
-| Frontend/UX | TBD | Manual upload UI stub, validation forms |
+| Name | Domain | Branch |
+|------|--------|--------|
+| Iranzi Innocent (L) | Governance + Lead | `data/governance` |
+| Angela Irungu | Health | `data/health` |
+| Leona Kamau | Education | `data/education` |
+| Jesca Kimani | Security + Agriculture | `data/security`, `data/agriculture` |
+
+See [docs/TEAM_ROSTER.md](docs/TEAM_ROSTER.md) for full assignments.
 
 ## License
 

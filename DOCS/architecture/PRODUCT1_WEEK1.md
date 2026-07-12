@@ -8,7 +8,7 @@
 
 | Requirement | Course wording | Our startup interpretation |
 |-------------|----------------|---------------------------|
-| Dataset size | ≥5,000 sentences per language pair | 10,000+ EN/SW PSAs first; NLLB-seed target langs; 500–1,000 human-validated gold |
+| Dataset size | ≥5,000 sentences per language pair | Week 1: EN/SW collection + alignment; Week 2+: NLLB seeding for luo/guz/som |
 | Sources | ≥10 reliable sources documented | Source Registry with trust scores, adapters, scrape logs |
 | Structure | CSV/JSON: PSA_ID, Domain, EN, SW, targets, Source, Date, Metadata | PostgreSQL knowledge objects + exportable CSV for submission |
 | Cleaning | Dedup, langdetect, relevance filter | 8-module pipeline (see below) |
@@ -177,7 +177,7 @@ ScraperOrchestrator
 ├── RssFeedAdapter          (WHO, news feeds)
 ├── TwitterAdapter          (Phase 2 — Week 2)
 ├── PdfAdapter              (gov PDF circulars)
-└── ManualUploadAdapter     (linguistic reviewer uploads)
+└── ManualUploadAdapter     (team manual uploads for PDFs / blocked sources)
 ```
 
 **Rules (non-negotiable):**
@@ -271,34 +271,30 @@ python -m services.cli stats --report docs/reports/week1_dataset_summary.md
 
 ---
 
-## 5. Solving the 5,000 Sentences Problem
+## 5. Low-Resource Language Pairs — Current Plan
 
-You will NOT find 5,000 parallel Dholuo/Ekegusii/Somali PSAs online. Here is the honest startup strategy:
+Parallel Dholuo/Ekegusii/Somali PSAs are not available online in the volumes the course requires. Our approach:
 
-### Phase A — Collect monolingual pairs (Week 1)
-Target: **10,000+ English OR Kiswahili PSAs** (many sites publish both).
+### Phase A — Collect monolingual PSAs (Week 1)
+Target: as many **English and Kiswahili** PSAs as we can from official sources.
 
-Many gov pages have EN + SW versions → true parallel pairs.
+Many gov pages publish both languages → true parallel EN↔SW pairs.
 
 ### Phase B — Align EN↔SW (Week 1–2)
-- Same URL different language paths (`/en/`, `/sw/`)
+- Same URL with different language paths (`/en/`, `/sw/`)
 - Same publish date + fuzzy title match (rapidfuzz ≥ 85)
-- Manual alignment for top 500
+- Manual alignment by the domain owner where needed
 
-### Phase C — Seed target languages (Week 2, NOT Week 1)
-- NLLB-200 zero-shot: EN → luo, eke, som
-- Mark as `translation_status: machine_seeded`
-- Never mix seeded data into gold eval set without review
+### Phase C — Seed target languages (Week 2+)
+- NLLB-200 zero-shot: EN → luo, guz, som
+- Mark records as `translation_method: nllb_zero_shot`
+- Keep seeded translations separate from any future manually checked set
 
-### Phase D — Human validation (Week 2)
-- 500–1,000 samples reviewed by native speakers
-- Promote to `datasets/gold/` with `verified: true`
-
-### What to tell the lecturer
-
-> "We collected 10,000+ verified PSAs in English and Kiswahili from 15 official sources. For low-resource target languages, we applied NLLB seeding followed by native-speaker validation on 500 gold samples — standard practice for low-resource MT."
-
-This is honest, defensible, and better than fabricating parallel data.
+### Phase D — Manual review (team only, when available)
+- Spot-check samples per domain (team members, not a native-speaker study)
+- Flag obvious errors in GitHub Issues
+- Set `verified: true` only after a team member has read and approved the entry
+- **We do not currently have native-speaker validation.** Document whatever review we actually do in the Week 1/2 report and in commit/PR notes.
 
 ---
 
@@ -365,7 +361,7 @@ This is honest, defensible, and better than fabricating parallel data.
 |------|-------|
 | Domain balance check (pie chart) | ML Engineer |
 | EN↔SW parallel pair detection | Data Engineer |
-| Quarantine review (false positives) | Product Lead + Linguistic |
+| Quarantine review (false positives) | Product Lead + domain owner |
 | Export course CSV | Backend Engineer |
 
 **Exit criteria:** Domain distribution documented, ≥3,000 EN/SW pairs identified.
@@ -415,18 +411,18 @@ This is honest, defensible, and better than fabricating parallel data.
 | CSV as primary storage | Monitoring agent, API, feedback can't plug in |
 | Scrape everything without PSA filter | 80% news articles pollute the dataset |
 | Skip robots.txt / rate limits | Ethical failure + IP bans mid-project |
-| Parallel data fabrication | Lecturer will ask about validation methodology |
+| Inventing parallel translations without recording method | Breaks reproducibility; eval results cannot be trusted |
 
 ---
 
 ## 9. Week 1 Report Template
 
-Submit this to Dr. Ombui:
+Save as `docs/reports/week1_dataset_summary.md` in the repo. Dr. Ombui can review it there alongside the code and data export.
 
 ```markdown
 # LughaLink AI — Week 1 Report
 
-## 1. Executive Summary
+## 1. Summary
 - Total PSAs collected: X
 - Sources active: X/15
 - Domain distribution: [chart]
@@ -446,14 +442,14 @@ Submit this to Dr. Ombui:
 
 ## 6. Quality Measures
 - Deduplication rate
-- PSA classifier precision (manual check on 50 samples)
+- PSA classifier precision (manual check on 50 samples by team)
 - Language detection accuracy
 
-## 7. Challenges & Mitigations
-[Honest account — e.g., low-resource parallel data strategy]
+## 7. Challenges & Blockers
+[What failed, what is not done yet — e.g. scraper selectors, low-resource pairs, no native-speaker review yet]
 
 ## 8. Week 2 Plan
-[Preprocessing, NLLB seeding, native speaker validation]
+[Preprocessing, NLLB seeding, team spot-checks on seeded translations]
 ```
 
 ---
