@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+.env.*
+
+# Data (large files tracked via DVC)
+datasets/raw/**
+datasets/interim/**
+!datasets/**/.gitkeep
+
+# ML artifacts
+models/
+wandb/
+*.pt
+*.bin
+*.ckpt
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs & DB
+*.log
+*.sqlite3
+database/*.db
+postgres_data/
+.venv.broken/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# DVC
+.dvc/cache/
+.dvc/tmp/
