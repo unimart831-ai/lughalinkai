@@ -1,0 +1,95 @@
+# PSA Domain Taxonomy — aligned with DSA 4020 + PSA Categories PDF
+
+domains:
+  health:
+    label: Health
+    course_required: true
+    sub_categories:
+      disease_prevention_and_control:
+        keywords: [malaria, vaccination, hiv, tb, tuberculosis, ebola, cholera, outbreak, immunization, vaccine]
+      maternal_and_child_health:
+        keywords: [maternal, pregnancy, infant, child vaccination, nutrition, antenatal]
+      public_health_campaigns:
+        keywords: [hygiene, sanitation, handwashing, diabetes, ncd, wash]
+      mental_health_awareness:
+        keywords: [mental health, stress, suicide, counseling, depression]
+      healthcare_access:
+        keywords: [health insurance, nhif, sha, medical camp, hospital, clinic]
+
+  agriculture:
+    label: Agriculture
+    course_required: true
+    sub_categories:
+      crop_production:
+        keywords: [crop, harvest, pest, drought-resistant, maize, fertilizer]
+      livestock_management:
+        keywords: [livestock, cattle, vaccination, grazing, poultry]
+      agribusiness_and_market_access:
+        keywords: [market, cooperative, fair trade, export, price]
+      sustainable_farming:
+        keywords: [organic, soil conservation, irrigation, water management]
+      agricultural_training:
+        keywords: [training, extension, farming techniques, subsidy]
+
+  education:
+    label: Education
+    course_required: true
+    sub_categories:
+      access_to_education:
+        keywords: [enrollment, school, literacy, free education, capitation]
+      vocational_training:
+        keywords: [tvet, vocational, skills training, apprenticeship]
+      civic_education:
+        keywords: [civic, voter education, rights, constitution]
+      educational_resources:
+        keywords: [scholarship, bursary, helb, textbook, kuccps]
+      school_safety_and_inclusion:
+        keywords: [bullying, disability, safe school, inclusion]
+
+  security:
+    label: Security & Safety
+    course_required: true
+    sub_categories:
+      public_safety_awareness:
+        keywords: [road safety, fire, flood, drought, disaster, ndma, evacuation]
+      crime_prevention:
+        keywords: [crime, police, report, corruption, community policing]
+      national_security:
+        keywords: [terrorism, border, peace, security alert]
+      gender_based_violence:
+        keywords: [gbv, domestic violence, sexual assault, gender]
+      cybersecurity:
+        keywords: [mpesa, scam, phishing, cyber, online safety, fraud]
+
+  governance:
+    label: Governance
+    course_required: true
+    sub_categories:
+      anti_corruption_initiatives:
+        keywords: [eacc, corruption, transparency, integrity]
+      public_participation:
+        keywords: [public participation, forum, consultation, devolution]
+      elections_and_voter_education:
+        keywords: [iebc, voter, election, register, ballot, polling]
+      public_service_delivery:
+        keywords: [huduma, ecitizen, passport, id, birth certificate, kra]
+      devolution_and_local_governance:
+        keywords: [county, governor, ward, cec, local government]
+
+urgency_rules:
+  emergency:
+    keywords: [emergency, outbreak, evacuate, immediate, danger, red alert, crisis]
+  high:
+    keywords: [warning, deadline, register by, urgent, alert, within 24, within 48]
+  medium:
+    keywords: [campaign, awareness, notice, reminder, upcoming]
+  low:
+    keywords: [information, update, general]
+
+audience_keywords:
+  parents: [parent, guardian, school, child]
+  students: [student, pupil, university, helb, kuccps]
+  farmers: [farmer, agriculture, crop, livestock]
+  drivers: [driver, road, traffic, motorist]
+  businesses: [business, sme, trader, entrepreneur]
+  health_workers: [health worker, nurse, clinician, chv]
