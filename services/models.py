@@ -30,7 +30,10 @@ class ScrapeConfig(BaseModel):
     rate_limit_seconds: float = 2.0
     requires_psa_filter: bool = False
     link_href_contains: Optional[str] = None  # e.g. "/news/?" or "newsdetails"
+    link_min_slug_chars: Optional[int] = None  # skip short nav paths like /about
     max_items: int = 50
+    max_listing_pages: int = 1  # follow ?page=N style pagination
+    page_param: str = "page"
     fetch_full_article: bool = False  # for RSS: follow link and extract title/body from HTML
 
 

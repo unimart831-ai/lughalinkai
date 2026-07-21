@@ -37,50 +37,91 @@ class GenericHtmlAdapter(BaseAdapter):
 
         self._check_robots(source, config.listing_url)
         items: list[RawScrapedItem] = []
+        seen_links: set[str] = set()
+        pages = max(1, config.max_listing_pages)
 
         with httpx.Client(timeout=30, follow_redirects=True, verify=_ssl_verify()) as client:
-            listing_html = client.get(config.listing_url).text
-            soup = BeautifulSoup(listing_html, "lxml")
-            links = self._extract_article_links(soup, config, config.listing_url)
+            for page in range(pages):
+                listing_url = config.listing_url
+                if page > 0:
+                    sep = "&" if "?" in listing_url else "?"
+                    listing_url = f"{listing_url}{sep}{config.page_param}={page}"
 
-            for link in links[: max(1, config.max_items)]:
-                time.sleep(config.rate_limit_seconds)
                 try:
-                    resp = client.get(link)
-                    resp.raise_for_status()
+                    listing_html = client.get(listing_url).text
                 except httpx.HTTPError:
                     continue
 
-                article_soup = BeautifulSoup(resp.text, "lxml")
-                title_el = article_soup.select_one(config.title_selector)
-                body_el = article_soup.select_one(config.body_selector)
-                date_el = article_soup.select_one(config.date_selector)
+                soup = BeautifulSoup(listing_html, "lxml")
+                links = self._extract_article_links(soup, config, listing_url)
 
-                title = title_el.get_text(strip=True) if title_el else "Untitled"
-                body = body_el.get_text("\n", strip=True) if body_el else ""
-                if not body or len(body.split()) < 10:
-                    continue
+                for link in links:
+                    if link in seen_links:
+                        continue
+                    if config.listing_url and link.rstrip("/") == config.listing_url.rstrip("/"):
+                        continue
+                    seen_links.add(link)
+                    if len(items) >= max(1, config.max_items):
+                        return items
 
-                published_at = None
-                if date_el and date_el.get("datetime"):
+                    time.sleep(config.rate_limit_seconds)
                     try:
-                        published_at = datetime.fromisoformat(
-                            date_el["datetime"].replace("Z", "+00:00")
-                        )
-                    except ValueError:
-                        published_at = None
+                        resp = client.get(link)
+                        resp.raise_for_status()
+                    except httpx.HTTPError:
+                        continue
 
-                items.append(
-                    RawScrapedItem(
-                        source_id=source.source_id,
-                        source_url=link,
-                        title=title,
-                        raw_html=resp.text,
-                        raw_text=body,
-                        published_at=published_at,
+                    article_soup = BeautifulSoup(resp.text, "lxml")
+                    title_el = self._select_first(article_soup, config.title_selector)
+                    _body_el, body = self._select_body(article_soup, config.body_selector)
+                    date_el = self._select_first(article_soup, config.date_selector)
+
+                    title = title_el.get_text(strip=True) if title_el else "Untitled"
+                    if not body or len(body.split()) < 10:
+                        continue
+
+                    published_at = None
+                    if date_el and date_el.get("datetime"):
+                        try:
+                            published_at = datetime.fromisoformat(
+                                date_el["datetime"].replace("Z", "+00:00")
+                            )
+                        except ValueError:
+                            published_at = None
+
+                    items.append(
+                        RawScrapedItem(
+                            source_id=source.source_id,
+                            source_url=link,
+                            title=title,
+                            raw_html=resp.text,
+                            raw_text=body,
+                            published_at=published_at,
+                        )
                     )
-                )
         return items
+
+    def _select_first(self, soup: BeautifulSoup, selector: str):
+        """Try comma-separated selectors in listed preference order."""
+        for part in [p.strip() for p in (selector or "").split(",") if p.strip()]:
+            el = soup.select_one(part)
+            if el:
+                return el
+        return None
+
+    def _select_body(self, soup: BeautifulSoup, selector: str) -> tuple:
+        best_el = None
+        best_text = ""
+        for part in [p.strip() for p in (selector or "").split(",") if p.strip()]:
+            el = soup.select_one(part)
+            if not el:
+                continue
+            text = el.get_text("\n", strip=True)
+            if len(text.split()) >= 10:
+                return el, text
+            if len(text.split()) > len(best_text.split()):
+                best_el, best_text = el, text
+        return best_el, best_text
 
     def _extract_article_links(
         self, soup: BeautifulSoup, config: ScrapeConfig, base_url: str
@@ -93,6 +134,9 @@ class GenericHtmlAdapter(BaseAdapter):
                 return
             full = urljoin(base_url, href).split("#")[0]
             if needle and needle not in full.lower():
+                return
+            slug = full.rstrip("/").split("/")[-1]
+            if config.link_min_slug_chars and len(slug) < config.link_min_slug_chars:
                 return
             if full not in links:
                 links.append(full)
@@ -131,7 +175,7 @@ class RssFeedAdapter(BaseAdapter):
         config = source.scrape_config
         feed = feedparser.parse(source.rss_feed)
         items: list[RawScrapedItem] = []
-        limit = max(1, min(config.max_items, 50))
+        limit = max(1, config.max_items)
 
         with httpx.Client(timeout=30, follow_redirects=True, verify=_ssl_verify()) as client:
             for entry in feed.entries[:limit]:
@@ -149,8 +193,17 @@ class RssFeedAdapter(BaseAdapter):
                         resp.raise_for_status()
                         raw_html = resp.text
                         article_soup = BeautifulSoup(resp.text, "lxml")
-                        title_el = article_soup.select_one(config.title_selector)
-                        body_el = article_soup.select_one(config.body_selector)
+                        title_el = None
+                        body_el = None
+                        for part in [p.strip() for p in (config.title_selector or "h1").split(",") if p.strip()]:
+                            title_el = article_soup.select_one(part)
+                            if title_el:
+                                break
+                        for part in [p.strip() for p in (config.body_selector or "article").split(",") if p.strip()]:
+                            cand = article_soup.select_one(part)
+                            if cand and len(cand.get_text(" ", strip=True).split()) >= 10:
+                                body_el = cand
+                                break
                         if title_el:
                             title = title_el.get_text(strip=True) or title
                         if body_el:
