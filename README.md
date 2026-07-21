@@ -54,6 +54,8 @@ See [docs/architecture/PRODUCT1_WEEK1.md](docs/architecture/PRODUCT1_WEEK1.md) f
 
 **Data collection guide (start here):** [docs/DATA_COLLECTION_RUNBOOK.md](docs/DATA_COLLECTION_RUNBOOK.md) — clone to export, commands per user, troubleshooting.
 
+**File reference:** [docs/FILE_REFERENCE.md](docs/FILE_REFERENCE.md) — what each file in `configs/`, `database/`, `datasets/`, `scripts/`, and `services/` does.
+
 ## Quick Start
 
 ```bash
