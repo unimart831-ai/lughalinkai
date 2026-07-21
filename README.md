@@ -56,6 +56,8 @@ See [docs/architecture/PRODUCT1_WEEK1.md](docs/architecture/PRODUCT1_WEEK1.md) f
 
 **File reference:** [docs/FILE_REFERENCE.md](docs/FILE_REFERENCE.md) — what each file in `configs/`, `database/`, `datasets/`, `scripts/`, and `services/` does.
 
+**Troubleshooting playbook:** [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) — how to fix scrape failures (SSL, Untitled, stored=0, JS pages, RSS, classifier).
+
 ## Quick Start
 
 ```bash

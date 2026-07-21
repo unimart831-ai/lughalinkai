@@ -61,6 +61,8 @@ main                              ← stable (Iranzi merges only)
 
 **Full guide:** [DATA_COLLECTION_RUNBOOK.md](DATA_COLLECTION_RUNBOOK.md) — step-by-step from clone to export.
 
+**When scraping fails:** [TROUBLESHOOTING.md](TROUBLESHOOTING.md) — challenge map and fix loop.
+
 ```powershell
 git clone https://github.com/unimart831-ai/lughalinkai.git
 cd lughalinkai
