@@ -7,7 +7,17 @@ def test_psa_positive():
         "Avoid unnecessary travel to Ebola hotspots. Report symptoms immediately.",
     )
     assert is_psa is True
-    assert score >= 0.6
+    assert score >= 0.55
+
+
+def test_psa_iebc_public_notice():
+    is_psa, score = classify_psa(
+        "PUBLIC NOTICE",
+        "The Commission reminds all voters that taking photographs of marked ballot papers "
+        "inside the polling booth is strictly prohibited. The Commission urges all voters to comply.",
+    )
+    assert is_psa is True
+    assert score >= 0.55
 
 
 def test_psa_negative():

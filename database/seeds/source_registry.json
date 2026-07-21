@@ -68,11 +68,13 @@
       "adapter": "generic_html",
       "scrape_config": {
         "listing_url": "https://www.iebc.or.ke/news/",
-        "article_selector": "article",
-        "title_selector": "h1",
-        "body_selector": ".entry-content",
-        "date_selector": "time",
-        "rate_limit_seconds": 2
+        "article_selector": "article, a",
+        "title_selector": "h3, h1, h2",
+        "body_selector": "article, .post",
+        "date_selector": "time, .date",
+        "link_href_contains": "/news/?",
+        "max_items": 200,
+        "rate_limit_seconds": 1.2
       },
       "robots_txt_respected": true,
       "active": true
@@ -192,12 +194,14 @@
       "priority": "medium",
       "adapter": "generic_html",
       "scrape_config": {
-        "listing_url": "https://www.hudumakenya.go.ke/en/notices",
-        "article_selector": "article, .notice",
-        "title_selector": "h1, h2",
-        "body_selector": ".content",
-        "date_selector": "time",
-        "rate_limit_seconds": 2
+        "listing_url": "https://www.hudumakenya.go.ke/news",
+        "article_selector": "article, a",
+        "title_selector": "h1, h2, h3",
+        "body_selector": "article",
+        "date_selector": "time, .date",
+        "link_href_contains": "newsdetails",
+        "max_items": 40,
+        "rate_limit_seconds": 1.5
       },
       "robots_txt_respected": true,
       "active": true
