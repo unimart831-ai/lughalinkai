@@ -29,6 +29,8 @@ class ScrapeConfig(BaseModel):
     date_selector: str = "time"
     rate_limit_seconds: float = 2.0
     requires_psa_filter: bool = False
+    link_href_contains: Optional[str] = None  # e.g. "/news/?" or "newsdetails"
+    max_items: int = 50
 
 
 class SourceRecord(BaseModel):
