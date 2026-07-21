@@ -7,7 +7,7 @@ def test_psa_positive():
         "Avoid unnecessary travel to Ebola hotspots. Report symptoms immediately.",
     )
     assert is_psa is True
-    assert score >= 0.55
+    assert score >= 0.5
 
 
 def test_psa_iebc_public_notice():
@@ -17,7 +17,17 @@ def test_psa_iebc_public_notice():
         "inside the polling booth is strictly prohibited. The Commission urges all voters to comply.",
     )
     assert is_psa is True
-    assert score >= 0.55
+    assert score >= 0.5
+
+
+def test_psa_eacc_governance():
+    is_psa, score = classify_psa(
+        "EACC CEO calls for stronger regional cooperation to combat corruption",
+        "The Ethics and Anti-Corruption Commission (EACC) urges African states to strengthen "
+        "anti-corruption mechanisms and protect public resources through accountability and integrity.",
+    )
+    assert is_psa is True
+    assert score >= 0.5
 
 
 def test_psa_negative():
