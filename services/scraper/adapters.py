@@ -128,26 +128,57 @@ class RssFeedAdapter(BaseAdapter):
         if not source.rss_feed:
             return []
 
+        config = source.scrape_config
         feed = feedparser.parse(source.rss_feed)
         items: list[RawScrapedItem] = []
-        for entry in feed.entries[:50]:
-            summary = getattr(entry, "summary", "") or getattr(entry, "description", "")
-            text = BeautifulSoup(summary, "lxml").get_text("\n", strip=True)
-            if len(text.split()) < 10:
-                continue
-            published_at = None
-            if hasattr(entry, "published_parsed") and entry.published_parsed:
-                published_at = datetime(*entry.published_parsed[:6])
-            items.append(
-                RawScrapedItem(
-                    source_id=source.source_id,
-                    source_url=entry.link,
-                    title=getattr(entry, "title", "Untitled"),
-                    raw_text=text,
-                    published_at=published_at,
+        limit = max(1, min(config.max_items, 50))
+
+        with httpx.Client(timeout=30, follow_redirects=True, verify=_ssl_verify()) as client:
+            for entry in feed.entries[:limit]:
+                summary = getattr(entry, "summary", "") or getattr(entry, "description", "")
+                text = BeautifulSoup(summary, "lxml").get_text("\n", strip=True)
+                title = getattr(entry, "title", "Untitled")
+                link = getattr(entry, "link", "")
+                raw_html = None
+
+                # Optional: open the article page and extract full body (better than short RSS blurb)
+                if config.fetch_full_article and link:
+                    time.sleep(config.rate_limit_seconds)
+                    try:
+                        resp = client.get(link)
+                        resp.raise_for_status()
+                        raw_html = resp.text
+                        article_soup = BeautifulSoup(resp.text, "lxml")
+                        title_el = article_soup.select_one(config.title_selector)
+                        body_el = article_soup.select_one(config.body_selector)
+                        if title_el:
+                            title = title_el.get_text(strip=True) or title
+                        if body_el:
+                            body = body_el.get_text("\n", strip=True)
+                            if len(body.split()) >= 10:
+                                text = body
+                    except httpx.HTTPError:
+                        pass
+                else:
+                    time.sleep(config.rate_limit_seconds)
+
+                if len(text.split()) < 10:
+                    continue
+
+                published_at = None
+                if hasattr(entry, "published_parsed") and entry.published_parsed:
+                    published_at = datetime(*entry.published_parsed[:6])
+
+                items.append(
+                    RawScrapedItem(
+                        source_id=source.source_id,
+                        source_url=link,
+                        title=title,
+                        raw_html=raw_html,
+                        raw_text=text,
+                        published_at=published_at,
+                    )
                 )
-            )
-            time.sleep(source.scrape_config.rate_limit_seconds)
         return items
 
 
