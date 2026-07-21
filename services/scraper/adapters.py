@@ -1,5 +1,6 @@
 from typing import Dict, Optional
 import os
+import re
 import time
 from abc import ABC, abstractmethod
 from datetime import datetime
@@ -42,7 +43,7 @@ class GenericHtmlAdapter(BaseAdapter):
             soup = BeautifulSoup(listing_html, "lxml")
             links = self._extract_article_links(soup, config, config.listing_url)
 
-            for link in links[:50]:  # cap per run
+            for link in links[: max(1, config.max_items)]:
                 time.sleep(config.rate_limit_seconds)
                 try:
                     resp = client.get(link)
@@ -85,18 +86,26 @@ class GenericHtmlAdapter(BaseAdapter):
         self, soup: BeautifulSoup, config: ScrapeConfig, base_url: str
     ) -> list[str]:
         links: list[str] = []
-        for el in soup.select(f"{config.article_selector} a[href]"):
-            href = el.get("href")
+        needle = (config.link_href_contains or "").lower()
+
+        def _maybe_add(href: str) -> None:
             if not href:
-                continue
-            full = urljoin(base_url, href)
+                return
+            full = urljoin(base_url, href).split("#")[0]
+            if needle and needle not in full.lower():
+                return
             if full not in links:
                 links.append(full)
+
+        for el in soup.select(f"{config.article_selector} a[href]"):
+            _maybe_add(el.get("href", ""))
         if not links:
             for el in soup.select("a[href]"):
                 href = el.get("href", "")
-                if re.search(r"(news|press|announce|alert|notice)", href, re.I):
-                    links.append(urljoin(base_url, href))
+                if needle:
+                    _maybe_add(href)
+                elif re.search(r"(news|press|announce|alert|notice)", href, re.I):
+                    _maybe_add(href)
         return links
 
     def _check_robots(self, source: SourceRecord, url: str) -> None:
