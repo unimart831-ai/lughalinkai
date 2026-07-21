@@ -207,6 +207,30 @@
       "active": true
     },
     {
+      "source_id": "eacc_kenya",
+      "organization": "Ethics and Anti-Corruption Commission",
+      "country": "Kenya",
+      "source_type": "government",
+      "domains_covered": ["governance"],
+      "website": "https://eacc.go.ke",
+      "rss_feed": "https://eacc.go.ke/en/default/feed/",
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": ["sw"],
+      "trust_score": 100,
+      "priority": "high",
+      "adapter": "rss_feed",
+      "scrape_config": {
+        "title_selector": "h1.section-title, h1",
+        "body_selector": ".article-box",
+        "fetch_full_article": true,
+        "rate_limit_seconds": 1.5,
+        "max_items": 200
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
       "source_id": "who_kenya",
       "organization": "WHO Kenya",
       "country": "Kenya",
