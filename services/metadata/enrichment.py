@@ -21,15 +21,23 @@ def infer_domain(text: str, default: str = "governance") -> Tuple[str, Optional[
     best_domain = default
     best_sub = None
     best_hits = 0
+    default_hits = 0
+    default_sub = None
 
     for domain_key, domain_data in cfg.get("domains", {}).items():
         for sub_key, sub_data in domain_data.get("sub_categories", {}).items():
             hits = sum(1 for kw in sub_data.get("keywords", []) if kw in lowered)
+            if domain_key == default and hits > default_hits:
+                default_hits = hits
+                default_sub = sub_key
             if hits > best_hits:
                 best_hits = hits
                 best_domain = domain_key
                 best_sub = sub_key
 
+    # Keep source-declared domain unless another domain clearly wins.
+    if best_domain != default and best_hits < max(2, default_hits + 1):
+        return default, default_sub
     return best_domain, best_sub
 
 
