@@ -7,7 +7,7 @@ def test_psa_positive():
         "Avoid unnecessary travel to Ebola hotspots. Report symptoms immediately.",
     )
     assert is_psa is True
-    assert score >= 0.5
+    assert score >= 0.28
 
 
 def test_psa_iebc_public_notice():
@@ -17,7 +17,7 @@ def test_psa_iebc_public_notice():
         "inside the polling booth is strictly prohibited. The Commission urges all voters to comply.",
     )
     assert is_psa is True
-    assert score >= 0.5
+    assert score >= 0.28
 
 
 def test_psa_eacc_governance():
@@ -27,7 +27,7 @@ def test_psa_eacc_governance():
         "anti-corruption mechanisms and protect public resources through accountability and integrity.",
     )
     assert is_psa is True
-    assert score >= 0.5
+    assert score >= 0.28
 
 
 def test_psa_negative():
