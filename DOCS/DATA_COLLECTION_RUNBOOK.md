@@ -159,7 +159,7 @@ Never work directly on `main`. Use your assigned branch:
 | Iranzi Innocent | `data/governance` |
 | Angela Irungu | `data/health` |
 | Leona Kamau | `data/education` |
-| Jesca Kimani | `data/security` or `data/agriculture` |
+| Jessica Kimani | `data/security` or `data/agriculture` |
 
 ```powershell
 git checkout data/governance
@@ -386,13 +386,13 @@ python -m services.cli scrape --source moe_kenya
 python -m services.cli scrape --source kuccps
 python -m services.cli scrape --source helb
 
-# Jesca — Security
+# Jessica — Security
 python -m services.cli scrape --source ndma
 python -m services.cli scrape --source met_kenya
 python -m services.cli scrape --source nps
 python -m services.cli scrape --source kenya_red_cross
 
-# Jesca — Agriculture
+# Jessica — Agriculture
 python -m services.cli scrape --source kilimo
 python -m services.cli scrape --source fao_kenya
 ```
