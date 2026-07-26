@@ -12,7 +12,10 @@ DOMAINS_PATH = PROJECT_ROOT / "configs" / "domains.yaml"
 def _load_config() -> dict:
     if not DOMAINS_PATH.exists():
         return {}
-    return yaml.safe_load(DOMAINS_PATH.read_text(encoding="utf-8")) or {}
+    try:
+        return yaml.safe_load(DOMAINS_PATH.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return {}
 
 
 def infer_domain(text: str, default: str = "governance") -> Tuple[str, Optional[str]]:

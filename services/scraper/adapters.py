@@ -30,6 +30,9 @@ class BaseAdapter(ABC):
 class GenericHtmlAdapter(BaseAdapter):
     name = "generic_html"
 
+    def __init__(self):
+        self.skip_urls: set = set()
+
     def fetch(self, source: SourceRecord) -> list[RawScrapedItem]:
         config = source.scrape_config
         if not config.listing_url:
@@ -59,6 +62,9 @@ class GenericHtmlAdapter(BaseAdapter):
                     if link in seen_links:
                         continue
                     if config.listing_url and link.rstrip("/") == config.listing_url.rstrip("/"):
+                        continue
+                    if link in self.skip_urls:
+                        seen_links.add(link)
                         continue
                     seen_links.add(link)
                     if len(items) >= max(1, config.max_items):
@@ -253,8 +259,14 @@ class ScraperOrchestrator:
     def __init__(self, adapters: Optional[Dict[str, BaseAdapter]] = None):
         self.adapters = adapters or ADAPTERS
 
-    def scrape(self, source: SourceRecord) -> list[RawScrapedItem]:
+    def scrape(self, source: SourceRecord, skip_urls: Optional[set] = None) -> list[RawScrapedItem]:
         adapter = self.adapters.get(source.adapter)
         if not adapter:
             raise ValueError(f"No adapter registered for: {source.adapter}")
-        return adapter.fetch(source)
+        if skip_urls and hasattr(adapter, "skip_urls"):
+            adapter.skip_urls = skip_urls
+        try:
+            return adapter.fetch(source)
+        finally:
+            if hasattr(adapter, "skip_urls"):
+                adapter.skip_urls = set()

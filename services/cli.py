@@ -73,7 +73,8 @@ def _process_item(conn, source: SourceRecord, item) -> str:
     hash_val = content_hash(text)
 
     existing = conn.execute(
-        "SELECT psa_id FROM psas WHERE content_hash = ?", (hash_val,)
+        "SELECT psa_id FROM psas WHERE content_hash = ? OR source_url = ?",
+        (hash_val, item.source_url),
     ).fetchone()
     if existing:
         return "duplicate"
@@ -191,7 +192,13 @@ def scrape(
         started = datetime.utcnow().isoformat()
         stored = rejected = 0
         try:
-            items = orchestrator.scrape(src)
+            skip_urls = {
+                r["source_url"]
+                for r in conn.execute(
+                    "SELECT source_url FROM psas WHERE source_url IS NOT NULL"
+                ).fetchall()
+            }
+            items = orchestrator.scrape(src, skip_urls=skip_urls)
             for item in items:
                 outcome = _process_item(conn, src, item)
                 if outcome == "stored":

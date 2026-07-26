@@ -71,5 +71,5 @@ def classify_psa(title: str, text: str) -> tuple[bool, float]:
         score += 0.1
 
     score = max(0.0, min(1.0, score))
-    is_psa = score >= 0.28
+    is_psa = score >= 0.25
     return is_psa, round(score, 3)
