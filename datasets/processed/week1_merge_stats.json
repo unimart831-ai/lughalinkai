@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-07-27T00:04:13.966886+00:00",
+  "output_csv": "datasets\\processed\\week1_psa_merged.csv",
+  "output_json": "datasets\\processed\\week1_psa_merged.json",
+  "quarantine_csv": "datasets\\processed\\week1_psa_quarantined.csv",
+  "source_inputs": {
+    "all_psa_export": {
+      "path": "A:\\SYSTEMS_2026\\LUGHALINK\\datasets\\processed\\all_psa_export.csv",
+      "rows": 4040,
+      "missing": false
+    },
+    "education_final": {
+      "path": "A:\\SYSTEMS_2026\\LUGHALINK\\datasets\\processed\\psa_dataset_final.csv",
+      "rows": 153,
+      "missing": false
+    },
+    "agriculture": {
+      "path": "A:\\SYSTEMS_2026\\LUGHALINK\\datasets\\processed\\agriculture_psa_export.csv",
+      "rows": 401,
+      "missing": false
+    },
+    "media_archives": {
+      "path": "A:\\SYSTEMS_2026\\LUGHALINK\\datasets\\processed\\media_archives_psa_dataset.csv",
+      "rows": 112,
+      "missing": false
+    },
+    "angela_raw": {
+      "path": "A:\\SYSTEMS_2026\\LUGHALINK\\datasets\\processed\\psa_dataset.csv",
+      "rows": 39,
+      "missing": false
+    }
+  },
+  "rows_before_dedupe": 4745,
+  "duplicates_removed": 100,
+  "rows_quarantined": 1106,
+  "rows_final_clean": 3539,
+  "quarantine_reasons": {
+    "nav_boilerplate": 264,
+    "very_long_report": 589,
+    "non_target_language:fr": 13,
+    "non_target_language:es": 1,
+    "off_topic_news": 37,
+    "listicle_not_psa": 3,
+    "too_short": 42,
+    "ngo_website_stub": 7,
+    "short_ngo_non_psa": 79,
+    "ngo_about_page": 32,
+    "angela_raw_scrape": 39
+  },
+  "quarantine_by_contributor": {
+    "Iranzi Innocent / data/governance": 853,
+    "Leona Kamau / data/education": 40,
+    "Jessica Kimani / data/agriculture": 145,
+    "michenitumaini-ux / main": 29,
+    "Angela Irungu / main": 39
+  },
+  "approx_english_sentences": 51534,
+  "rows_with_kiswahili_text": 11,
+  "by_domain": {
+    "Governance": 1242,
+    "Education": 224,
+    "Health": 775,
+    "Security": 1150,
+    "Agriculture": 148
+  },
+  "by_lang_detected": {
+    "en": 3528,
+    "sw": 11
+  },
+  "by_contributor": {
+    "Iranzi Innocent / data/governance": 3187,
+    "Leona Kamau / data/education": 113,
+    "Jessica Kimani / data/agriculture": 156,
+    "michenitumaini-ux / main": 83
+  },
+  "target_languages_placeholder": [
+    "Dholuo",
+    "Ekegusii",
+    "Somali"
+  ]
+}
