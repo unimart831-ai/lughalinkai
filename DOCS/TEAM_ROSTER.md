@@ -12,7 +12,7 @@
 | **A** | **Iranzi Innocent (L)** | Product & Project Lead | Governance | `data/governance` | *(fill in)* |
 | **B** | **Angela Irungu** | Health Domain Lead | Health | `data/health` | *(fill in)* |
 | **C** | **Leona Kamau** | Education Domain Lead | Education | `data/education` | *(fill in)* |
-| **D** | **Jesca Kimani** | Security + Agriculture Lead | Security, Agriculture | `data/security`, `data/agriculture` | *(fill in)* |
+| **D** | **Jessica Kimani** | Security + Agriculture Lead | Security, Agriculture | `data/security`, `data/agriculture` | *(fill in)* |
 
 > **Note:** We have 4 members and 5 course domains. Jesca owns **two domains** (Security + Agriculture). Target: ≥1,000 PSAs per domain.
 
@@ -39,8 +39,8 @@ main                              ← stable (Iranzi merges only)
 | Iranzi Innocent | `data/governance` | `iebc`, `huduma` |
 | Angela Irungu | `data/health` | `moh_kenya`, `who_kenya`, `unicef_kenya` |
 | Leona Kamau | `data/education` | `moe_kenya`, `kuccps`, `helb` |
-| Jesca Kimani | `data/security` | `ndma`, `met_kenya`, `nps`, `kenya_red_cross` |
-| Jesca Kimani | `data/agriculture` | `kilimo`, `fao_kenya` |
+| Jessica Kimani | `data/security` | `ndma`, `met_kenya`, `nps`, `kenya_red_cross` |
+| Jessica Kimani | `data/agriculture` | `kilimo`, `fao_kenya` |
 
 ---
 
@@ -51,8 +51,8 @@ main                              ← stable (Iranzi merges only)
 | Iranzi Innocent | Governance | ≥1,000 |
 | Angela Irungu | Health | ≥1,000 |
 | Leona Kamau | Education | ≥1,000 |
-| Jesca Kimani | Security | ≥1,000 |
-| Jesca Kimani | Agriculture | ≥1,000 |
+| Jessica Kimani | Security | ≥1,000 |
+| Jessica Kimani | Agriculture | ≥1,000 |
 | **Team total** | **All 5 domains** | **≥5,000** |
 
 ---
@@ -75,8 +75,8 @@ python scripts/init_db.py
 git checkout data/governance    # Iranzi
 git checkout data/health        # Angela
 git checkout data/education     # Leona
-git checkout data/security      # Jesca
-git checkout data/agriculture   # Jesca
+git checkout data/security      # Jessica
+git checkout data/agriculture   # Jessica
 ```
 
 ---
