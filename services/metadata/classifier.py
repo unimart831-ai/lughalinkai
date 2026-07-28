@@ -25,6 +25,9 @@ PSA_POSITIVE_PATTERNS = [
 
 PSA_NEGATIVE_PATTERNS = [
     r"\b(match report|celebrity|premier league|gossip|rumour)\b",
+    r"\b(explore partnership|signed an? mou|capacity-?building|breakfast meeting)\b",
+    r"\b(country brief|situation report|format situation report)\b",
+    r"\b(strengthen collaboration|hosts? .{0,20}for talks)\b",
 ]
 
 AUTHORITY_PREFIX = re.compile(
@@ -63,12 +66,16 @@ def classify_psa(title: str, text: str) -> tuple[bool, float]:
     score += min(imperative_count * 0.05, 0.2)
 
     token_len = len(text.split())
-    if token_len > 1000:
+    if token_len > 500:
+        score -= 0.25
+    elif token_len > 300:
         score -= 0.15
     elif token_len < 12:
         score -= 0.2
-    elif 15 <= token_len <= 400:
-        score += 0.1
+    elif 15 <= token_len <= 250:
+        score += 0.15
+    elif 251 <= token_len <= 300:
+        score += 0.05
 
     score = max(0.0, min(1.0, score))
     is_psa = score >= 0.28

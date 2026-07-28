@@ -33,6 +33,12 @@ scraper = [
     "selenium>=4.21",
     "playwright>=1.44",
 ]
+mt = [
+    "transformers>=4.40",
+    "torch>=2.2",
+    "sentencepiece>=0.2",
+    "protobuf>=4.25",
+]
 
 [project.scripts]
 lughalink = "services.cli:app"

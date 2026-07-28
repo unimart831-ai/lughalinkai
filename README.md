@@ -17,14 +17,14 @@ LughaLink AI is a Public Information Translation Platform — not a semester tra
 
 ## Course Alignment (DSA 4020)
 
-Mapped to the project brief in `DOCS/DSA4020 Summer2026 Project.pdf`:
+This project satisfies Dr. Ombui's requirements while building startup-grade infrastructure:
 
-- ≥5,000 sentences per language pair — Week 1: collect EN/SW PSAs; Week 2+: NLLB seeding for low-resource targets
+- ≥5,000 sentences per language pair (via EN/SW collection + NLLB seeding + human validation)
 - ≥10 reliable sources with documented scraping
 - Structured dataset with required columns
-- Few-shot cross-lingual transfer (NLLB, mT5, mBART) — Week 3
-- Automatic + manual evaluation — Week 4 (no native-speaker pipeline in place yet)
-- Deployable digital public good — Week 4
+- Few-shot cross-lingual transfer (NLLB, mT5, mBART)
+- Evaluation beyond BLEU + human review
+- Deployable digital public good
 
 ## Repository Layout
 
@@ -40,23 +40,33 @@ lughalink-ai/
 └── scripts/
 ```
 
-## Week 1 Focus
+## Week 1 (complete)
 
-**Build Product 1: PSA Intelligence Platform.**
+**Product 1: PSA Intelligence Platform** — clean corpus + quarantine + report.
 
-See [docs/architecture/PRODUCT1_WEEK1.md](docs/architecture/PRODUCT1_WEEK1.md) for the full execution playbook.
+- Report: [DOCS/WEEK1_REPORT.md](DOCS/WEEK1_REPORT.md)
+- Clean sheet: `datasets/processed/week1_psa_merged.csv`
+- Playbook: [DOCS/architecture/PRODUCT1_WEEK1.md](DOCS/architecture/PRODUCT1_WEEK1.md)
 
-**Repository:** https://github.com/unimart831-ai/lughalinkai
+## Week 2 (current)
 
-**Team guide:** [docs/TEAM_OPERATIONS.md](docs/TEAM_OPERATIONS.md) — roles, domain ownership, data collection workflow, GitHub collaboration rules.
+**Product 2: Translation Engine** — EN↔SW alignment, NLLB seeding, gold review.
 
-**Team roster:** [docs/TEAM_ROSTER.md](docs/TEAM_ROSTER.md) — names, branches, source ownership.
+- Handoff: [DOCS/WEEK2_HANDOFF.md](DOCS/WEEK2_HANDOFF.md)
+- Plan: [DOCS/architecture/PRODUCT2_WEEK2.md](DOCS/architecture/PRODUCT2_WEEK2.md)
+- Languages: [configs/languages.yaml](configs/languages.yaml)
 
-**Data collection guide (start here):** [docs/DATA_COLLECTION_RUNBOOK.md](docs/DATA_COLLECTION_RUNBOOK.md) — clone to export, commands per user, troubleshooting.
+```bash
+# Freeze Week 1 baseline + build seed candidates
+python scripts/prepare_week2_baseline.py
 
-**File reference:** [docs/FILE_REFERENCE.md](docs/FILE_REFERENCE.md) — what each file in `configs/`, `database/`, `datasets/`, `scripts/`, and `services/` does.
+# Dry-run NLLB seeder (no model download)
+python scripts/seed_nllb_sample.py --dry-run --limit 5
 
-**Troubleshooting playbook:** [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) — how to fix scrape failures (SSL, Untitled, stored=0, JS pages, RSS, classifier).
+# Real seeding (large download)
+pip install -e ".[mt]"
+python scripts/seed_nllb_sample.py --limit 50 --targets luo,guz,som
+```
 
 ## Quick Start
 
@@ -75,16 +85,15 @@ python -m services.cli validate-sources
 python -m services.cli scrape --source moh_kenya
 ```
 
-## Team
+## Team Roles
 
-| Name | Domain | Branch |
-|------|--------|--------|
-| Iranzi Innocent (L) | Governance + Lead | `data/governance` |
-| Angela Irungu | Health | `data/health` |
-| Leona Kamau | Education | `data/education` |
-| Jesca Kimani | Security + Agriculture | `data/security`, `data/agriculture` |
-
-See [docs/TEAM_ROSTER.md](docs/TEAM_ROSTER.md) for full assignments.
+| Role | Owner | Week 1 Deliverable |
+|------|-------|-------------------|
+| Product Lead | TBD | Roadmap, GitHub, Week 1 report |
+| Data Engineer | TBD | Scraper adapters, cleaning pipeline |
+| ML Engineer | TBD | PSA classifier rules, language detection |
+| Backend Engineer | TBD | Database schema, ingestion CLI |
+| Frontend/UX | TBD | Manual upload UI stub, validation forms |
 
 ## License
 

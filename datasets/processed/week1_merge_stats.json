@@ -1,0 +1,82 @@
+{
+  "generated_at": "2026-07-27T22:34:20.663987+00:00",
+  "strict_refilter": true,
+  "rows_input_unique": 8674,
+  "rows_final_clean": 4152,
+  "rows_quarantined": 4522,
+  "quarantine_reasons": {
+    "non_target_language:fr": 17,
+    "non_target_language:es": 6,
+    "report_not_psa": 1454,
+    "off_topic_news": 134,
+    "listicle_not_psa": 41,
+    "low_psa_score:0.22": 42,
+    "low_psa_score:0.24": 45,
+    "low_psa_score:0.00": 91,
+    "low_psa_score:0.15": 87,
+    "low_psa_score:0.25": 30,
+    "low_psa_score:0.27": 54,
+    "low_psa_score:0.20": 11,
+    "low_psa_score:0.10": 6,
+    "low_psa_score:0.12": 23,
+    "short_ngo_non_psa": 83,
+    "too_short": 43,
+    "nav_boilerplate": 487,
+    "low_psa_score:0.21": 129,
+    "low_psa_score:0.14": 86,
+    "low_psa_score:0.09": 170,
+    "low_psa_score:0.17": 67,
+    "low_psa_score:0.26": 44,
+    "low_psa_score:0.02": 46,
+    "low_psa_score:0.19": 21,
+    "ngo_website_stub": 7,
+    "ngo_about_page": 32,
+    "angela_raw_scrape": 38,
+    "low_psa_score:0.05": 16,
+    "low_psa_score:0.07": 10,
+    "genre_news_not_psa": 1023,
+    "weak_forced_narrative:0.09": 86,
+    "weak_forced_narrative:0.07": 3,
+    "weak_forced_narrative:0.00": 30,
+    "weak_forced_narrative:0.02": 8,
+    "weak_forced_narrative:0.14": 18,
+    "weak_forced_narrative:0.08": 2,
+    "weak_long_narrative:0.17": 29,
+    "weak_forced_narrative:0.04": 2,
+    "weak_long_narrative:0.16": 1
+  },
+  "quarantine_by_contributor": {
+    "Iranzi Innocent / data/governance": 1743,
+    "Leona Kamau / data/education": 72,
+    "Jessica Kimani / data/agriculture": 264,
+    "michenitumaini-ux / main": 93,
+    "Angela Irungu / main": 38,
+    "unknown": 2312
+  },
+  "by_domain": {
+    "Governance": 1951,
+    "Education": 341,
+    "Health": 838,
+    "Agriculture": 185,
+    "Security": 837
+  },
+  "by_lang_detected": {
+    "en": 2371,
+    "sw": 3,
+    "unknown": 1778
+  },
+  "by_contributor": {
+    "Iranzi Innocent / data/governance": 2237,
+    "Leona Kamau / data/education": 81,
+    "Jessica Kimani / data/agriculture": 37,
+    "michenitumaini-ux / main": 19,
+    "unknown": 1778
+  },
+  "approx_english_sentences": 51442,
+  "rows_with_kiswahili_text": 3,
+  "gate": {
+    "min_tokens": 12,
+    "max_tokens": 350,
+    "min_classifier_score": 0.28
+  }
+}

@@ -7,12 +7,16 @@
       "organization": "Ministry of Health",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["health"],
+      "domains_covered": [
+        "health"
+      ],
       "website": "https://www.health.go.ke",
       "rss_feed": null,
       "twitter_handle": "@MOH_Kenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -34,12 +38,16 @@
       "organization": "Ministry of Education",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["education"],
+      "domains_covered": [
+        "education"
+      ],
       "website": "https://www.education.go.ke",
       "rss_feed": null,
       "twitter_handle": "@MoE_Kenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -63,12 +71,16 @@
       "organization": "Independent Electoral and Boundaries Commission",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.iebc.or.ke",
       "rss_feed": null,
       "twitter_handle": "@IEBCKenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -79,7 +91,7 @@
         "body_selector": "article, .post",
         "date_selector": "time, .date",
         "link_href_contains": "/news/?",
-        "max_items": 420,
+        "max_items": 500,
         "rate_limit_seconds": 0.8
       },
       "robots_txt_respected": true,
@@ -90,12 +102,17 @@
       "organization": "National Drought Management Authority",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["agriculture", "security"],
+      "domains_covered": [
+        "agriculture",
+        "security"
+      ],
       "website": "https://www.ndma.go.ke",
       "rss_feed": null,
       "twitter_handle": "@NDMA_KE",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -118,12 +135,18 @@
       "organization": "Kenya Meteorological Department",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["security", "agriculture", "health"],
+      "domains_covered": [
+        "security",
+        "agriculture",
+        "health"
+      ],
       "website": "https://meteo.go.ke",
       "rss_feed": null,
       "twitter_handle": "@MeteoKenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -147,12 +170,16 @@
       "organization": "National Police Service",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["security"],
+      "domains_covered": [
+        "security"
+      ],
       "website": "https://www.nationalpolice.go.ke",
       "rss_feed": null,
       "twitter_handle": "@NPSOfficial_KE",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "medium",
       "adapter": "generic_html",
@@ -172,12 +199,16 @@
       "organization": "Ministry of Agriculture and Livestock Development",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["agriculture"],
+      "domains_covered": [
+        "agriculture"
+      ],
       "website": "https://www.kilimo.go.ke",
       "rss_feed": null,
       "twitter_handle": "@kilimoKE",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -200,12 +231,16 @@
       "organization": "Huduma Kenya",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.hudumakenya.go.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 95,
       "priority": "medium",
       "adapter": "generic_html",
@@ -227,12 +262,16 @@
       "organization": "Ethics and Anti-Corruption Commission",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://eacc.go.ke",
       "rss_feed": "https://eacc.go.ke/en/default/feed/",
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "rss_feed",
@@ -251,12 +290,16 @@
       "organization": "Kenya Revenue Authority",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.kra.go.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -267,7 +310,7 @@
         "body_selector": ".main-content, article",
         "date_selector": "time, .date",
         "link_href_contains": "/public-notices/",
-        "max_items": 280,
+        "max_items": 400,
         "rate_limit_seconds": 0.7
       },
       "robots_txt_respected": true,
@@ -278,12 +321,16 @@
       "organization": "Presidency of Kenya",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.president.go.ke",
       "rss_feed": "https://www.president.go.ke/feed",
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 95,
       "priority": "medium",
       "adapter": "rss_feed",
@@ -302,12 +349,16 @@
       "organization": "Communications Authority of Kenya",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.ca.go.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 95,
       "priority": "medium",
       "adapter": "generic_html",
@@ -329,12 +380,16 @@
       "organization": "The National Treasury",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.treasury.go.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "medium",
       "adapter": "generic_html",
@@ -356,12 +411,16 @@
       "organization": "Kenya Revenue Authority",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.kra.go.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -372,8 +431,8 @@
         "body_selector": ".main-content, article",
         "date_selector": "time, .date",
         "link_href_contains": "/press-release/",
-        "max_items": 150,
-        "rate_limit_seconds": 0.6
+        "max_items": 400,
+        "rate_limit_seconds": 0.55
       },
       "robots_txt_respected": true,
       "active": true
@@ -383,12 +442,16 @@
       "organization": "Public Service Commission",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.publicservice.go.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 95,
       "priority": "medium",
       "adapter": "generic_html",
@@ -410,12 +473,16 @@
       "organization": "Office of the Director of Public Prosecutions",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["governance"],
+      "domains_covered": [
+        "governance"
+      ],
       "website": "https://www.odpp.go.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 95,
       "priority": "medium",
       "adapter": "generic_html",
@@ -437,12 +504,16 @@
       "organization": "WHO Kenya",
       "country": "Kenya",
       "source_type": "un_agency",
-      "domains_covered": ["health"],
+      "domains_covered": [
+        "health"
+      ],
       "website": "https://www.afro.who.int/countries/kenya",
       "rss_feed": "https://www.afro.who.int/rss/countries/kenya/news",
       "twitter_handle": "@WHOKenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 95,
       "priority": "high",
       "adapter": "generic_html",
@@ -454,8 +525,8 @@
         "date_selector": "time",
         "link_href_contains": "/countries/kenya/news/",
         "link_min_slug_chars": 20,
-        "max_items": 220,
-        "max_listing_pages": 23,
+        "max_items": 300,
+        "max_listing_pages": 30,
         "page_param": "page",
         "rate_limit_seconds": 0.6
       },
@@ -467,12 +538,17 @@
       "organization": "UNICEF Kenya",
       "country": "Kenya",
       "source_type": "un_agency",
-      "domains_covered": ["health", "education"],
+      "domains_covered": [
+        "health",
+        "education"
+      ],
       "website": "https://www.unicef.org/kenya",
       "rss_feed": null,
       "twitter_handle": "@UNICEFKenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 90,
       "priority": "medium",
       "adapter": "generic_html",
@@ -494,12 +570,16 @@
       "organization": "Kenya Universities and Colleges Central Placement Service",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["education"],
+      "domains_covered": [
+        "education"
+      ],
       "website": "https://www.kuccps.ac.ke",
       "rss_feed": null,
       "twitter_handle": "@KUCCPS_Official",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -521,12 +601,16 @@
       "organization": "Kenya National Examinations Council",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["education"],
+      "domains_covered": [
+        "education"
+      ],
       "website": "https://www.knec.ac.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -550,12 +634,16 @@
       "organization": "Higher Education Loans Board",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["education"],
+      "domains_covered": [
+        "education"
+      ],
       "website": "https://www.helb.co.ke",
       "rss_feed": null,
       "twitter_handle": "@HELBpage",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "medium",
       "adapter": "generic_html",
@@ -575,12 +663,16 @@
       "organization": "FAO Kenya",
       "country": "Kenya",
       "source_type": "un_agency",
-      "domains_covered": ["agriculture"],
+      "domains_covered": [
+        "agriculture"
+      ],
       "website": "https://www.fao.org/kenya",
       "rss_feed": null,
       "twitter_handle": "@FAOKenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 90,
       "priority": "medium",
       "adapter": "generic_html",
@@ -604,12 +696,17 @@
       "organization": "Kenya Red Cross Society",
       "country": "Kenya",
       "source_type": "ngo",
-      "domains_covered": ["security", "health"],
+      "domains_covered": [
+        "security",
+        "health"
+      ],
       "website": "https://www.redcross.or.ke",
       "rss_feed": null,
       "twitter_handle": "@KenyaRedCross",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 90,
       "priority": "high",
       "adapter": "generic_html",
@@ -632,12 +729,20 @@
       "organization": "Citizen TV Kenya",
       "country": "Kenya",
       "source_type": "media",
-      "domains_covered": ["health", "security", "governance", "education", "agriculture"],
+      "domains_covered": [
+        "health",
+        "security",
+        "governance",
+        "education",
+        "agriculture"
+      ],
       "website": "https://www.citizen.digital",
       "rss_feed": null,
       "twitter_handle": "@citizentvkenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 80,
       "priority": "low",
       "adapter": "generic_html",
@@ -658,12 +763,18 @@
       "organization": "ReliefWeb Kenya",
       "country": "Kenya",
       "source_type": "un_agency",
-      "domains_covered": ["security", "health", "agriculture"],
+      "domains_covered": [
+        "security",
+        "health",
+        "agriculture"
+      ],
       "website": "https://reliefweb.int",
       "rss_feed": "https://reliefweb.int/updates/rss.xml?search=primary_country.iso3:ken",
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 90,
       "priority": "high",
       "adapter": "rss_feed",
@@ -682,12 +793,18 @@
       "organization": "ReliefWeb Kenya Reports",
       "country": "Kenya",
       "source_type": "un_agency",
-      "domains_covered": ["security", "health", "agriculture"],
+      "domains_covered": [
+        "security",
+        "health",
+        "agriculture"
+      ],
       "website": "https://reliefweb.int",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 90,
       "priority": "high",
       "adapter": "generic_html",
@@ -698,10 +815,10 @@
         "body_selector": "article, main, .rw-report__body",
         "date_selector": "time",
         "link_href_contains": "/report/kenya/",
-        "max_items": 450,
-        "max_listing_pages": 35,
+        "max_items": 1000,
+        "max_listing_pages": 60,
         "page_param": "page",
-        "rate_limit_seconds": 0.5
+        "rate_limit_seconds": 0.45
       },
       "robots_txt_respected": true,
       "active": true
@@ -711,12 +828,18 @@
       "organization": "Kenya Meteorological Department",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["security", "agriculture", "health"],
+      "domains_covered": [
+        "security",
+        "agriculture",
+        "health"
+      ],
       "website": "https://meteo.go.ke",
       "rss_feed": null,
       "twitter_handle": "@MeteoKenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -738,12 +861,16 @@
       "organization": "Ministry of Education",
       "country": "Kenya",
       "source_type": "government",
-      "domains_covered": ["education"],
+      "domains_covered": [
+        "education"
+      ],
       "website": "https://www.education.go.ke",
       "rss_feed": null,
       "twitter_handle": "@MoE_Kenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 100,
       "priority": "high",
       "adapter": "generic_html",
@@ -765,12 +892,16 @@
       "organization": "Capital FM Kenya",
       "country": "Kenya",
       "source_type": "media",
-      "domains_covered": ["health"],
+      "domains_covered": [
+        "health"
+      ],
       "website": "https://www.capitalfm.co.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 75,
       "priority": "low",
       "adapter": "generic_html",
@@ -782,9 +913,9 @@
         "date_selector": "time",
         "link_href_contains": "capitalfm.africa/",
         "link_min_slug_chars": 35,
-        "max_items": 60,
-        "max_listing_pages": 5,
-        "rate_limit_seconds": 0.7,
+        "max_items": 250,
+        "max_listing_pages": 20,
+        "rate_limit_seconds": 0.55,
         "requires_psa_filter": true
       },
       "robots_txt_respected": true,
@@ -795,12 +926,16 @@
       "organization": "Capital FM Kenya",
       "country": "Kenya",
       "source_type": "media",
-      "domains_covered": ["education"],
+      "domains_covered": [
+        "education"
+      ],
       "website": "https://www.capitalfm.co.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 75,
       "priority": "low",
       "adapter": "generic_html",
@@ -812,9 +947,9 @@
         "date_selector": "time",
         "link_href_contains": "capitalfm.africa/",
         "link_min_slug_chars": 35,
-        "max_items": 80,
-        "max_listing_pages": 8,
-        "rate_limit_seconds": 0.6,
+        "max_items": 250,
+        "max_listing_pages": 20,
+        "rate_limit_seconds": 0.55,
         "requires_psa_filter": true
       },
       "robots_txt_respected": true,
@@ -825,12 +960,16 @@
       "organization": "Capital FM Kenya",
       "country": "Kenya",
       "source_type": "media",
-      "domains_covered": ["security"],
+      "domains_covered": [
+        "security"
+      ],
       "website": "https://www.capitalfm.co.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 75,
       "priority": "low",
       "adapter": "generic_html",
@@ -842,9 +981,9 @@
         "date_selector": "time",
         "link_href_contains": "capitalfm.africa/",
         "link_min_slug_chars": 35,
-        "max_items": 80,
-        "max_listing_pages": 8,
-        "rate_limit_seconds": 0.6,
+        "max_items": 250,
+        "max_listing_pages": 20,
+        "rate_limit_seconds": 0.55,
         "requires_psa_filter": true
       },
       "robots_txt_respected": true,
@@ -855,12 +994,19 @@
       "organization": "Citizen Digital",
       "country": "Kenya",
       "source_type": "media",
-      "domains_covered": ["health", "education", "security", "agriculture"],
+      "domains_covered": [
+        "health",
+        "education",
+        "security",
+        "agriculture"
+      ],
       "website": "https://www.citizen.digital",
       "rss_feed": null,
       "twitter_handle": "@citizentvkenya",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 75,
       "priority": "low",
       "adapter": "generic_html",
@@ -871,9 +1017,9 @@
         "body_selector": "article, .article-body, main",
         "date_selector": "time",
         "link_href_contains": "/article/",
-        "max_items": 120,
-        "max_listing_pages": 10,
-        "rate_limit_seconds": 0.6,
+        "max_items": 250,
+        "max_listing_pages": 25,
+        "rate_limit_seconds": 0.5,
         "requires_psa_filter": true
       },
       "robots_txt_respected": true,
@@ -884,12 +1030,16 @@
       "organization": "WHO Africa",
       "country": "Kenya",
       "source_type": "un_agency",
-      "domains_covered": ["health"],
+      "domains_covered": [
+        "health"
+      ],
       "website": "https://www.afro.who.int",
       "rss_feed": null,
       "twitter_handle": "@WHOAFRO",
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 90,
       "priority": "medium",
       "adapter": "generic_html",
@@ -901,8 +1051,8 @@
         "date_selector": "time",
         "link_href_contains": "afro.who.int/",
         "link_min_slug_chars": 25,
-        "max_items": 200,
-        "max_listing_pages": 25,
+        "max_items": 300,
+        "max_listing_pages": 30,
         "rate_limit_seconds": 0.55
       },
       "robots_txt_respected": true,
@@ -913,12 +1063,16 @@
       "organization": "Standard Media FarmKenya",
       "country": "Kenya",
       "source_type": "media",
-      "domains_covered": ["agriculture"],
+      "domains_covered": [
+        "agriculture"
+      ],
       "website": "https://www.standardmedia.co.ke",
       "rss_feed": null,
       "twitter_handle": null,
       "primary_language": "en",
-      "secondary_languages": ["sw"],
+      "secondary_languages": [
+        "sw"
+      ],
       "trust_score": 75,
       "priority": "low",
       "adapter": "generic_html",
@@ -930,9 +1084,705 @@
         "date_selector": "time",
         "link_href_contains": "/farmkenya/",
         "link_min_slug_chars": 20,
-        "max_items": 100,
-        "max_listing_pages": 10,
+        "max_items": 200,
+        "max_listing_pages": 18,
         "rate_limit_seconds": 0.6,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_disasters",
+      "organization": "ReliefWeb Kenya Disasters",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "security",
+        "health",
+        "agriculture"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+disaster.name:*",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 700,
+        "max_listing_pages": 45,
+        "page_param": "page",
+        "rate_limit_seconds": 0.45
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "kra_news",
+      "organization": "Kenya Revenue Authority",
+      "country": "Kenya",
+      "source_type": "government",
+      "domains_covered": [
+        "governance"
+      ],
+      "website": "https://www.kra.go.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 100,
+      "priority": "medium",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.kra.go.ke/news-center/news",
+        "article_selector": "a",
+        "title_selector": "h2, h1",
+        "body_selector": ".main-content, article, main",
+        "date_selector": "time, .date",
+        "link_href_contains": "/news-center/news/",
+        "max_items": 40,
+        "rate_limit_seconds": 0.6
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "tuko_edu",
+      "organization": "Tuko Education",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "education"
+      ],
+      "website": "https://www.tuko.co.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 70,
+      "priority": "low",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.tuko.co.ke/education/",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .article-body, .entry-content, main, .post-content",
+        "date_selector": "time",
+        "link_href_contains": "tuko.co.ke/",
+        "link_min_slug_chars": 20,
+        "max_items": 300,
+        "max_listing_pages": 25,
+        "rate_limit_seconds": 0.5,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "tuko_kenya",
+      "organization": "Tuko Kenya",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "security",
+        "health",
+        "education",
+        "agriculture",
+        "governance"
+      ],
+      "website": "https://www.tuko.co.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 70,
+      "priority": "low",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.tuko.co.ke/kenya/",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .article-body, .entry-content, main, .post-content",
+        "date_selector": "time",
+        "link_href_contains": ".html",
+        "link_min_slug_chars": 15,
+        "max_items": 300,
+        "max_listing_pages": 25,
+        "rate_limit_seconds": 0.45,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "nema_kenya",
+      "organization": "National Environment Management Authority",
+      "country": "Kenya",
+      "source_type": "government",
+      "domains_covered": [
+        "agriculture",
+        "health",
+        "security"
+      ],
+      "website": "https://www.nema.go.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 95,
+      "priority": "medium",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://nema.go.ke/public-notices-2/",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .entry-content, .content",
+        "date_selector": "time",
+        "link_href_contains": "nema.go.ke/",
+        "link_min_slug_chars": 15,
+        "max_items": 200,
+        "rate_limit_seconds": 0.6,
+        "max_listing_pages": 15
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "kebs_kenya",
+      "organization": "Kenya Bureau of Standards",
+      "country": "Kenya",
+      "source_type": "government",
+      "domains_covered": [
+        "agriculture",
+        "health",
+        "governance"
+      ],
+      "website": "https://www.kebs.org",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 95,
+      "priority": "medium",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.kebs.org/index.php/media-center/news",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .entry-content, .content",
+        "date_selector": "time",
+        "link_href_contains": "kebs.org/",
+        "link_min_slug_chars": 20,
+        "max_items": 80,
+        "rate_limit_seconds": 0.6
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_health",
+      "organization": "ReliefWeb Kenya Health",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "health"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+(health+OR+outbreak+OR+malaria+OR+cholera+OR+vaccine)",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 500,
+        "max_listing_pages": 40,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_food",
+      "organization": "ReliefWeb Kenya Food Security",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "agriculture",
+        "security"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+(food+OR+agriculture+OR+drought+OR+livestock+OR+farming)",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 500,
+        "max_listing_pages": 40,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_education",
+      "organization": "ReliefWeb Kenya Education",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "education"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+(education+OR+school+OR+learner+OR+teacher)",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 400,
+        "max_listing_pages": 30,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "allafrica_kenya",
+      "organization": "AllAfrica Kenya",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "health",
+        "education",
+        "security",
+        "agriculture",
+        "governance"
+      ],
+      "website": "https://allafrica.com",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 75,
+      "priority": "medium",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://allafrica.com/kenya/",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .story-body, main, .content",
+        "date_selector": "time",
+        "link_href_contains": "/stories/",
+        "max_items": 400,
+        "max_listing_pages": 30,
+        "page_param": "page",
+        "rate_limit_seconds": 0.45,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "thestar_kenya",
+      "organization": "The Star Kenya",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "health",
+        "education",
+        "security",
+        "agriculture",
+        "governance"
+      ],
+      "website": "https://www.the-star.co.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 75,
+      "priority": "low",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.the-star.co.ke/news",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .article-body, main, .content",
+        "date_selector": "time",
+        "link_href_contains": "the-star.co.ke/",
+        "link_min_slug_chars": 30,
+        "max_items": 250,
+        "max_listing_pages": 20,
+        "rate_limit_seconds": 0.45,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "standard_health",
+      "organization": "Standard Media Health",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "health"
+      ],
+      "website": "https://www.standardmedia.co.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 75,
+      "priority": "low",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.standardmedia.co.ke/health",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .article-body, main, .content",
+        "date_selector": "time",
+        "link_href_contains": "standardmedia.co.ke/",
+        "link_min_slug_chars": 25,
+        "max_items": 200,
+        "max_listing_pages": 18,
+        "rate_limit_seconds": 0.5,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "tuko_health",
+      "organization": "Tuko Health",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "health"
+      ],
+      "website": "https://www.tuko.co.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 70,
+      "priority": "low",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.tuko.co.ke/health-science/",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .article-body, .entry-content, main, .post-content",
+        "date_selector": "time",
+        "link_href_contains": ".html",
+        "max_items": 300,
+        "max_listing_pages": 25,
+        "rate_limit_seconds": 0.45,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "business_daily",
+      "organization": "Business Daily Africa",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "agriculture",
+        "governance",
+        "health",
+        "education"
+      ],
+      "website": "https://www.businessdailyafrica.com",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 75,
+      "priority": "low",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.businessdailyafrica.com/bd/corporate/health-science",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .article-body, main, .content",
+        "date_selector": "time",
+        "link_href_contains": "businessdailyafrica.com/",
+        "link_min_slug_chars": 30,
+        "max_items": 200,
+        "max_listing_pages": 18,
+        "rate_limit_seconds": 0.5,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_wash",
+      "organization": "ReliefWeb Kenya WASH",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "health",
+        "security"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+(water+OR+sanitation+OR+hygiene+OR+wash+OR+cholera)",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 400,
+        "max_listing_pages": 35,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_refugees",
+      "organization": "ReliefWeb Kenya Refugees",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "security",
+        "health",
+        "education"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+(refugee+OR+asylum+OR+displacement+OR+camp+OR+unhcr)",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 400,
+        "max_listing_pages": 35,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_nutrition",
+      "organization": "ReliefWeb Kenya Nutrition",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "health",
+        "agriculture"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+(nutrition+OR+malnutrition+OR+hunger+OR+ipc+OR+famine)",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 350,
+        "max_listing_pages": 30,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "reliefweb_climate",
+      "organization": "ReliefWeb Kenya Climate",
+      "country": "Kenya",
+      "source_type": "un_agency",
+      "domains_covered": [
+        "agriculture",
+        "security"
+      ],
+      "website": "https://reliefweb.int",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 90,
+      "priority": "high",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://reliefweb.int/updates?view=reports&search=primary_country.iso3:ken+AND+(climate+OR+flood+OR+drought+OR+rainfall+OR+weather)",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, main, .rw-report__body",
+        "date_selector": "time",
+        "link_href_contains": "/report/kenya/",
+        "max_items": 400,
+        "max_listing_pages": 35,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "allafrica_latest",
+      "organization": "AllAfrica Kenya Latest",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "health",
+        "education",
+        "security",
+        "agriculture",
+        "governance"
+      ],
+      "website": "https://allafrica.com",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 75,
+      "priority": "medium",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://allafrica.com/kenya/latest/",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .story-body, main, .content",
+        "date_selector": "time",
+        "link_href_contains": "/stories/",
+        "max_items": 400,
+        "max_listing_pages": 40,
+        "page_param": "page",
+        "rate_limit_seconds": 0.4,
+        "requires_psa_filter": true
+      },
+      "robots_txt_respected": true,
+      "active": true
+    },
+    {
+      "source_id": "tuko_edu2",
+      "organization": "Tuko Education Deep",
+      "country": "Kenya",
+      "source_type": "media",
+      "domains_covered": [
+        "education"
+      ],
+      "website": "https://www.tuko.co.ke",
+      "rss_feed": null,
+      "twitter_handle": null,
+      "primary_language": "en",
+      "secondary_languages": [
+        "sw"
+      ],
+      "trust_score": 70,
+      "priority": "low",
+      "adapter": "generic_html",
+      "scrape_config": {
+        "listing_url": "https://www.tuko.co.ke/education/",
+        "article_selector": "a",
+        "title_selector": "h1",
+        "body_selector": "article, .article-body, .entry-content, main, .post-content",
+        "date_selector": "time",
+        "link_href_contains": "tuko.co.ke/",
+        "link_min_slug_chars": 18,
+        "max_items": 300,
+        "max_listing_pages": 25,
+        "rate_limit_seconds": 0.4,
         "requires_psa_filter": true
       },
       "robots_txt_respected": true,
