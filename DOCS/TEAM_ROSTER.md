@@ -14,7 +14,7 @@
 | **C** | **Leona Kamau** | Education Domain Lead | Education | `data/education` | *(fill in)* |
 | **D** | **Jessica Kimani** | Security + Agriculture Lead | Security, Agriculture | `data/security`, `data/agriculture` | *(fill in)* |
 
-> **Note:** We have 4 members and 5 course domains. Jesca owns **two domains** (Security + Agriculture). Target: ≥1,000 PSAs per domain.
+> **Note:** We have 4 members and 5 course domains. Jessica owns **two domains** (Security + Agriculture). Target: ≥1,000 PSAs per domain.
 
 ---
 
