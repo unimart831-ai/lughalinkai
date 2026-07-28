@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-07-27T22:37:23.941500+00:00",
+  "file": "datasets\\processed\\week2_ready_psas.csv",
+  "rows": 4152,
+  "by_domain": {
+    "Governance": 1951,
+    "Education": 341,
+    "Health": 838,
+    "Agriculture": 185,
+    "Security": 837
+  },
+  "rows_with_kiswahili": 3,
+  "purpose": "Frozen clean PSA corpus for Week 2 / Product 2 translation seeding",
+  "do_not_overwrite_with_quarantine": true
+}
