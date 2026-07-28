@@ -1,0 +1,41 @@
+# Target languages — LughaLink AI (Week 2+)
+
+languages:
+  - id: en
+    name: English
+    iso_639_1: en
+    iso_639_3: eng
+    nllb: eng_Latn
+    role: source
+  - id: sw
+    name: Kiswahili
+    iso_639_1: sw
+    iso_639_3: swa
+    nllb: swh_Latn
+    role: pivot
+  - id: luo
+    name: Dholuo
+    iso_639_1: luo
+    iso_639_3: luo
+    nllb: luo_Latn
+    role: target
+  - id: guz
+    name: Ekegusii
+    iso_639_1: guz
+    iso_639_3: guz
+    nllb: guz_Latn
+    role: target
+  - id: som
+    name: Somali
+    iso_639_1: so
+    iso_639_3: som
+    nllb: som_Latn
+    role: target
+
+seed_defaults:
+  source_nllb: eng_Latn
+  target_ids: [luo, guz, som]
+  max_source_tokens: 200
+  min_source_tokens: 12
+
+nllb_model: facebook/nllb-200-distilled-600M

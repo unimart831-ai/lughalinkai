@@ -25,6 +25,7 @@ from services.metadata.enrichment import (
     infer_domain,
     infer_urgency,
 )
+from services.metadata.psa_core import extract_psa_core
 from services.models import PSARecord, ScrapeConfig, SourceRecord, SourceType
 from services.preprocessing.cleaning import clean_raw_content
 from services.scraper.adapters import ScraperOrchestrator
@@ -64,6 +65,17 @@ def _process_item(conn, source: SourceRecord, item) -> str:
     if not text:
         return "rejected"
 
+    # Prefer short PSA cores over full news/report bodies.
+    if cleaned["token_count"] > 320:
+        core = extract_psa_core(item.title, text, max_tokens=340)
+        if core and len(core.split()) >= 12:
+            text = core
+            cleaned = {
+                **cleaned,
+                "text": text,
+                "token_count": len(text.split()),
+            }
+
     is_psa, confidence = classify_psa(item.title, text)
     domain, sub_category = infer_domain(text, default=source.domains_covered[0])
     urgency = infer_urgency(text)
@@ -73,7 +85,8 @@ def _process_item(conn, source: SourceRecord, item) -> str:
     hash_val = content_hash(text)
 
     existing = conn.execute(
-        "SELECT psa_id FROM psas WHERE content_hash = ?", (hash_val,)
+        "SELECT psa_id FROM psas WHERE content_hash = ? OR source_url = ?",
+        (hash_val, item.source_url),
     ).fetchone()
     if existing:
         return "duplicate"
@@ -191,7 +204,13 @@ def scrape(
         started = datetime.utcnow().isoformat()
         stored = rejected = 0
         try:
-            items = orchestrator.scrape(src)
+            skip_urls = {
+                r["source_url"]
+                for r in conn.execute(
+                    "SELECT source_url FROM psas WHERE source_url IS NOT NULL"
+                ).fetchall()
+            }
+            items = orchestrator.scrape(src, skip_urls=skip_urls)
             for item in items:
                 outcome = _process_item(conn, src, item)
                 if outcome == "stored":

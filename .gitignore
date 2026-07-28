@@ -14,7 +14,25 @@ venv/
 # Data (large files tracked via DVC)
 datasets/raw/**
 datasets/interim/**
+!datasets/interim/.gitkeep
 !datasets/**/.gitkeep
+
+# Keep Week 2 generated samples out of git until reviewed (optional local only)
+datasets/parallel/nllb_seeded_sample.csv
+datasets/interim/week2_seed_candidates.csv
+datasets/interim/week2_baseline_stats.json
+
+# Week-1: hide raw/noisy teammate scrapes from public branch.
+# Submission surfaces: week1_psa_merged.csv + week1_psa_quarantined.csv
+datasets/processed/psa_dataset.csv
+datasets/processed/agriculture_psa_raw.json
+datasets/processed/NLP_Group_Project.ipynb
+datasets/processed/all_psa_export.csv
+datasets/processed/governance_psa_export.csv
+datasets/processed/agriculture_psa_export.csv
+datasets/processed/psa_dataset_final.csv
+datasets/processed/media_archives_psa_dataset.csv
+datasets/processed/week1_psa_merged.json
 
 # ML artifacts
 models/
