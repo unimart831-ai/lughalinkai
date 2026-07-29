@@ -1,0 +1,106 @@
+# Cultural / institutional terms for Kenyan PSAs (Week 2 preprocessing).
+# keep_form: preferred surface form during normalization.
+# do_not_translate: leave as-is in target-language drafts until human review.
+# notes: cultural / institutional context for reviewers.
+
+version: 1
+terms:
+  - term: IEBC
+    keep_form: IEBC
+    do_not_translate: true
+    notes: Independent Electoral and Boundaries Commission
+  - term: EACC
+    keep_form: EACC
+    do_not_translate: true
+    notes: Ethics and Anti-Corruption Commission
+  - term: NHIF
+    keep_form: NHIF
+    do_not_translate: true
+    notes: National Hospital Insurance Fund (legacy name; also see SHA)
+  - term: SHA
+    keep_form: SHA
+    do_not_translate: true
+    notes: Social Health Authority
+  - term: NDMA
+    keep_form: NDMA
+    do_not_translate: true
+    notes: National Drought Management Authority
+  - term: KRA
+    keep_form: KRA
+    do_not_translate: true
+    notes: Kenya Revenue Authority
+  - term: HELB
+    keep_form: HELB
+    do_not_translate: true
+    notes: Higher Education Loans Board
+  - term: KUCCPS
+    keep_form: KUCCPS
+    do_not_translate: true
+    notes: Kenya Universities and Colleges Central Placement Service
+  - term: TVET
+    keep_form: TVET
+    do_not_translate: true
+    notes: Technical and Vocational Education and Training
+  - term: Huduma
+    keep_form: Huduma
+    do_not_translate: true
+    notes: Huduma Kenya service centres
+  - term: eCitizen
+    keep_form: eCitizen
+    do_not_translate: true
+    notes: Government digital services portal
+  - term: M-PESA
+    keep_form: M-PESA
+    aliases: [Mpesa, MPESA, m-pesa]
+    do_not_translate: true
+    notes: Mobile money service — preserve branding
+  - term: KSh
+    keep_form: KSh
+    aliases: [KES, Kshs, Ksh]
+    do_not_translate: true
+    notes: Kenyan shilling
+  - term: GBV
+    keep_form: GBV
+    do_not_translate: true
+    notes: Gender-based violence
+  - term: CHV
+    keep_form: CHV
+    do_not_translate: true
+    notes: Community Health Volunteer / Community Health Promoter
+  - term: NCD
+    keep_form: NCD
+    do_not_translate: true
+    notes: Non-communicable disease
+  - term: WASH
+    keep_form: WASH
+    do_not_translate: true
+    notes: Water, Sanitation and Hygiene
+  - term: county
+    keep_form: county
+    do_not_translate: false
+    notes: Devolved unit of government — translate carefully in local languages
+  - term: ward
+    keep_form: ward
+    do_not_translate: false
+    notes: Electoral / administrative unit under a county
+  - term: baraza
+    keep_form: baraza
+    do_not_translate: true
+    notes: Public meeting / community forum (Swahili loan in EN PSAs)
+  - term: harambee
+    keep_form: harambee
+    do_not_translate: true
+    notes: Community fundraising / collective effort
+  - term: ugali
+    keep_form: ugali
+    do_not_translate: true
+    notes: Staple food — cultural term, do not literal-translate
+  - term: bodaboda
+    keep_form: bodaboda
+    aliases: [boda boda, boda-boda]
+    do_not_translate: true
+    notes: Motorcycle taxi
+  - term: matatu
+    keep_form: matatu
+    do_not_translate: true
+    notes: Public minibus transport

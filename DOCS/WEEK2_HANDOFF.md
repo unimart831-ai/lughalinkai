@@ -38,10 +38,11 @@ python scripts/prepare_week2_baseline.py
 
 ## Week 2 starting checklist
 
-- [ ] Read [PRODUCT2_WEEK2.md](architecture/PRODUCT2_WEEK2.md)  
-- [ ] Run `python scripts/prepare_week2_baseline.py`  
-- [ ] Create / checkout `week2/translation`  
-- [ ] Assign: EN↔SW harvest · NLLB seeding · gold review languages  
+- [x] Read [PRODUCT2_WEEK2.md](architecture/PRODUCT2_WEEK2.md) — aligned to course EDA week  
+- [x] Run `python scripts/prepare_week2_processing.py` (cleaned + splits + 500 validation + EDA stats)  
+- [x] Open `notebooks/week2_eda.ipynb` / draft `DOCS/WEEK2_REPORT.md`  
+- [ ] Collect native-speaker feedback on `datasets/gold/native_validation_500.csv`  
+- [ ] Optional stretch: `python scripts/prepare_week2_baseline.py` + EN↔SW harvest / NLLB seed  
 - [ ] Install MT extras only when ready to seed: `pip install -e ".[mt]"`  
 
 ---
