@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-08-01T22:34:49.741304+00:00",
+  "framework_doc": "DOCS/PSA FRAMEWORK.pdf",
+  "input": "datasets\\processed\\week1_psa_merged.csv",
+  "total_rows": 1615,
+  "strict_psa_kept": 1615,
+  "quarantined": 0,
+  "keep_rate": 1.0,
+  "min_confidence": 0.55,
+  "also_legacy_gate": true,
+  "by_framework_label": {
+    "psa": 1615
+  },
+  "by_framework_reason_top": [
+    [
+      "public_action_advisory_or_alert",
+      1615
+    ]
+  ],
+  "by_domain_all": {
+    "Governance": 953,
+    "Health": 252,
+    "Education": 135,
+    "Security": 233,
+    "Agriculture": 42
+  },
+  "by_domain_strict_psa": {
+    "Governance": 953,
+    "Health": 252,
+    "Education": 135,
+    "Security": 233,
+    "Agriculture": 42
+  },
+  "outputs": {
+    "audit": "datasets\\interim\\psa_framework_audit.csv",
+    "strict_psas": "datasets\\processed\\week2_strict_psas.csv",
+    "quarantine": "datasets\\processed\\week2_framework_quarantine.csv"
+  },
+  "verdict": "mostly_psa",
+  "next_steps": [
+    "Review sample rows in datasets/interim/psa_framework_audit.csv",
+    "Use datasets/processed/week2_strict_psas.csv as the training/seed corpus",
+    "python scripts/prepare_week2_baseline.py  # after copying strict \u2192 week2_ready if approved"
+  ]
+}

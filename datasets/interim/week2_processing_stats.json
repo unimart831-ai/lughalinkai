@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-08-01T23:36:19.665969+00:00",
+  "input_rows": 5000,
+  "cleaned_rows": 5000,
+  "dropped_empty_english": 0,
+  "outputs": {
+    "cleaned": "datasets\\processed\\week2_cleaned_psas.csv",
+    "train": "datasets/splits/train.csv",
+    "dev": "datasets/splits/dev.csv",
+    "test": "datasets/splits/test.csv",
+    "native_validation": "datasets\\gold\\native_validation_500.csv",
+    "eda_stats": "datasets\\interim\\week2_eda_stats.json"
+  },
+  "by_domain": {
+    "Governance": 1066,
+    "Health": 724,
+    "Education": 924,
+    "Security": 762,
+    "Agriculture": 1524
+  },
+  "splits": {
+    "train": 3998,
+    "dev": 498,
+    "test": 504,
+    "ratios": [
+      0.8,
+      0.1,
+      0.1
+    ],
+    "by_domain": {
+      "train": {
+        "Agriculture": 1219,
+        "Governance": 852,
+        "Education": 739,
+        "Security": 609,
+        "Health": 579
+      },
+      "dev": {
+        "Agriculture": 152,
+        "Governance": 106,
+        "Education": 92,
+        "Security": 76,
+        "Health": 72
+      },
+      "test": {
+        "Agriculture": 153,
+        "Governance": 108,
+        "Education": 93,
+        "Security": 77,
+        "Health": 73
+      }
+    }
+  },
+  "native_validation": {
+    "path": "datasets\\gold\\native_validation_500.csv",
+    "rows": 500,
+    "by_domain": {
+      "Agriculture": 153,
+      "Governance": 107,
+      "Education": 92,
+      "Security": 76,
+      "Health": 72
+    },
+    "from_heldout_preferred": true
+  }
+}

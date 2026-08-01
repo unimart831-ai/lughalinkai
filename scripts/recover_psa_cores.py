@@ -114,7 +114,7 @@ def main() -> None:
             "Domain": row.get("Domain") or "Governance",
             "English": core,
             "Kiswahili": "",
-            "Target Languages": row.get("Target Languages") or '["Dholuo","Ekegusii","Somali"]',
+            "Target Languages": row.get("Target Languages") or '["Kikuyu"]',
             "Source": row.get("Source") or "",
             "Date": row.get("Date") or "",
             "Metadata": json.dumps(meta, ensure_ascii=False),

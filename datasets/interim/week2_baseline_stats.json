@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-08-01T23:37:02.533796+00:00",
+  "baseline": "datasets\\processed\\week1_baseline_psa.csv",
+  "baseline_rows": 5000,
+  "by_domain": {
+    "Governance": 1066,
+    "Health": 724,
+    "Education": 924,
+    "Security": 762,
+    "Agriculture": 1524
+  },
+  "seed_candidates": "datasets\\interim\\week2_seed_candidates.csv",
+  "seed_candidate_rows": 3464,
+  "seed_candidates_by_domain": {
+    "Governance": 165,
+    "Education": 793,
+    "Health": 481,
+    "Security": 541,
+    "Agriculture": 1484
+  },
+  "min_source_tokens": 12,
+  "max_source_tokens": 200
+}

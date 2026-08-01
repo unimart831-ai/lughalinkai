@@ -21,7 +21,7 @@ def validate_psa(record: PSARecord) -> ValidationResult:
         warnings.append("low_trust_source")
     if not record.published_at:
         warnings.append("missing_publish_date")
-    if record.language not in {"en", "sw", "luo", "guz", "som"}:
+    if record.language not in {"en", "sw", "kik", "ki", "luo", "guz", "som"}:
         warnings.append(f"unexpected_language:{record.language}")
 
     return ValidationResult(valid=len(errors) == 0, errors=errors, warnings=warnings)

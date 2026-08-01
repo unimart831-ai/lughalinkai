@@ -1,5 +1,6 @@
 # Machine translation training config (Week 3 baseline)
-# Silver data only until human gold exists.
+# PSA-only silver data until human gold exists.
+# Languages: English (source) · Kiswahili (pivot) · Kikuyu (indigenous target)
 
 model:
   name: facebook/nllb-200-distilled-600M
@@ -15,20 +16,13 @@ languages:
       target: sw
       target_nllb: swh_Latn
     - source: en
-      target: luo
-      target_nllb: luo_Latn
-    - source: en
-      target: guz
-      target_nllb: guz_Latn
-    - source: en
-      target: som
-      target_nllb: som_Latn
+      target: kik
+      target_nllb: kik_Latn
 
 data:
   train: datasets/mt/train.csv
   dev: datasets/mt/dev.csv
   test: datasets/mt/test.csv
-  # Only rows with auto_qc_pass=true are used (prepare_mt_training_data.py enforces this)
 
 train:
   output_dir: artifacts/mt_baseline
@@ -44,11 +38,12 @@ train:
   logging_steps: 25
   save_steps: 200
   eval_steps: 200
-  # Keep first Navon run short; raise on High-Performance grid
   max_train_samples: null
   max_eval_samples: 200
 
 policy:
+  psa_only: true
   human_reviewed_required_for_gold: true
   allow_silver_for_baseline: true
   never_promote_dry_run: true
+  exclude_external_opus: true

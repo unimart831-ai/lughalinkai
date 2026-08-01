@@ -1,0 +1,324 @@
+{
+  "rows": 5000,
+  "by_domain": {
+    "Governance": 1066,
+    "Health": 724,
+    "Education": 924,
+    "Security": 762,
+    "Agriculture": 1524
+  },
+  "rows_with_kiswahili": 0,
+  "code_switch_rows": 9,
+  "lang_primary": {
+    "en": 5000
+  },
+  "token_count": {
+    "min": 14,
+    "p25": 31.0,
+    "median": 34.0,
+    "p75": 278.0,
+    "max": 373,
+    "mean": 114.7
+  },
+  "vocabulary_size": 15467,
+  "top_tokens": [
+    [
+      "the",
+      31040
+    ],
+    [
+      "to",
+      20080
+    ],
+    [
+      "and",
+      14636
+    ],
+    [
+      "of",
+      14467
+    ],
+    [
+      "in",
+      8266
+    ],
+    [
+      "for",
+      6717
+    ],
+    [
+      "on",
+      5235
+    ],
+    [
+      "a",
+      5056
+    ],
+    [
+      "kra",
+      4389
+    ],
+    [
+      "is",
+      3950
+    ],
+    [
+      "public",
+      3892
+    ],
+    [
+      "that",
+      3881
+    ],
+    [
+      "kenya",
+      3545
+    ],
+    [
+      "are",
+      3329
+    ],
+    [
+      "tax",
+      3221
+    ],
+    [
+      "2026",
+      3200
+    ],
+    [
+      "with",
+      3089
+    ],
+    [
+      "official",
+      3065
+    ],
+    [
+      "be",
+      2908
+    ],
+    [
+      "through",
+      2636
+    ],
+    [
+      "will",
+      2383
+    ],
+    [
+      "by",
+      2318
+    ],
+    [
+      "from",
+      2277
+    ],
+    [
+      "county",
+      2236
+    ],
+    [
+      "as",
+      2190
+    ],
+    [
+      "not",
+      2186
+    ],
+    [
+      "this",
+      2039
+    ],
+    [
+      "channels",
+      1961
+    ],
+    [
+      "information",
+      1772
+    ],
+    [
+      "at",
+      1727
+    ],
+    [
+      "has",
+      1720
+    ],
+    [
+      "or",
+      1681
+    ],
+    [
+      "government",
+      1667
+    ],
+    [
+      "penalties",
+      1648
+    ],
+    [
+      "under",
+      1620
+    ],
+    [
+      "only",
+      1619
+    ],
+    [
+      "act",
+      1568
+    ],
+    [
+      "comply",
+      1556
+    ],
+    [
+      "before",
+      1542
+    ],
+    [
+      "may",
+      1536
+    ]
+  ],
+  "top_glossary_hits": [
+    [
+      "county",
+      1551
+    ],
+    [
+      "KRA",
+      601
+    ],
+    [
+      "NDMA",
+      394
+    ],
+    [
+      "HELB",
+      298
+    ],
+    [
+      "KSh",
+      258
+    ],
+    [
+      "IEBC",
+      234
+    ],
+    [
+      "KUCCPS",
+      188
+    ],
+    [
+      "SHA",
+      121
+    ],
+    [
+      "Huduma",
+      88
+    ],
+    [
+      "WASH",
+      87
+    ],
+    [
+      "ward",
+      43
+    ],
+    [
+      "EACC",
+      28
+    ],
+    [
+      "TVET",
+      24
+    ],
+    [
+      "eCitizen",
+      15
+    ],
+    [
+      "GBV",
+      12
+    ],
+    [
+      "M-PESA",
+      10
+    ],
+    [
+      "harambee",
+      5
+    ],
+    [
+      "matatu",
+      5
+    ],
+    [
+      "NHIF",
+      4
+    ],
+    [
+      "bodaboda",
+      2
+    ]
+  ],
+  "language_pair_notes": {
+    "en_psas": 5000,
+    "en_sw_pairs_present": 0,
+    "target_lang_placeholders": [
+      "Kikuyu"
+    ],
+    "gap": "Almost all rows are English-only; EN\u2194SW harvest still required for true parallel stats."
+  },
+  "generated_at": "2026-08-01T23:36:19.665969+00:00",
+  "source": "datasets\\processed\\week2_ready_psas.csv",
+  "cleaned": "datasets\\processed\\week2_cleaned_psas.csv",
+  "splits": {
+    "train": 3998,
+    "dev": 498,
+    "test": 504,
+    "ratios": [
+      0.8,
+      0.1,
+      0.1
+    ],
+    "by_domain": {
+      "train": {
+        "Agriculture": 1219,
+        "Governance": 852,
+        "Education": 739,
+        "Security": 609,
+        "Health": 579
+      },
+      "dev": {
+        "Agriculture": 152,
+        "Governance": 106,
+        "Education": 92,
+        "Security": 76,
+        "Health": 72
+      },
+      "test": {
+        "Agriculture": 153,
+        "Governance": 108,
+        "Education": 93,
+        "Security": 77,
+        "Health": 73
+      }
+    }
+  },
+  "native_validation": {
+    "path": "datasets\\gold\\native_validation_500.csv",
+    "rows": 500,
+    "by_domain": {
+      "Agriculture": 153,
+      "Governance": 107,
+      "Education": 92,
+      "Security": 76,
+      "Health": 72
+    },
+    "from_heldout_preferred": true
+  }
+}

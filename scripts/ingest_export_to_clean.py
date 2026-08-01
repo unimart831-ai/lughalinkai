@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from services.metadata.psa_core import extract_psa_core  # noqa: E402
+from services.metadata.psa_framework import classify_psa_framework  # noqa: E402
 from services.metadata.psa_gate import strict_psa_rejection_reason  # noqa: E402
 
 CLEAN = ROOT / "datasets" / "processed" / "week1_psa_merged.csv"
@@ -68,31 +69,41 @@ def main() -> None:
         full = f"{title}. {body}".strip(". ").strip() if title else body
         tokens = len(full.split())
         if tokens > 320:
-            full = extract_psa_core(title, full, max_tokens=340)
+            core = extract_psa_core(title, full, max_tokens=340)
+            if core and len(core.split()) >= 12:
+                full = core
         reason = strict_psa_rejection_reason(
             full,
             source=r.get("source_url") or "",
             lang=(r.get("language") or "en")[:2],
             contributor="scrape_export",
         )
+        fw = classify_psa_framework(full, title=title)
         key = _norm(full)
-        if reason or not key or key in seen:
+        reject_reason = reason
+        if not reject_reason and not fw["is_strict_psa"]:
+            reject_reason = f"framework_{fw['framework_label']}:{fw['framework_reason']}"
+        if reject_reason or not key or key in seen:
             rejected += 1
-            if reason and key and key not in seen:
+            if reject_reason and key and key not in seen:
                 quarantine.append(
                     {
                         "PSA_ID": "",
                         "Domain": (r.get("domain") or "governance").title(),
                         "English": full,
                         "Kiswahili": "",
-                        "Target Languages": '["Dholuo","Ekegusii","Somali"]',
+                        "Target Languages": '["Kikuyu"]',
                         "Source": r.get("source_url") or "",
                         "Date": r.get("published_at") or "",
                         "Metadata": json.dumps(
-                            {"origin": "scrape_export", "quarantine_reason": reason},
+                            {
+                                "origin": "scrape_export",
+                                "quarantine_reason": reject_reason,
+                                "framework_label": fw["framework_label"],
+                            },
                             ensure_ascii=False,
                         ),
-                        "Quarantine_Reason": reason,
+                        "Quarantine_Reason": reject_reason,
                     }
                 )
                 seen.add(key)
@@ -108,7 +119,7 @@ def main() -> None:
                 "Domain": domain,
                 "English": full,
                 "Kiswahili": "",
-                "Target Languages": '["Dholuo","Ekegusii","Somali"]',
+                "Target Languages": '["Kikuyu"]',
                 "Source": r.get("source_url") or "",
                 "Date": r.get("published_at") or "",
                 "Metadata": json.dumps(
@@ -118,6 +129,8 @@ def main() -> None:
                         "organization": r.get("organization"),
                         "token_count": len(full.split()),
                         "strict_psa_pass": True,
+                        "framework_label": fw["framework_label"],
+                        "framework_confidence": fw["framework_confidence"],
                     },
                     ensure_ascii=False,
                 ),

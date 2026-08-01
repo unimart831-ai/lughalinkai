@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-08-01T23:25:39.530027+00:00",
+  "policy": "psa_only",
+  "human_reviewed": false,
+  "note": "PSA-only silver/auto-QC. External OPUS excluded. Not human gold. Train only after NLLB PSA seeding on Navon.",
+  "psa_sentence_candidates": 8409,
+  "parallel_raw_rows": 15,
+  "rejected_or_filtered": 15,
+  "kept_pairs": 0,
+  "by_method": {},
+  "by_target_lang": {},
+  "splits": {
+    "train": 0,
+    "dev": 0,
+    "test": 0
+  },
+  "outputs": {
+    "sentences": "datasets\\interim\\week2_mt_sentences.csv",
+    "all": "datasets/mt/all_pairs.csv",
+    "train": "datasets/mt/train.csv",
+    "dev": "datasets/mt/dev.csv",
+    "test": "datasets/mt/test.csv"
+  },
+  "navon_next": [
+    "pip install -e '.[mt]'",
+    "python scripts/seed_nllb_sample.py --input datasets/interim/week2_mt_sentences.csv --targets sw,kik --limit 820 --output datasets/parallel/nllb_psa_silver.csv",
+    "python scripts/prepare_mt_training_data.py",
+    "python scripts/train_baseline.py --dry-run --pair en-kik",
+    "python scripts/train_baseline.py --pair en-kik --epochs 1"
+  ]
+}

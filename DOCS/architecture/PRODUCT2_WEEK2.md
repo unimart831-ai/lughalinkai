@@ -100,6 +100,6 @@ See `DOCS/NAVON_TRAINING_READY.md`.
 | External EN↔SW (OPUS silver) | `scripts/harvest_external_en_sw.py` → `datasets/parallel/en_sw_pairs.csv` |
 | MT merges + splits | `scripts/prepare_mt_training_data.py` → `datasets/mt/` |
 | Train dry-run | `scripts/train_baseline.py --dry-run` |
-| PSA NLLB silver (on Navon GPU) | `scripts/seed_nllb_sample.py --targets sw,luo,guz,som` |
+| PSA NLLB silver (on Navon GPU) | `scripts/seed_nllb_sample.py --targets sw,kik` |
 | Auto-QC validation sheet | `scripts/auto_qc_validation.py` (`verified` stays false) |
 | Human gold (when reviewers exist) | `datasets/gold/gold_translations.csv` |

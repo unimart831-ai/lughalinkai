@@ -26,7 +26,7 @@ CFG_PATH = ROOT / "configs" / "mt_train.yaml"
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="LughaLink MT baseline train / dry-run")
     p.add_argument("--config", type=Path, default=CFG_PATH)
-    p.add_argument("--pair", type=str, default="en-sw", help="e.g. en-sw / en-luo")
+    p.add_argument("--pair", type=str, default="en-kik", help="e.g. en-kik / en-sw")
     p.add_argument("--dry-run", action="store_true", help="Validate data only; no model")
     p.add_argument("--epochs", type=int, default=None)
     p.add_argument("--max-train-samples", type=int, default=None)
@@ -41,8 +41,7 @@ def load_cfg(path: Path) -> dict:
 def load_split(path: Path, src: str, tgt: str) -> list[dict]:
     if not path.exists():
         raise SystemExit(
-            f"Missing {path}. Run:\n"
-            "  python scripts/harvest_external_en_sw.py\n"
+            f"Missing {path}. Run PSA NLLB seed on Navon, then:\n"
             "  python scripts/prepare_mt_training_data.py"
         )
     rows = []

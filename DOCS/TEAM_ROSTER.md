@@ -51,7 +51,7 @@ main                              ← stable (Iranzi merges only)
 | Baseline freeze + NLLB seeder | Iranzi Innocent | `week1_baseline_psa.csv`, seed scripts |
 | EN↔SW parallel harvest | Angela + Iranzi | `datasets/parallel/en_sw_pairs.csv` |
 | Education volume / review | Leona Kamau | Domain boost + gold review (SW/local) |
-| Security / Agriculture + review | Jesca Kimani | Domain boost + Dholuo/Somali review where possible |
+| Security / Agriculture + review | Jesca Kimani | Domain boost + Kikuyu/SW review where possible |
 | Gold verification | All | `datasets/gold/gold_translations.csv` |
 
 **Week 2 branch:** `week2/translation` (cut from `data/governance` after Week 1 merge).  

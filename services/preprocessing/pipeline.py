@@ -157,7 +157,7 @@ def compute_eda_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "language_pair_notes": {
             "en_psas": len(rows),
             "en_sw_pairs_present": with_sw,
-            "target_lang_placeholders": ["Dholuo", "Ekegusii", "Somali"],
+            "target_lang_placeholders": ["Kikuyu"],
             "gap": "Almost all rows are English-only; EN↔SW harvest still required for true parallel stats.",
         },
     }

@@ -16,11 +16,18 @@ datasets/raw/**
 datasets/interim/**
 !datasets/interim/.gitkeep
 !datasets/**/.gitkeep
+# Navon / Week-2 critical interim artifacts (must ship with repo)
+!datasets/interim/week2_mt_sentences.csv
+!datasets/interim/week2_seed_candidates.csv
+!datasets/interim/week2_baseline_stats.json
+!datasets/interim/synthetic_psa_stats.json
+!datasets/interim/mt_training_ready_stats.json
+!datasets/interim/psa_framework_audit_stats.json
+!datasets/interim/week2_eda_stats.json
+!datasets/interim/week2_processing_stats.json
 
-# Keep Week 2 generated samples out of git until reviewed (optional local only)
+# Keep Week 2 dry-run NLLB sample out of git
 datasets/parallel/nllb_seeded_sample.csv
-datasets/interim/week2_seed_candidates.csv
-datasets/interim/week2_baseline_stats.json
 
 # Week-1: hide raw/noisy teammate scrapes from public branch.
 # Submission surfaces: week1_psa_merged.csv + week1_psa_quarantined.csv

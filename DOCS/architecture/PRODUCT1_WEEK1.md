@@ -8,7 +8,7 @@
 
 | Requirement | Course wording | Our startup interpretation |
 |-------------|----------------|---------------------------|
-| Dataset size | ≥5,000 sentences per language pair | Week 1: EN/SW collection + alignment; Week 2+: NLLB seeding for luo/guz/som |
+| Dataset size | ≥5,000 sentences per language pair | Week 1: EN/SW collection + alignment; Week 2+: NLLB seeding for sw + kik (Kikuyu) |
 | Sources | ≥10 reliable sources documented | Source Registry with trust scores, adapters, scrape logs |
 | Structure | CSV/JSON: PSA_ID, Domain, EN, SW, targets, Source, Date, Metadata | PostgreSQL knowledge objects + exportable CSV for submission |
 | Cleaning | Dedup, langdetect, relevance filter | 8-module pipeline (see below) |
@@ -273,7 +273,7 @@ python -m services.cli stats --report docs/reports/week1_dataset_summary.md
 
 ## 5. Low-Resource Language Pairs — Current Plan
 
-Parallel Dholuo/Ekegusii/Somali PSAs are not available online in the volumes the course requires. Our approach:
+Parallel Kikuyu PSAs are not available online in the volumes the course requires. Our approach:
 
 ### Phase A — Collect monolingual PSAs (Week 1)
 Target: as many **English and Kiswahili** PSAs as we can from official sources.
@@ -286,7 +286,7 @@ Many gov pages publish both languages → true parallel EN↔SW pairs.
 - Manual alignment by the domain owner where needed
 
 ### Phase C — Seed target languages (Week 2+)
-- NLLB-200 zero-shot: EN → luo, guz, som
+- NLLB-200 zero-shot: EN → sw (pivot), EN → kik (Kikuyu indigenous target)
 - Mark records as `translation_method: nllb_zero_shot`
 - Keep seeded translations separate from any future manually checked set
 

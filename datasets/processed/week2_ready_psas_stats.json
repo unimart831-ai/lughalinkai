@@ -1,15 +1,18 @@
 {
-  "generated_at": "2026-07-27T22:37:23.941500+00:00",
-  "file": "datasets\\processed\\week2_ready_psas.csv",
-  "rows": 4152,
+  "generated_at": "2026-08-01T23:25:37.076981+00:00",
+  "file": "A:\\SYSTEMS_2026\\LUGHALINK\\datasets\\processed\\week2_ready_psas.csv",
+  "rows": 5000,
   "by_domain": {
-    "Governance": 1951,
-    "Education": 341,
-    "Health": 838,
-    "Agriculture": 185,
-    "Security": 837
+    "Governance": 1066,
+    "Health": 724,
+    "Education": 924,
+    "Security": 762,
+    "Agriculture": 1524
   },
-  "rows_with_kiswahili": 3,
-  "purpose": "Frozen clean PSA corpus for Week 2 / Product 2 translation seeding",
+  "by_origin": {
+    "real": 1615,
+    "synthetic": 3385
+  },
+  "purpose": "Strict real PSAs + framework-valid synthetic templates toward 5k",
   "do_not_overwrite_with_quarantine": true
 }

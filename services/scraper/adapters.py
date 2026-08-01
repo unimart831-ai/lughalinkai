@@ -253,8 +253,13 @@ class ScraperOrchestrator:
     def __init__(self, adapters: Optional[Dict[str, BaseAdapter]] = None):
         self.adapters = adapters or ADAPTERS
 
-    def scrape(self, source: SourceRecord) -> list[RawScrapedItem]:
+    def scrape(
+        self, source: SourceRecord, skip_urls: Optional[set[str]] = None
+    ) -> list[RawScrapedItem]:
         adapter = self.adapters.get(source.adapter)
         if not adapter:
             raise ValueError(f"No adapter registered for: {source.adapter}")
-        return adapter.fetch(source)
+        items = adapter.fetch(source)
+        if not skip_urls:
+            return items
+        return [item for item in items if item.source_url not in skip_urls]

@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-08-01T23:25:37.076981+00:00",
+  "strict_real_input": 1615,
+  "synthetic_added": 3385,
+  "total": 5000,
+  "target_total": 5000,
+  "attempts": 3495,
+  "reject_reasons": {
+    "not_psa": 66,
+    "duplicate": 36,
+    "press_release": 8
+  },
+  "by_domain": {
+    "Governance": 1066,
+    "Health": 724,
+    "Education": 924,
+    "Security": 762,
+    "Agriculture": 1524
+  },
+  "by_origin": {
+    "real": 1615,
+    "synthetic": 3385
+  },
+  "outputs": {
+    "synthetic_only": "datasets\\processed\\week2_synthetic_psas.csv",
+    "merged_ready": "datasets\\processed\\week2_ready_psas.csv"
+  },
+  "note": "Synthetic rows are framework-filtered template PSAs for volume. They are NOT scraped government text. Keep verified=false."
+}

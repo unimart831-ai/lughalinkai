@@ -1,4 +1,6 @@
-# Target languages — LughaLink AI (Week 2+)
+# Target languages — LughaLink AI
+# Course brief: English/Kiswahili ↔ selected indigenous language(s).
+# Selected indigenous target: Kikuyu (Bantu) — NLLB-supported (kik_Latn).
 
 languages:
   - id: en
@@ -13,28 +15,17 @@ languages:
     iso_639_3: swa
     nllb: swh_Latn
     role: pivot
-  - id: luo
-    name: Dholuo
-    iso_639_1: luo
-    iso_639_3: luo
-    nllb: luo_Latn
-    role: target
-  - id: guz
-    name: Ekegusii
-    iso_639_1: guz
-    iso_639_3: guz
-    nllb: guz_Latn
-    role: target
-  - id: som
-    name: Somali
-    iso_639_1: so
-    iso_639_3: som
-    nllb: som_Latn
+  - id: kik
+    name: Kikuyu
+    iso_639_1: ki
+    iso_639_3: kik
+    nllb: kik_Latn
     role: target
 
 seed_defaults:
   source_nllb: eng_Latn
-  target_ids: [luo, guz, som]
+  # Seed pivot + indigenous target from PSA English sentences
+  target_ids: [sw, kik]
   max_source_tokens: 200
   min_source_tokens: 12
 

@@ -65,7 +65,7 @@ python scripts/seed_nllb_sample.py --dry-run --limit 5
 
 # Real seeding (large download)
 pip install -e ".[mt]"
-python scripts/seed_nllb_sample.py --limit 50 --targets luo,guz,som
+python scripts/seed_nllb_sample.py --limit 50 --targets sw,kik
 ```
 
 ## Quick Start

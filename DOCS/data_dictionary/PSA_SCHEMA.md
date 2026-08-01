@@ -7,7 +7,7 @@
 | `psa_id` | string | yes | Unique ID: `psa_{year}_{sequence}` |
 | `title` | string | yes | Headline or first-line summary |
 | `text` | string | yes | Clean PSA body text |
-| `language` | ISO 639-1 | yes | `en`, `sw`, `luo`, `guz`, `som` |
+| `language` | ISO 639-1 | yes | `en`, `sw`, `ki` / `kik` |
 | `domain` | enum | yes | Top-level category (see domains.yaml) |
 | `sub_category` | enum | no | From PSA Categories PDF |
 | `urgency` | enum | yes | `emergency`, `high`, `medium`, `low` |
@@ -37,9 +37,7 @@ Required by DSA 4020 submission:
 | Domain | `domain` |
 | English | `text` where language=en, or aligned pair |
 | Kiswahili | `text` where language=sw, or aligned pair |
-| Dholuo | translation where target=luo (Week 2+) |
-| Ekegusii | translation where target=guz (Week 2+) |
-| Somali | translation where target=som (Week 2+) |
+| Kikuyu | translation where target=kik (Week 2+) |
 | Source | `source_url` |
 | Date | `published_at` |
 | Urgency | `urgency` |
@@ -113,6 +111,4 @@ From `configs/domains.yaml` — aligned with PSA Categories PDF:
 |----------|-----------|-----------|-----------|
 | English | en | eng | eng_Latn |
 | Kiswahili | sw | swa | swh_Latn |
-| Dholuo | luo | luo | luo_Latn |
-| Ekegusii | guz | guz | guz_Latn |
-| Somali | som | som | som_Latn |
+| Kikuyu | ki | kik | kik_Latn |

@@ -27,7 +27,7 @@ OUT_JSON = ROOT / "datasets" / "processed" / "week1_psa_merged.json"
 OUT_QUARANTINE = ROOT / "datasets" / "processed" / "week1_psa_quarantined.csv"
 OUT_STATS = ROOT / "datasets" / "processed" / "week1_merge_stats.json"
 
-TARGET_LANGUAGES = ["Dholuo", "Ekegusii", "Somali"]
+TARGET_LANGUAGES = ["Kikuyu"]
 DOMAIN_MAP = {
     "health": "Health",
     "agriculture": "Agriculture",
@@ -159,9 +159,9 @@ def load_education(path: Path) -> list[dict]:
     for r in read_csv(path):
         english = r.get("English") or ""
         kiswahili = r.get("Kiswahili") or ""
-        targets = ["Dholuo", "Ekegusii", "Somali"]
-        if r.get("Kikuyu"):
-            targets = ["Kikuyu", "Dholuo", "Ekegusii", "Somali"]
+        targets = list(TARGET_LANGUAGES)
+        if r.get("Kikuyu") and "Kikuyu" not in targets:
+            targets = ["Kikuyu"] + targets
         meta = {
             "contributor": "Leona Kamau / data/education",
             "origin_file": path.name,

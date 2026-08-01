@@ -2,9 +2,11 @@
 
 Examples:
   python scripts/seed_nllb_sample.py --dry-run --limit 5
-  python scripts/seed_nllb_sample.py --limit 50 --targets luo,guz,som
-  python scripts/seed_nllb_sample.py --limit 200 --targets sw \\
-      --output datasets/parallel/nllb_en_sw_silver.csv
+  # Preferred PSA-only path (sentence sheet):
+  python scripts/seed_nllb_sample.py \\
+    --input datasets/interim/week2_mt_sentences.csv \\
+    --targets sw,kik --limit 820 \\
+    --output datasets/parallel/nllb_psa_silver.csv
 
 Silver only: outputs always verified=false. Re-run prepare_mt_training_data.py after seeding.
 """
@@ -29,17 +31,32 @@ from services.translation.seeder import (
 )
 
 CANDIDATES = ROOT / "datasets" / "interim" / "week2_seed_candidates.csv"
-OUT = ROOT / "datasets" / "parallel" / "nllb_seeded_sample.csv"
+SENTENCES = ROOT / "datasets" / "interim" / "week2_mt_sentences.csv"
+OUT = ROOT / "datasets" / "parallel" / "nllb_psa_silver.csv"
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="NLLB zero-shot PSA seed sample")
-    p.add_argument("--limit", type=int, default=20, help="Max source PSAs to seed")
-    p.add_argument("--targets", type=str, default="luo,guz,som", help="Comma-separated target ids")
+    p = argparse.ArgumentParser(description="NLLB zero-shot PSA seed (PSA text only)")
+    p.add_argument("--limit", type=int, default=20, help="Max source rows to seed")
+    p.add_argument(
+        "--targets",
+        type=str,
+        default="sw,kik",
+        help="Comma-separated target ids (default: Kiswahili pivot + Kikuyu)",
+    )
     p.add_argument("--dry-run", action="store_true", help="Write placeholder targets; no model")
-    p.add_argument("--input", type=Path, default=CANDIDATES)
+    default_in = SENTENCES if SENTENCES.exists() else CANDIDATES
+    p.add_argument("--input", type=Path, default=default_in)
     p.add_argument("--output", type=Path, default=OUT)
     return p.parse_args()
+
+
+def _source_text(row: dict) -> str:
+    return (row.get("source_text") or row.get("seed_text") or "").strip()
+
+
+def _psa_id(row: dict) -> str:
+    return (row.get("psa_id") or row.get("PSA_ID") or "").strip()
 
 
 def load_model(model_name: str):
@@ -77,7 +94,9 @@ def main() -> None:
     args = parse_args()
     if not args.input.exists():
         raise SystemExit(
-            f"Missing candidates: {args.input}\nRun: python scripts/prepare_week2_baseline.py"
+            f"Missing PSA input: {args.input}\n"
+            "Run: python scripts/prepare_week2_baseline.py && "
+            "python scripts/prepare_mt_training_data.py --allow-empty"
         )
 
     cfg = load_language_config()
@@ -94,8 +113,9 @@ def main() -> None:
     records = []
     n = 0
     for row in rows:
-        source_text = (row.get("seed_text") or "").strip()
-        if not source_text:
+        source_text = _source_text(row)
+        psa_id = _psa_id(row)
+        if not source_text or not psa_id:
             continue
         for tgt in targets:
             n += 1
@@ -109,7 +129,7 @@ def main() -> None:
             records.append(
                 build_seed_record(
                     translation_id=f"seed_{n:06d}",
-                    psa_id=row.get("psa_id") or "",
+                    psa_id=psa_id,
                     domain=row.get("Domain") or "Governance",
                     source_text=source_text,
                     translated_text=translated,
