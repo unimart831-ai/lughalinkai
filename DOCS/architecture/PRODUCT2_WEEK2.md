@@ -91,11 +91,15 @@ After `prepare_week2_processing.py`:
 
 ---
 
-## 8. Stretch → Week 3 prep
+## 8. Stretch → Week 3 prep (silver path — no human review)
+
+See `DOCS/NAVON_TRAINING_READY.md`.
 
 | Milestone | Path |
 |-----------|------|
-| EN↔SW parallel harvest | `datasets/parallel/en_sw_pairs.csv` |
-| Seed candidates | `scripts/prepare_week2_baseline.py` → `datasets/interim/week2_seed_candidates.csv` |
-| NLLB zero-shot sample | `scripts/seed_nllb_sample.py` → `datasets/parallel/nllb_seeded_sample.csv` |
-| Human gold translations | `datasets/gold/gold_translations.csv` |
+| External EN↔SW (OPUS silver) | `scripts/harvest_external_en_sw.py` → `datasets/parallel/en_sw_pairs.csv` |
+| MT merges + splits | `scripts/prepare_mt_training_data.py` → `datasets/mt/` |
+| Train dry-run | `scripts/train_baseline.py --dry-run` |
+| PSA NLLB silver (on Navon GPU) | `scripts/seed_nllb_sample.py --targets sw,luo,guz,som` |
+| Auto-QC validation sheet | `scripts/auto_qc_validation.py` (`verified` stays false) |
+| Human gold (when reviewers exist) | `datasets/gold/gold_translations.csv` |

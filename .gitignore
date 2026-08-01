@@ -36,6 +36,7 @@ datasets/processed/week1_psa_merged.json
 
 # ML artifacts
 models/
+artifacts/
 wandb/
 *.pt
 *.bin

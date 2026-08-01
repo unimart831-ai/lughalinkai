@@ -107,11 +107,13 @@ Charts: run `notebooks/week2_eda.ipynb` → writes under `datasets/interim/week2
 
 ## 6. Next steps (still Week 2 / into Week 3)
 
-- [ ] Collect reviewer feedback on `native_validation_500.csv`
-- [ ] Harvest real EN↔SW pairs → `datasets/parallel/en_sw_pairs.csv`
-- [ ] Optional: NLLB zero-shot seed sample (marked `verified=false`)
+- [x] Silver EN↔SW harvest (OPUS GlobalVoices, no human review) → `datasets/parallel/en_sw_pairs.csv`
+- [x] MT splits → `datasets/mt/{train,dev,test}.csv` (2000/250/250)
+- [x] Train dry-run ready → `python scripts/train_baseline.py --dry-run`
+- [x] Auto-QC validation sheet (still `verified=false`) → `native_validation_500_autoqc.csv`
+- [ ] On Navon Shared: real NLLB PSA silver seed + 1-epoch train (see `DOCS/NAVON_TRAINING_READY.md`)
 - [ ] Supervisor check-in with this report + EDA notebook
-- [ ] Attach exported figures to final submission pack
+- [ ] When humans available: promote a gold sample from silver test/NLLB PSA rows
 
 ---
 

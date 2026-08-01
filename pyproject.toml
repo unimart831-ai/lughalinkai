@@ -30,6 +30,7 @@ dev = [
     "ruff>=0.4",
     "matplotlib>=3.8",
     "jupyter>=1.0",
+    "datasets>=2.19",
 ]
 scraper = [
     "selenium>=4.21",

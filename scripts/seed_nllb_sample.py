@@ -3,6 +3,10 @@
 Examples:
   python scripts/seed_nllb_sample.py --dry-run --limit 5
   python scripts/seed_nllb_sample.py --limit 50 --targets luo,guz,som
+  python scripts/seed_nllb_sample.py --limit 200 --targets sw \\
+      --output datasets/parallel/nllb_en_sw_silver.csv
+
+Silver only: outputs always verified=false. Re-run prepare_mt_training_data.py after seeding.
 """
 
 from __future__ import annotations

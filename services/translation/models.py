@@ -14,6 +14,8 @@ class TranslationMethod(str, Enum):
     NLLB_ZERO_SHOT = "nllb_zero_shot"
     NLLB_FINETUNED = "nllb_finetuned"
     MT5 = "mt5"
+    EXTERNAL_OPUS = "external_opus"
+    SYNTHETIC_TEMPLATE = "synthetic_template"
 
 
 class TranslationRecord(BaseModel):
