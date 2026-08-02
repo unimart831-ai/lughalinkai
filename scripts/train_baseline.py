@@ -186,37 +186,51 @@ def train_real(cfg: dict, train_rows, dev_rows, pair: str, args: argparse.Namesp
 
     tcfg = cfg["train"]
     use_fp16 = bool(tcfg.get("fp16")) and torch.cuda.is_available()
-    args_tr = Seq2SeqTrainingArguments(
-        output_dir=str(out_dir),
-        num_train_epochs=epochs,
-        learning_rate=float(tcfg["learning_rate"]),
-        per_device_train_batch_size=int(tcfg["train_batch_size"]),
-        per_device_eval_batch_size=int(tcfg["eval_batch_size"]),
-        weight_decay=float(tcfg["weight_decay"]),
-        warmup_ratio=float(tcfg["warmup_ratio"]),
-        gradient_accumulation_steps=int(tcfg["gradient_accumulation_steps"]),
-        fp16=use_fp16,
-        predict_with_generate=True,
-        evaluation_strategy="steps",
-        eval_steps=int(tcfg["eval_steps"]),
-        save_steps=int(tcfg["save_steps"]),
-        logging_steps=int(tcfg["logging_steps"]),
-        save_total_limit=2,
-        seed=int(tcfg["seed"]),
-        report_to=[],
-    )
+    # transformers>=4.41 renamed evaluation_strategy -> eval_strategy
+    import inspect
+
+    ta_params = inspect.signature(Seq2SeqTrainingArguments.__init__).parameters
+    eval_key = "eval_strategy" if "eval_strategy" in ta_params else "evaluation_strategy"
+    train_args = {
+        "output_dir": str(out_dir),
+        "num_train_epochs": epochs,
+        "learning_rate": float(tcfg["learning_rate"]),
+        "per_device_train_batch_size": int(tcfg["train_batch_size"]),
+        "per_device_eval_batch_size": int(tcfg["eval_batch_size"]),
+        "weight_decay": float(tcfg["weight_decay"]),
+        "warmup_ratio": float(tcfg["warmup_ratio"]),
+        "gradient_accumulation_steps": int(tcfg["gradient_accumulation_steps"]),
+        "fp16": use_fp16,
+        "predict_with_generate": True,
+        eval_key: "steps",
+        "eval_steps": int(tcfg["eval_steps"]),
+        "save_steps": int(tcfg["save_steps"]),
+        "logging_steps": int(tcfg["logging_steps"]),
+        "save_total_limit": 2,
+        "seed": int(tcfg["seed"]),
+        "report_to": [],
+    }
+    if "save_strategy" in ta_params:
+        train_args["save_strategy"] = "steps"
+    args_tr = Seq2SeqTrainingArguments(**train_args)
     collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
     # Forced BOS for NLLB generations during eval
     model.generation_config.forced_bos_token_id = tokenizer.convert_tokens_to_ids(tgt_code)
 
-    trainer = Seq2SeqTrainer(
-        model=model,
-        args=args_tr,
-        train_dataset=train_ds,
-        eval_dataset=dev_ds,
-        data_collator=collator,
-        tokenizer=tokenizer,
-    )
+    # transformers>=4.46 renamed tokenizer -> processing_class on Trainer
+    trainer_kwargs = {
+        "model": model,
+        "args": args_tr,
+        "train_dataset": train_ds,
+        "eval_dataset": dev_ds,
+        "data_collator": collator,
+    }
+    trainer_params = inspect.signature(Seq2SeqTrainer.__init__).parameters
+    if "processing_class" in trainer_params:
+        trainer_kwargs["processing_class"] = tokenizer
+    else:
+        trainer_kwargs["tokenizer"] = tokenizer
+    trainer = Seq2SeqTrainer(**trainer_kwargs)
     trainer.train()
     trainer.save_model(str(out_dir / "final"))
     tokenizer.save_pretrained(str(out_dir / "final"))
