@@ -82,10 +82,19 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Write empty split files if no PSA pairs yet (awaiting NLLB seed)",
     )
+    p.add_argument(
+        "--refresh-sentences",
+        action="store_true",
+        help="Rebuild week2_mt_sentences.csv from seed candidates (default: keep existing)",
+    )
     return p.parse_args()
 
 
-def write_sentence_sheet(path: Path) -> int:
+def write_sentence_sheet(path: Path, *, refresh: bool = False) -> int:
+    if path.exists() and not refresh:
+        n = max(sum(1 for _ in path.open(encoding="utf-8")) - 1, 0)
+        print(f"Keeping existing PSA sentence sheet -> {path} ({n} rows)")
+        return n
     if not CANDIDATES.exists():
         print(f"WARN: missing {CANDIDATES}; run prepare_week2_baseline.py")
         return 0
@@ -243,7 +252,7 @@ def main() -> None:
     if len(ratios) != 3 or abs(sum(ratios) - 1.0) > 1e-6:
         raise SystemExit("--ratios must be three floats summing to 1")
 
-    n_sent = write_sentence_sheet(SENT_OUT)
+    n_sent = write_sentence_sheet(SENT_OUT, refresh=args.refresh_sentences)
     raw = load_parallel_files(
         args.parallel_glob, psa_only=args.psa_only, include_external=args.include_external
     )
