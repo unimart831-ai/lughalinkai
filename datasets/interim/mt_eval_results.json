@@ -1,0 +1,26 @@
+[
+  {
+    "generated_at": "2026-08-02T22:43:59.874285+00:00",
+    "pair": "en-kik",
+    "model_family": "nllb",
+    "checkpoint": "artifacts/mt_baseline/en-kik/final",
+    "metrics": {
+      "bleu": 72.5398321537347,
+      "chrf": 84.54504916483575,
+      "n": 450
+    },
+    "caveat": "References are PSA silver (NLLB zero-shot / auto-QC), not human gold. Use scores for relative model comparison only."
+  },
+  {
+    "generated_at": "2026-08-02T22:45:56.054004+00:00",
+    "pair": "en-sw",
+    "model_family": "nllb",
+    "checkpoint": "artifacts/mt_baseline/en-sw/final",
+    "metrics": {
+      "bleu": 89.5787786902101,
+      "chrf": 94.74638399244026,
+      "n": 460
+    },
+    "caveat": "References are PSA silver (NLLB zero-shot / auto-QC), not human gold. Use scores for relative model comparison only."
+  }
+]
