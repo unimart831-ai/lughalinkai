@@ -3,76 +3,87 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LughaLink — PSA Translator</title>
+    <title>LughaLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;550;700&family=Literata:opsz,wght@7..72,600;7..72,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
-    <div class="atmosphere" aria-hidden="true"></div>
-    <main class="shell">
-      <header class="brand-block">
-        <p class="eyebrow">Kenya public information</p>
-        <h1 class="brand">LughaLink</h1>
-        <p class="tagline">
-          Translate Public Service Announcements into Kiswahili and Kikuyu.
-        </p>
-      </header>
+    <header class="topbar">
+      <button type="button" class="icon-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a class="top-brand" href="/">LUGHALINK</a>
+      <a class="signin" href="/docs" title="API docs">API</a>
+    </header>
 
-      <section class="workspace" aria-label="Translator">
-        <label class="field-label" for="source">English PSA</label>
-        <textarea
+    <main class="hero">
+      <h1 class="headline">Translate PSAs</h1>
+      <p class="greeting" id="greeting">Good morning</p>
+      <p class="support">
+        You don’t need separate tools for every language. Paste an English public
+        notice, and LughaLink will translate it.
+      </p>
+
+      <div class="lang-row" role="group" aria-label="Target language">
+        <button type="button" class="lang-pill active" data-target="sw">Kiswahili</button>
+        <button type="button" class="lang-pill" data-target="kik">Kikuyu</button>
+      </div>
+
+      <form class="composer" id="composeForm">
+        <label class="sr-only" for="source">English PSA</label>
+        <input
           id="source"
-          rows="5"
+          type="text"
           maxlength="2000"
-          placeholder="Example: The public is advised to follow official health guidelines."
-        ></textarea>
+          placeholder="IEBC reminds voters to verify their details…"
+          autocomplete="off"
+        />
+        <button type="submit" class="send" id="translateBtn" aria-label="Translate">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path
+              d="M12 4l-1.4 1.4L16.2 11H4v2h12.2l-5.6 5.6L12 20l8-8-8-8z"
+              fill="currentColor"
+              transform="rotate(-90 12 12)"
+            />
+          </svg>
+        </button>
+      </form>
 
-        <div class="controls">
-          <div class="lang-group" role="group" aria-label="Target language">
-            <button type="button" class="lang active" data-target="sw">Kiswahili</button>
-            <button type="button" class="lang" data-target="kik">Kikuyu</button>
-          </div>
-          <button type="button" id="translateBtn" class="primary">Translate</button>
-        </div>
+      <p class="try-line">
+        <span class="try-label">Try :</span>
+        <button type="button" class="try-link" data-example="The public is advised to follow official health guidelines.">
+          Health advisory
+        </button>
+        <span class="dot">·</span>
+        <button type="button" class="try-link" data-example="IEBC reminds voters to verify their details on the official portal.">
+          IEBC notice
+        </button>
+        <span class="dot">·</span>
+        <button type="button" class="try-link" data-example="Farmers are urged to plant drought-resistant crops this season.">
+          Agriculture alert
+        </button>
+      </p>
 
-        <div class="examples" aria-label="Example PSAs">
-          <button type="button" class="chip" data-example="The public is advised to follow official health guidelines.">
-            Health advisory
-          </button>
-          <button type="button" class="chip" data-example="IEBC reminds voters to verify their details on the official portal.">
-            IEBC notice
-          </button>
-          <button type="button" class="chip" data-example="Farmers are urged to plant drought-resistant crops this season.">
-            Agriculture
-          </button>
+      <section class="result" id="resultPanel" hidden>
+        <div class="result-head">
+          <span id="outputLang">Kiswahili</span>
+          <button type="button" id="copyBtn" class="copy">Copy</button>
         </div>
-
-        <div class="output-panel">
-          <div class="output-head">
-            <span id="outputLang">Kiswahili</span>
-            <button type="button" id="copyBtn" class="ghost" hidden>Copy</button>
-          </div>
-          <p id="output" class="output" aria-live="polite">
-            Translation appears here. Models stay on the server — your browser only sends text.
-          </p>
-          <p id="status" class="status" hidden></p>
-        </div>
+        <p id="output" class="output" aria-live="polite"></p>
+        <p id="status" class="status"></p>
       </section>
-
-      <footer class="foot">
-        <p>
-          Powered by fine-tuned NLLB on
-          <a href="https://huggingface.co/iranzi/lughalink-nllb-psa-en-sw" target="_blank" rel="noreferrer">Hugging Face</a>.
-          Silver-trained PSA models — not official government translations.
-        </p>
-        <p><a href="/docs">API docs</a> · <a href="/health">Health</a></p>
-      </footer>
     </main>
+
+    <footer class="bottom">
+      <span class="explore">EXPLORE LUGHALINK</span>
+      <a class="live" href="https://huggingface.co/iranzi" target="_blank" rel="noreferrer">See models live</a>
+    </footer>
+
     <script src="/static/app.js"></script>
   </body>
 </html>

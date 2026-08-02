@@ -1,25 +1,30 @@
 (() => {
   const source = document.getElementById("source");
+  const form = document.getElementById("composeForm");
   const output = document.getElementById("output");
   const status = document.getElementById("status");
   const outputLang = document.getElementById("outputLang");
   const translateBtn = document.getElementById("translateBtn");
   const copyBtn = document.getElementById("copyBtn");
-  const langButtons = [...document.querySelectorAll(".lang")];
-  const chips = [...document.querySelectorAll(".chip")];
+  const resultPanel = document.getElementById("resultPanel");
+  const greeting = document.getElementById("greeting");
+  const langButtons = [...document.querySelectorAll(".lang-pill")];
+  const tryLinks = [...document.querySelectorAll(".try-link")];
 
   const labels = { sw: "Kiswahili", kik: "Kikuyu" };
   let target = "sw";
 
+  function setGreeting() {
+    const h = new Date().getHours();
+    let text = "Good evening";
+    if (h < 12) text = "Good morning";
+    else if (h < 18) text = "Good afternoon";
+    greeting.textContent = text;
+  }
+
   function setStatus(msg, isError = false) {
-    if (!msg) {
-      status.hidden = true;
-      status.textContent = "";
-      return;
-    }
-    status.hidden = false;
-    status.textContent = msg;
-    status.classList.toggle("error", isError);
+    status.textContent = msg || "";
+    status.classList.toggle("error", Boolean(isError && msg));
   }
 
   langButtons.forEach((btn) => {
@@ -30,9 +35,9 @@
     });
   });
 
-  chips.forEach((chip) => {
-    chip.addEventListener("click", () => {
-      source.value = chip.dataset.example || "";
+  tryLinks.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      source.value = btn.dataset.example || "";
       source.focus();
     });
   });
@@ -48,18 +53,20 @@
     }
   });
 
-  async function translate() {
+  async function translate(event) {
+    if (event) event.preventDefault();
     const text = source.value.trim();
     if (!text) {
-      setStatus("Enter an English PSA first.", true);
+      resultPanel.hidden = false;
+      output.textContent = "";
+      setStatus("Type an English PSA first.", true);
       return;
     }
 
     translateBtn.disabled = true;
-    copyBtn.hidden = true;
-    output.classList.add("placeholder");
+    resultPanel.hidden = false;
     output.textContent = "Translating…";
-    setStatus("Calling the server model (no download in your browser).");
+    setStatus("Calling Hub model on the server — nothing downloads in your browser.");
 
     try {
       const res = await fetch("/translate", {
@@ -69,23 +76,20 @@
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data.detail || `Request failed (${res.status})`);
+        const detail = data.detail;
+        const msg = typeof detail === "string" ? detail : `Request failed (${res.status})`;
+        throw new Error(msg);
       }
-      output.classList.remove("placeholder");
       output.textContent = data.translation || "";
-      copyBtn.hidden = !data.translation;
-      setStatus(`Model: ${data.model || "hub"}`);
+      setStatus(data.model ? `Model · ${data.model}` : "");
     } catch (err) {
-      output.classList.add("placeholder");
-      output.textContent = "Translation failed.";
+      output.textContent = "";
       setStatus(err.message || String(err), true);
     } finally {
       translateBtn.disabled = false;
     }
   }
 
-  translateBtn.addEventListener("click", translate);
-  source.addEventListener("keydown", (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") translate();
-  });
+  form.addEventListener("submit", translate);
+  setGreeting();
 })();
