@@ -45,12 +45,24 @@ mt = [
     "evaluate>=0.4",
     "sacrebleu>=2.4",
     "datasets>=2.19",
+    "huggingface_hub>=0.23",
 ]
 demo = [
     "streamlit>=1.32",
     "transformers>=4.40",
     "torch>=2.2",
     "sentencepiece>=0.2",
+]
+api = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "transformers>=4.40",
+    "torch>=2.2",
+    "sentencepiece>=0.2",
+    "protobuf>=4.25",
+    "accelerate>=0.30",
+    "huggingface_hub>=0.23",
+    "safetensors>=0.4",
 ]
 
 [project.scripts]

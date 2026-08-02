@@ -1,0 +1,1 @@
+"""LughaLink FastAPI MT service."""

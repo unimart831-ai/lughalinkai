@@ -73,14 +73,12 @@ python scripts/infer_mt.py --pair en-kik --text "Register to vote at your neares
 # Human eval pack (reviewers fill scores later)
 python scripts/prepare_human_eval.py
 # See DOCS/HUMAN_EVAL_GUIDE.md
-
-# Local Streamlit demo (point at extracted checkpoints)
-pip install -e ".[demo]"
-set LUGHALINK_MODEL_DIR=path\to\lugha_ckpt
-streamlit run app/streamlit_mt.py
 ```
 
-**Do not commit** `model/`, `artifacts/`, or `*.safetensors` — weights stay local/Navon only.
+**UI:** Custom browser UI comes later. Runtime path: **Hugging Face Hub** (weights) + **FastAPI** (`apps/api`) deployable as an HF Space. See [DOCS/DEPLOY_HF.md](DOCS/DEPLOY_HF.md).  
+Verify locally with `infer_mt.py` / `evaluate_mt.py`. (`app/streamlit_mt.py` is an optional stub, not the product UI.)
+
+**Do not commit** `model/`, `artifacts/`, or `*.safetensors` — push weights to Hugging Face Hub instead.
 
 ## Quick Start
 
