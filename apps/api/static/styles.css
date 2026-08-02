@@ -44,63 +44,18 @@ body {
 .topbar {
   height: 56px;
   background: var(--orange);
-  display: grid;
-  grid-template-columns: 56px 1fr auto;
+  display: flex;
   align-items: center;
-  padding: 0 0.75rem 0 0.35rem;
-}
-
-.icon-btn {
-  width: 44px;
-  height: 44px;
-  border: 0;
-  background: transparent;
-  display: grid;
-  gap: 5px;
-  place-content: center;
-  cursor: pointer;
-}
-
-.icon-btn span {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: #fff;
-  border-radius: 2px;
+  justify-content: center;
+  padding: 0 0.75rem;
 }
 
 .top-brand {
-  justify-self: center;
   color: #fff;
   text-decoration: none;
   font-weight: 800;
   letter-spacing: 0.04em;
   font-size: 1.05rem;
-}
-
-.signin {
-  justify-self: end;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: #fff;
-  color: #555;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.9rem;
-  border-radius: 999px;
-  padding: 0.45rem 0.9rem;
-}
-
-.signin::before {
-  content: "";
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1.5px solid #888;
-  background:
-    radial-gradient(circle at 50% 38%, #888 2px, transparent 2.5px),
-    radial-gradient(circle at 50% 70%, transparent 4px, #888 4.5px, transparent 5px);
 }
 
 /* Centered hero */
