@@ -1,15 +1,15 @@
 # Deploy LughaLink MT on Hugging Face
 
-**Goal:** Store fine-tuned NLLB checkpoints on the Hub, serve them with a FastAPI API (HF Space), and call that API from a custom browser UI later.
+**Goal:** Store fine-tuned NLLB checkpoints on the Hub, serve them with FastAPI + a clean browser UI (HF Space). The **browser never downloads** the 2.3 GB weights — it only sends JSON to `/translate`; the Space loads models from the Hub once on the server.
 
 No mT5 in this path. Streamlit is not the product UI.
 
 ```text
-Navon checkpoint  →  HF Hub model repos
+Navon checkpoint  →  HF Hub model repos (iranzi/...)
                          ↓
-              FastAPI Space (GPU preferred)
+         FastAPI Space (UI at / + API at /translate)
                          ↓
-              Custom web UI (later)
+              User browser (text in / out only)
 ```
 
 ---
@@ -32,26 +32,26 @@ huggingface-cli login
 
 ## 1. Upload models to the Hub
 
-Replace `YOUR_USER` with your HF username or org.
+HF account for this project: **`iranzi`**.
 
 ```bash
 cd ~/lughalinkai
 
 # dry-run first
-python scripts/push_to_hub.py --hf-user YOUR_USER --all --dry-run
+python scripts/push_to_hub.py --hf-user iranzi --all --dry-run
 
 # public upload (recommended for course digital public good)
-python scripts/push_to_hub.py --hf-user YOUR_USER --pair en-kik
-python scripts/push_to_hub.py --hf-user YOUR_USER --pair en-sw
+python scripts/push_to_hub.py --hf-user iranzi --pair en-kik
+python scripts/push_to_hub.py --hf-user iranzi --pair en-sw
 
 # or both:
-# python scripts/push_to_hub.py --hf-user YOUR_USER --all
+# python scripts/push_to_hub.py --hf-user iranzi --all
 ```
 
 Expected repos:
 
-- `https://huggingface.co/YOUR_USER/lughalink-nllb-psa-en-kik`
-- `https://huggingface.co/YOUR_USER/lughalink-nllb-psa-en-sw`
+- `https://huggingface.co/iranzi/lughalink-nllb-psa-en-kik`
+- `https://huggingface.co/iranzi/lughalink-nllb-psa-en-sw`
 
 Each upload includes `model.safetensors`, tokenizer files, and a model card from `DOCS/model_cards/MODEL_CARD_TEMPLATE.md`.
 
@@ -71,8 +71,8 @@ Then set `HF_TOKEN` on the Space.
 cd ~/lughalinkai
 pip install -r apps/api/requirements.txt
 
-export LUGHALINK_MODEL_KIK=YOUR_USER/lughalink-nllb-psa-en-kik
-export LUGHALINK_MODEL_SW=YOUR_USER/lughalink-nllb-psa-en-sw
+export LUGHALINK_MODEL_KIK=iranzi/lughalink-nllb-psa-en-kik
+export LUGHALINK_MODEL_SW=iranzi/lughalink-nllb-psa-en-sw
 # export HF_TOKEN=...   # if private
 
 # On Navon with local disks instead of Hub:
@@ -102,33 +102,43 @@ Interactive docs: `http://127.0.0.1:7860/docs`
 
 ---
 
-## 3. Deploy API as a Hugging Face Space (Docker)
+## 3. Deploy UI + API as a Hugging Face Space (Docker)
 
-### 3.1 Create the Space
+### 3.1 Create the Space (checklist)
 
-1. https://huggingface.co/new-space  
-2. **SDK:** Docker  
-3. Name e.g. `lughalink-mt-api`  
-4. Link this GitHub repo **or** push the repo contents so the **root `Dockerfile`** is used  
-5. Hardware: **GPU** if available (T4/A10). Free CPU works but is slow/cold for 600M.
+1. Open https://huggingface.co/new-space  
+2. **Owner:** `iranzi`  
+3. **Space name:** `lughalink-mt-api`  
+4. **SDK:** **Docker**  
+5. Connect GitHub repo `unimart831-ai/lughalinkai` (root `Dockerfile`)  
+6. Hardware: **GPU** if available (T4/A10). Free CPU is slow/cold for 600M.
 
 ### 3.2 Space variables
 
-In Space → Settings → Variables / Secrets:
+Settings → Variables and secrets:
 
 | Variable | Value |
 |----------|--------|
-| `LUGHALINK_MODEL_KIK` | `YOUR_USER/lughalink-nllb-psa-en-kik` |
-| `LUGHALINK_MODEL_SW` | `YOUR_USER/lughalink-nllb-psa-en-sw` |
-| `LUGHALINK_CORS_ORIGINS` | `*` (tighten later to your frontend origin) |
+| `LUGHALINK_MODEL_KIK` | `iranzi/lughalink-nllb-psa-en-kik` |
+| `LUGHALINK_MODEL_SW` | `iranzi/lughalink-nllb-psa-en-sw` |
+| `LUGHALINK_CORS_ORIGINS` | `*` |
 | `HF_TOKEN` (secret) | only if models are private |
 
-### 3.3 Verify Space URL
+Defaults in code already point at the `iranzi/...` repos if env vars are omitted, but setting them explicitly is clearer.
 
-After build:
+### 3.3 What users open
+
+| URL | Purpose |
+|-----|---------|
+| `https://iranzi-lughalink-mt-api.hf.space/` | **Clean translator UI** |
+| `.../docs` | API playground |
+| `.../health` | Model config check |
+| `.../translate` | JSON API used by the UI |
+
+### 3.4 Verify
 
 ```bash
-export SPACE=https://YOUR_USER-lughalink-mt-api.hf.space
+export SPACE=https://iranzi-lughalink-mt-api.hf.space
 
 curl -s "$SPACE/health"
 curl -s -X POST "$SPACE/translate" \
@@ -136,17 +146,17 @@ curl -s -X POST "$SPACE/translate" \
   -d '{"text":"Wash hands regularly.","target":"sw"}'
 ```
 
-Browser: open `$SPACE/docs`.
+Open `$SPACE/` in a browser and translate a sample PSA.
 
-### 3.4 GPU vs CPU
+### 3.5 GPU vs CPU
 
 | Hardware | Expectation |
 |----------|-------------|
 | GPU Space | Reasonable latency for demos |
 | Free CPU | Long cold start; may OOM or timeout on 2.3G loads |
-| Navon A100 running uvicorn | Best for live class demo if Space GPU unavailable |
+| Navon A100 + uvicorn | Fast fallback demo if Space GPU unavailable |
 
-Same API code either way — only where it runs changes.
+**Calling without downloading (your machine):** correct — only the Space server pulls Hub weights once. Browsers send/receive short JSON.
 
 ---
 
@@ -173,7 +183,7 @@ Your web app should **not** load model weights. It only calls the API.
 {
   "translation": "...",
   "target": "kik",
-  "model": "YOUR_USER/lughalink-nllb-psa-en-kik",
+  "model": "iranzi/lughalink-nllb-psa-en-kik",
   "source_lang": "en"
 }
 ```
@@ -181,7 +191,7 @@ Your web app should **not** load model weights. It only calls the API.
 ### Browser `fetch` example
 
 ```javascript
-const res = await fetch("https://YOUR_USER-lughalink-mt-api.hf.space/translate", {
+const res = await fetch("https://iranzi-lughalink-mt-api.hf.space/translate", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({

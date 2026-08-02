@@ -75,8 +75,7 @@ python scripts/prepare_human_eval.py
 # See DOCS/HUMAN_EVAL_GUIDE.md
 ```
 
-**UI:** Custom browser UI comes later. Runtime path: **Hugging Face Hub** (weights) + **FastAPI** (`apps/api`) deployable as an HF Space. See [DOCS/DEPLOY_HF.md](DOCS/DEPLOY_HF.md).  
-Verify locally with `infer_mt.py` / `evaluate_mt.py`. (`app/streamlit_mt.py` is an optional stub, not the product UI.)
+**Deploy:** Models on Hub (`iranzi/lughalink-nllb-psa-en-*`) + FastAPI Space with built-in UI (`apps/api/static`). Browser calls `/translate` — no local weight download. See [DOCS/DEPLOY_HF.md](DOCS/DEPLOY_HF.md).
 
 **Do not commit** `model/`, `artifacts/`, or `*.safetensors` — push weights to Hugging Face Hub instead.
 

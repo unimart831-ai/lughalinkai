@@ -1,14 +1,15 @@
-"""LughaLink PSA translation API (FastAPI).
+"""LughaLink PSA translation API + web UI (FastAPI).
 
 Loads fine-tuned NLLB checkpoints from Hugging Face Hub (or local paths).
+The browser only calls /translate — weights stay on the server.
 
 Env:
-  LUGHALINK_MODEL_KIK=user/lughalink-nllb-psa-en-kik
-  LUGHALINK_MODEL_SW=user/lughalink-nllb-psa-en-sw
+  LUGHALINK_MODEL_KIK=iranzi/lughalink-nllb-psa-en-kik
+  LUGHALINK_MODEL_SW=iranzi/lughalink-nllb-psa-en-sw
   HF_TOKEN=...   # only if repos are private
-  LUGHALINK_CORS_ORIGINS=*   # or comma-separated origins
+  LUGHALINK_CORS_ORIGINS=*
 
-Run locally:
+Run:
   uvicorn apps.api.main:app --host 0.0.0.0 --port 7860
 """
 
@@ -21,6 +22,8 @@ from typing import Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -28,6 +31,11 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from services.translation.nllb_infer import get_cached_nllb, translate_nllb  # noqa: E402
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+
+DEFAULT_KIK = "iranzi/lughalink-nllb-psa-en-kik"
+DEFAULT_SW = "iranzi/lughalink-nllb-psa-en-sw"
 
 TargetLang = Literal["kik", "sw"]
 
@@ -47,8 +55,8 @@ class TranslateResponse(BaseModel):
 
 def _model_id(target: TargetLang) -> str:
     if target == "kik":
-        return os.environ.get("LUGHALINK_MODEL_KIK", "").strip()
-    return os.environ.get("LUGHALINK_MODEL_SW", "").strip()
+        return os.environ.get("LUGHALINK_MODEL_KIK", DEFAULT_KIK).strip()
+    return os.environ.get("LUGHALINK_MODEL_SW", DEFAULT_SW).strip()
 
 
 def _cors_origins() -> list[str]:
@@ -61,7 +69,7 @@ def _cors_origins() -> list[str]:
 app = FastAPI(
     title="LughaLink PSA MT API",
     description="English → Kiswahili / Kikuyu PSA translation (fine-tuned NLLB).",
-    version="0.1.0",
+    version="0.2.0",
 )
 
 app.add_middleware(
@@ -72,14 +80,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+if STATIC_DIR.is_dir():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
 
 @app.get("/")
-def root():
+def ui():
+    index = STATIC_DIR / "index.html"
+    if index.exists():
+        return FileResponse(index)
     return {
         "service": "lughalink-mt-api",
         "docs": "/docs",
         "health": "/health",
         "translate": "POST /translate",
+    }
+
+
+@app.get("/api")
+def api_info():
+    return {
+        "service": "lughalink-mt-api",
+        "ui": "/",
+        "docs": "/docs",
+        "health": "/health",
+        "translate": "POST /translate",
+        "models": {"kik": _model_id("kik"), "sw": _model_id("sw")},
     }
 
 
@@ -112,6 +138,6 @@ def translate(req: TranslateRequest):
         hyp = translate_nllb(
             tok, model, device, text, req.target, max_new_tokens=req.max_new_tokens
         )
-    except Exception as exc:  # noqa: BLE001 — surface load/gen errors to client
+    except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=str(exc)) from exc
     return TranslateResponse(translation=hyp, target=req.target, model=model_id)
