@@ -1,6 +1,6 @@
 :root {
-  --orange: #f58220;
-  --orange-deep: #e06e0f;
+  --orange: #1a73e8;
+  --orange-deep: #1558b0;
   --ink: #111111;
   --muted: #6b6b6b;
   --line: #d9d9d9;
@@ -40,7 +40,7 @@ body {
   border: 0;
 }
 
-/* Top bar — Unimart-style orange header */
+/* Top bar — Unimart-style blue header */
 .topbar {
   height: 56px;
   background: var(--orange);
@@ -159,7 +159,7 @@ body {
 .lang-pill.active {
   border-color: var(--orange);
   color: var(--orange-deep);
-  background: #fff7ef;
+  background: #eef4ff;
 }
 
 /* Pill composer */
