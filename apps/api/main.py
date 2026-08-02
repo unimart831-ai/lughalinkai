@@ -22,7 +22,7 @@ from typing import Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -72,10 +72,11 @@ app = FastAPI(
     version="0.2.0",
 )
 
+_origins = _cors_origins()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=_cors_origins(),
-    allow_credentials=True,
+    allow_origins=_origins,
+    allow_credentials=_origins != ["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -84,17 +85,28 @@ if STATIC_DIR.is_dir():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 
-@app.get("/")
+def _render_ui() -> str:
+    """Inline CSS/JS so the Unimart-style layout always loads (even if /static 404s)."""
+    index = STATIC_DIR / "index.html"
+    css = (STATIC_DIR / "styles.css").read_text(encoding="utf-8") if (STATIC_DIR / "styles.css").exists() else ""
+    js = (STATIC_DIR / "app.js").read_text(encoding="utf-8") if (STATIC_DIR / "app.js").exists() else ""
+    html = index.read_text(encoding="utf-8")
+    html = html.replace("<!--INJECT_CSS-->", f"<style>\n{css}\n</style>")
+    html = html.replace(
+        '<link rel="stylesheet" href="/static/styles.css" />',
+        "<!-- styles inlined -->",
+    )
+    html = html.replace("<!--INJECT_JS-->", f"<script>\n{js}\n</script>")
+    html = html.replace('<script src="/static/app.js"></script>', "<!-- script inlined -->")
+    return html
+
+
+@app.get("/", response_class=HTMLResponse)
 def ui():
     index = STATIC_DIR / "index.html"
     if index.exists():
-        return FileResponse(index)
-    return {
-        "service": "lughalink-mt-api",
-        "docs": "/docs",
-        "health": "/health",
-        "translate": "POST /translate",
-    }
+        return HTMLResponse(_render_ui())
+    return HTMLResponse("<h1>LughaLink API</h1><p>UI assets missing. See /docs</p>")
 
 
 @app.get("/api")

@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <!--INJECT_CSS-->
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
@@ -18,7 +19,7 @@
         <span></span><span></span><span></span>
       </button>
       <a class="top-brand" href="/">LUGHALINK</a>
-      <a class="signin" href="/docs" title="API docs">API</a>
+      <a class="signin" href="/docs" title="API docs">Sign in</a>
     </header>
 
     <main class="hero">
@@ -40,7 +41,7 @@
           id="source"
           type="text"
           maxlength="2000"
-          placeholder="IEBC reminds voters to verify their details…"
+          placeholder="Where should this PSA go? e.g. IEBC reminds voters…"
           autocomplete="off"
         />
         <button type="submit" class="send" id="translateBtn" aria-label="Translate">
@@ -81,9 +82,10 @@
 
     <footer class="bottom">
       <span class="explore">EXPLORE LUGHALINK</span>
-      <a class="live" href="https://huggingface.co/iranzi" target="_blank" rel="noreferrer">See models live</a>
+      <a class="live" href="https://huggingface.co/iranzi" target="_blank" rel="noreferrer">See what’s live</a>
     </footer>
 
+    <!--INJECT_JS-->
     <script src="/static/app.js"></script>
   </body>
 </html>
