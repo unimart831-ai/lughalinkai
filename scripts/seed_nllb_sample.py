@@ -112,7 +112,8 @@ def main() -> None:
 
     records = []
     n = 0
-    for row in rows:
+    total_jobs = len(rows) * max(len(targets), 1)
+    for row_i, row in enumerate(rows, 1):
         source_text = _source_text(row)
         psa_id = _psa_id(row)
         if not source_text or not psa_id:
@@ -138,6 +139,8 @@ def main() -> None:
                     dry_run=args.dry_run,
                 )
             )
+            if n % 25 == 0 or n == total_jobs:
+                print(f"Progress {n}/{total_jobs} (source row {row_i}/{len(rows)})")
 
     out_rows = records_to_csv_rows(records)
     args.output.parent.mkdir(parents=True, exist_ok=True)

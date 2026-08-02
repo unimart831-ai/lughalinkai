@@ -41,13 +41,21 @@ datasets/processed/psa_dataset_final.csv
 datasets/processed/media_archives_psa_dataset.csv
 datasets/processed/week1_psa_merged.json
 
-# ML artifacts
+# ML artifacts / local checkpoint backups (too large for git)
 models/
+model/
 artifacts/
 wandb/
 *.pt
 *.bin
 *.ckpt
+*.safetensors
+lughalink_mt_*.tar.gz
+
+# Allow small MT experiment logs
+!datasets/interim/experiment_log.csv
+!datasets/interim/mt_eval_results.json
+!datasets/interim/ablation_zero_vs_ft.csv
 
 # IDE / OS
 .idea/

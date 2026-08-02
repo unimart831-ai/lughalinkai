@@ -41,6 +41,16 @@ mt = [
     "torch>=2.2",
     "sentencepiece>=0.2",
     "protobuf>=4.25",
+    "accelerate>=0.30",
+    "evaluate>=0.4",
+    "sacrebleu>=2.4",
+    "datasets>=2.19",
+]
+demo = [
+    "streamlit>=1.32",
+    "transformers>=4.40",
+    "torch>=2.2",
+    "sentencepiece>=0.2",
 ]
 
 [project.scripts]

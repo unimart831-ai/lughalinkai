@@ -1,14 +1,16 @@
-"""Baseline MT fine-tune / dry-run for NLLB (Week 3).
+"""Baseline MT fine-tune / dry-run for NLLB or mT5 (Week 3).
 
 Examples:
-  python scripts/train_baseline.py --dry-run
-  python scripts/train_baseline.py --pair en-sw --epochs 1 --max-train-samples 500
+  python scripts/train_baseline.py --dry-run --pair en-kik
+  python scripts/train_baseline.py --pair en-kik --epochs 1
+  python scripts/train_baseline.py --model mt5 --pair en-kik --epochs 1
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import inspect
 import json
 import sys
 from datetime import datetime, timezone
@@ -21,12 +23,22 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 CFG_PATH = ROOT / "configs" / "mt_train.yaml"
+EXPERIMENT_LOG = ROOT / "datasets" / "interim" / "experiment_log.csv"
+
+TARGET_NAMES = {"sw": "Swahili", "kik": "Kikuyu"}
 
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="LughaLink MT baseline train / dry-run")
     p.add_argument("--config", type=Path, default=CFG_PATH)
     p.add_argument("--pair", type=str, default="en-kik", help="e.g. en-kik / en-sw")
+    p.add_argument(
+        "--model",
+        type=str,
+        default="nllb",
+        choices=["nllb", "mt5"],
+        help="Pretrained family: nllb (default) or mt5",
+    )
     p.add_argument("--dry-run", action="store_true", help="Validate data only; no model")
     p.add_argument("--epochs", type=int, default=None)
     p.add_argument("--max-train-samples", type=int, default=None)
@@ -36,6 +48,21 @@ def parse_args() -> argparse.Namespace:
 
 def load_cfg(path: Path) -> dict:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def resolve_model_name(cfg: dict, family: str) -> str:
+    if family == "nllb":
+        return cfg["model"]["name"]
+    alts = cfg["model"].get("alt_models") or []
+    for name in alts:
+        if "mt5" in name.lower():
+            return name
+    return "google/mt5-small"
+
+
+def mt5_prefix(source_text: str, tgt: str) -> str:
+    name = TARGET_NAMES.get(tgt, tgt)
+    return f"translate English to {name}: {source_text}"
 
 
 def load_split(path: Path, src: str, tgt: str) -> list[dict]:
@@ -57,10 +84,33 @@ def load_split(path: Path, src: str, tgt: str) -> list[dict]:
     return rows
 
 
-def dry_run_report(train, dev, test, pair: str, out_dir: Path) -> dict:
+def append_experiment_log(row: dict) -> None:
+    EXPERIMENT_LOG.parent.mkdir(parents=True, exist_ok=True)
+    fields = [
+        "timestamp",
+        "pair",
+        "model_family",
+        "model_name",
+        "train_rows",
+        "dev_rows",
+        "epochs",
+        "device",
+        "output_dir",
+        "notes",
+    ]
+    write_header = not EXPERIMENT_LOG.exists()
+    with EXPERIMENT_LOG.open("a", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fields)
+        if write_header:
+            writer.writeheader()
+        writer.writerow({k: row.get(k, "") for k in fields})
+
+
+def dry_run_report(train, dev, test, pair: str, out_dir: Path, model_family: str) -> dict:
     report = {
         "mode": "dry_run",
         "pair": pair,
+        "model_family": model_family,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "counts": {"train": len(train), "dev": len(dev), "test": len(test)},
         "sample_train": [
@@ -112,7 +162,57 @@ def _import_hf_dataset_class():
     return Dataset
 
 
-def train_real(cfg: dict, train_rows, dev_rows, pair: str, args: argparse.Namespace) -> None:
+def _training_arguments(Seq2SeqTrainingArguments, tcfg, out_dir, epochs, use_fp16):
+    ta_params = inspect.signature(Seq2SeqTrainingArguments.__init__).parameters
+    eval_key = "eval_strategy" if "eval_strategy" in ta_params else "evaluation_strategy"
+    train_args = {
+        "output_dir": str(out_dir),
+        "num_train_epochs": epochs,
+        "learning_rate": float(tcfg["learning_rate"]),
+        "per_device_train_batch_size": int(tcfg["train_batch_size"]),
+        "per_device_eval_batch_size": int(tcfg["eval_batch_size"]),
+        "weight_decay": float(tcfg["weight_decay"]),
+        "warmup_ratio": float(tcfg["warmup_ratio"]),
+        "gradient_accumulation_steps": int(tcfg["gradient_accumulation_steps"]),
+        "fp16": use_fp16,
+        "predict_with_generate": True,
+        eval_key: "steps",
+        "eval_steps": int(tcfg["eval_steps"]),
+        "save_steps": int(tcfg["save_steps"]),
+        "logging_steps": int(tcfg["logging_steps"]),
+        "save_total_limit": 2,
+        "seed": int(tcfg["seed"]),
+        "report_to": [],
+    }
+    if "save_strategy" in ta_params:
+        train_args["save_strategy"] = "steps"
+    return Seq2SeqTrainingArguments(**train_args)
+
+
+def _make_trainer(Seq2SeqTrainer, model, args_tr, train_ds, dev_ds, collator, tokenizer):
+    trainer_kwargs = {
+        "model": model,
+        "args": args_tr,
+        "train_dataset": train_ds,
+        "eval_dataset": dev_ds,
+        "data_collator": collator,
+    }
+    trainer_params = inspect.signature(Seq2SeqTrainer.__init__).parameters
+    if "processing_class" in trainer_params:
+        trainer_kwargs["processing_class"] = tokenizer
+    else:
+        trainer_kwargs["tokenizer"] = tokenizer
+    return Seq2SeqTrainer(**trainer_kwargs)
+
+
+def train_real(
+    cfg: dict,
+    train_rows,
+    dev_rows,
+    pair: str,
+    args: argparse.Namespace,
+    model_family: str,
+) -> None:
     try:
         import torch
         from transformers import (
@@ -139,8 +239,13 @@ def train_real(cfg: dict, train_rows, dev_rows, pair: str, args: argparse.Namesp
     if not pair_cfg:
         raise SystemExit(f"Pair {pair} not in configs/mt_train.yaml")
 
-    model_name = cfg["model"]["name"]
-    out_dir = args.output_dir or Path(cfg["train"]["output_dir"]) / pair
+    model_name = resolve_model_name(cfg, model_family)
+    default_out = Path(cfg["train"]["output_dir"]) / (
+        pair if model_family == "nllb" else f"{model_family}-{pair}"
+    )
+    out_dir = args.output_dir or default_out
+    if not out_dir.is_absolute():
+        out_dir = ROOT / out_dir
     max_src = int(cfg["model"]["max_source_length"])
     max_tgt = int(cfg["model"]["max_target_length"])
     epochs = args.epochs or int(cfg["train"]["num_epochs"])
@@ -152,23 +257,30 @@ def train_real(cfg: dict, train_rows, dev_rows, pair: str, args: argparse.Namesp
     if max_eval:
         dev_rows = dev_rows[: int(max_eval)]
 
-    print(f"Loading {model_name} for {pair} …")
+    print(f"Loading {model_name} ({model_family}) for {pair} …")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
     src_code = cfg["languages"]["source_nllb"]
     tgt_code = pair_cfg["target_nllb"]
-    tokenizer.src_lang = src_code
+
+    if model_family == "nllb":
+        tokenizer.src_lang = src_code
 
     def to_ds(rows):
+        if model_family == "mt5":
+            sources = [mt5_prefix(r["source_text"], tgt) for r in rows]
+        else:
+            sources = [r["source_text"] for r in rows]
         return Dataset.from_dict(
             {
-                "source_text": [r["source_text"] for r in rows],
+                "source_text": sources,
                 "target_text": [r["target_text"] for r in rows],
             }
         )
 
     def preprocess(batch):
-        tokenizer.src_lang = src_code
+        if model_family == "nllb":
+            tokenizer.src_lang = src_code
         model_inputs = tokenizer(
             batch["source_text"], max_length=max_src, truncation=True, padding=False
         )
@@ -181,70 +293,53 @@ def train_real(cfg: dict, train_rows, dev_rows, pair: str, args: argparse.Namesp
         model_inputs["labels"] = labels["input_ids"]
         return model_inputs
 
-    train_ds = to_ds(train_rows).map(preprocess, batched=True, remove_columns=["source_text", "target_text"])
-    dev_ds = to_ds(dev_rows).map(preprocess, batched=True, remove_columns=["source_text", "target_text"])
+    train_ds = to_ds(train_rows).map(
+        preprocess, batched=True, remove_columns=["source_text", "target_text"]
+    )
+    dev_ds = to_ds(dev_rows).map(
+        preprocess, batched=True, remove_columns=["source_text", "target_text"]
+    )
 
     tcfg = cfg["train"]
     use_fp16 = bool(tcfg.get("fp16")) and torch.cuda.is_available()
-    # transformers>=4.41 renamed evaluation_strategy -> eval_strategy
-    import inspect
-
-    ta_params = inspect.signature(Seq2SeqTrainingArguments.__init__).parameters
-    eval_key = "eval_strategy" if "eval_strategy" in ta_params else "evaluation_strategy"
-    train_args = {
-        "output_dir": str(out_dir),
-        "num_train_epochs": epochs,
-        "learning_rate": float(tcfg["learning_rate"]),
-        "per_device_train_batch_size": int(tcfg["train_batch_size"]),
-        "per_device_eval_batch_size": int(tcfg["eval_batch_size"]),
-        "weight_decay": float(tcfg["weight_decay"]),
-        "warmup_ratio": float(tcfg["warmup_ratio"]),
-        "gradient_accumulation_steps": int(tcfg["gradient_accumulation_steps"]),
-        "fp16": use_fp16,
-        "predict_with_generate": True,
-        eval_key: "steps",
-        "eval_steps": int(tcfg["eval_steps"]),
-        "save_steps": int(tcfg["save_steps"]),
-        "logging_steps": int(tcfg["logging_steps"]),
-        "save_total_limit": 2,
-        "seed": int(tcfg["seed"]),
-        "report_to": [],
-    }
-    if "save_strategy" in ta_params:
-        train_args["save_strategy"] = "steps"
-    args_tr = Seq2SeqTrainingArguments(**train_args)
+    args_tr = _training_arguments(Seq2SeqTrainingArguments, tcfg, out_dir, epochs, use_fp16)
     collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
-    # Forced BOS for NLLB generations during eval
-    model.generation_config.forced_bos_token_id = tokenizer.convert_tokens_to_ids(tgt_code)
+    if model_family == "nllb":
+        model.generation_config.forced_bos_token_id = tokenizer.convert_tokens_to_ids(tgt_code)
 
-    # transformers>=4.46 renamed tokenizer -> processing_class on Trainer
-    trainer_kwargs = {
-        "model": model,
-        "args": args_tr,
-        "train_dataset": train_ds,
-        "eval_dataset": dev_ds,
-        "data_collator": collator,
-    }
-    trainer_params = inspect.signature(Seq2SeqTrainer.__init__).parameters
-    if "processing_class" in trainer_params:
-        trainer_kwargs["processing_class"] = tokenizer
-    else:
-        trainer_kwargs["tokenizer"] = tokenizer
-    trainer = Seq2SeqTrainer(**trainer_kwargs)
-    trainer.train()
+    trainer = _make_trainer(
+        Seq2SeqTrainer, model, args_tr, train_ds, dev_ds, collator, tokenizer
+    )
+    train_out = trainer.train()
     trainer.save_model(str(out_dir / "final"))
     tokenizer.save_pretrained(str(out_dir / "final"))
     meta = {
         "pair": pair,
+        "model_family": model_family,
         "model": model_name,
         "train_rows": len(train_rows),
         "dev_rows": len(dev_rows),
         "epochs": epochs,
         "device": "cuda" if torch.cuda.is_available() else "cpu",
         "silver_only": True,
+        "train_loss": getattr(train_out, "training_loss", None),
         "saved_at": datetime.now(timezone.utc).isoformat(),
     }
     (out_dir / "train_meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
+    append_experiment_log(
+        {
+            "timestamp": meta["saved_at"],
+            "pair": pair,
+            "model_family": model_family,
+            "model_name": model_name,
+            "train_rows": len(train_rows),
+            "dev_rows": len(dev_rows),
+            "epochs": epochs,
+            "device": meta["device"],
+            "output_dir": str(out_dir / "final"),
+            "notes": "silver_psa_only",
+        }
+    )
     print(f"Saved checkpoint -> {out_dir / 'final'}")
 
 
@@ -257,15 +352,19 @@ def main() -> None:
     train = load_split(ROOT / cfg["data"]["train"], src, tgt)
     dev = load_split(ROOT / cfg["data"]["dev"], src, tgt)
     test = load_split(ROOT / cfg["data"]["test"], src, tgt)
-    out_dir = args.output_dir or ROOT / cfg["train"]["output_dir"] / args.pair
+    family = args.model
+    default_out = ROOT / cfg["train"]["output_dir"] / (
+        args.pair if family == "nllb" else f"{family}-{args.pair}"
+    )
+    out_dir = args.output_dir or default_out
 
     if args.dry_run:
-        dry_run_report(train, dev, test, args.pair, out_dir)
+        dry_run_report(train, dev, test, args.pair, out_dir, family)
         return
 
     if len(train) < 50:
         raise SystemExit(f"Only {len(train)} train rows for {args.pair}; harvest more data first.")
-    train_real(cfg, train, dev, args.pair, args)
+    train_real(cfg, train, dev, args.pair, args, family)
 
 
 if __name__ == "__main__":

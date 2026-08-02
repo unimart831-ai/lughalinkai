@@ -48,25 +48,39 @@ lughalink-ai/
 - Clean sheet: `datasets/processed/week1_psa_merged.csv`
 - Playbook: [DOCS/architecture/PRODUCT1_WEEK1.md](DOCS/architecture/PRODUCT1_WEEK1.md)
 
-## Week 2 (current)
+## Week 2
 
-**Product 2: Translation Engine** — EN↔SW alignment, NLLB seeding, gold review.
+**Product 2: Translation Engine** — PSA freeze, EDA, Kikuyu target, seed candidates.
 
-- Handoff: [DOCS/WEEK2_HANDOFF.md](DOCS/WEEK2_HANDOFF.md)
-- Plan: [DOCS/architecture/PRODUCT2_WEEK2.md](DOCS/architecture/PRODUCT2_WEEK2.md)
-- Languages: [configs/languages.yaml](configs/languages.yaml)
+- Report: [DOCS/WEEK2_REPORT.md](DOCS/WEEK2_REPORT.md)
+- Languages: [configs/languages.yaml](configs/languages.yaml) (EN · SW · Kikuyu)
+
+## Week 3–4 (modeling, eval, demo)
+
+Final write-up: [DOCS/FINAL_REPORT.md](DOCS/FINAL_REPORT.md)  
+Navon scale + train: [DOCS/NAVON_TRAINING_READY.md](DOCS/NAVON_TRAINING_READY.md)
 
 ```bash
-# Freeze Week 1 baseline + build seed candidates
-python scripts/prepare_week2_baseline.py
+# On Navon A100 (JupyterLab project) — scale to ~5k/pair then train NLLB + mT5
+git pull
+bash scripts/navon_scale_and_train.sh
+# Download ~/lughalink_mt_scaled.tar.gz before stopping the pod
 
-# Dry-run NLLB seeder (no model download)
-python scripts/seed_nllb_sample.py --dry-run --limit 5
+# Evaluate (silver references — relative scores only)
+python scripts/evaluate_mt.py --pair en-kik --model nllb --write-ablation
+python scripts/infer_mt.py --pair en-kik --text "Register to vote at your nearest centre."
 
-# Real seeding (large download)
-pip install -e ".[mt]"
-python scripts/seed_nllb_sample.py --limit 50 --targets sw,kik
+# Human eval pack (reviewers fill scores later)
+python scripts/prepare_human_eval.py
+# See DOCS/HUMAN_EVAL_GUIDE.md
+
+# Local Streamlit demo (point at extracted checkpoints)
+pip install -e ".[demo]"
+set LUGHALINK_MODEL_DIR=path\to\lugha_ckpt
+streamlit run app/streamlit_mt.py
 ```
+
+**Do not commit** `model/`, `artifacts/`, or `*.safetensors` — weights stay local/Navon only.
 
 ## Quick Start
 
