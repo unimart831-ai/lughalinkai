@@ -1,8 +1,37 @@
+---
+title: LughaLink PSA MT API
+emoji: 🇰🇪
+colorFrom: green
+colorTo: blue
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # LughaLink AI
 
 **Every Public Message. Every Kenyan. Every Language.**
 
 LughaLink AI is a Public Information Translation Platform — not a semester translation homework. We build the infrastructure that makes Kenyan public service announcements (PSAs) accessible in every language.
+
+## Live demo (FastAPI + Hub models)
+
+| URL | Purpose |
+|-----|---------|
+| [Space UI](https://iranzi-lughalink-mt-api.hf.space/) | Browser translator (no local weight download) |
+| [en-kik model](https://huggingface.co/iranzi/lughalink-nllb-psa-en-kik) | Fine-tuned NLLB EN→Kikuyu |
+| [en-sw model](https://huggingface.co/iranzi/lughalink-nllb-psa-en-sw) | Fine-tuned NLLB EN→Kiswahili |
+
+Deploy guide: [DOCS/DEPLOY_HF.md](DOCS/DEPLOY_HF.md)
+
+```bash
+# Local UI + API (loads public Hub checkpoints)
+pip install -r apps/api/requirements.txt
+set LUGHALINK_MODEL_KIK=iranzi/lughalink-nllb-psa-en-kik
+set LUGHALINK_MODEL_SW=iranzi/lughalink-nllb-psa-en-sw
+uvicorn apps.api.main:app --host 0.0.0.0 --port 7860
+# Open http://127.0.0.1:7860/
+```
 
 ## What We're Building
 

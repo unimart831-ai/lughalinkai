@@ -55,37 +55,53 @@ Human pack:
 
 ## 5. Sub-objective 4 — Deployment
 
+**Shipped path:** Hub checkpoints + FastAPI + browser UI (no client weight download).
+
+| Piece | Location |
+|-------|----------|
+| EN→Kikuyu model | https://huggingface.co/iranzi/lughalink-nllb-psa-en-kik |
+| EN→Kiswahili model | https://huggingface.co/iranzi/lughalink-nllb-psa-en-sw |
+| API + UI | `apps/api/main.py` + `apps/api/static/` |
+| Space deploy | [DOCS/DEPLOY_HF.md](DEPLOY_HF.md) · Space `iranzi/lughalink-mt-api` |
+
 ```bash
-pip install streamlit transformers torch sentencepiece
-streamlit run app/streamlit_mt.py
+# Local demo (loads public Hub models)
+pip install -r apps/api/requirements.txt
+uvicorn apps.api.main:app --host 0.0.0.0 --port 7860
+# UI: http://127.0.0.1:7860/   API: POST /translate
+
+# Optional CLI
+python scripts/infer_mt.py --pair en-kik --text "The public is advised to follow official health guidelines."
 ```
 
-Set `LUGHALINK_MODEL_DIR` to the folder that contains `en-kik/final` (extracted backup or `artifacts/mt_baseline`). Demo features: example PSAs, language select, model family select, feedback CSV.
+`app/streamlit_mt.py` is a leftover stub and is **not** the product UI. Further Navon epochs / mT5 are deferred until this Hub+UI path is live.
 
 ## 6. Limitations
 
-1. Parallel Kikuyu/SW data before scale-up was few-shot (~hundreds of pairs); full brief volume needs Navon `--limit 5200` run.
+1. Parallel Kikuyu/SW training used silver NLLB targets (`verified=false`); not human gold.
 2. Synthetic English PSAs inflate monolingual count; reported separately from real scrapes.
-3. No human gold at training time — do not claim production-quality indigenous MT.
+3. Automatic BLEU/chrF used silver refs — relative comparison only.
 4. Ekegusii/Dholuo/Somali examples in the brief were replaced by Kikuyu for NLLB support.
-5. Large weights must stay out of GitHub (~2.3 GB each).
+5. Large weights stay on Hugging Face Hub (~2.3 GB each), not in GitHub.
 
 ## 7. Reproducibility (short)
 
 ```bash
 git pull
-pip install -e ".[mt]"
-# On Navon GPU:
-bash scripts/navon_scale_and_train.sh
+pip install -r apps/api/requirements.txt
+uvicorn apps.api.main:app --host 0.0.0.0 --port 7860
+# On Navon GPU (later: more epochs / mT5):
+# bash scripts/navon_scale_and_train.sh
 python scripts/evaluate_mt.py --pair en-kik --model nllb --write-ablation
 python scripts/prepare_human_eval.py
-streamlit run app/streamlit_mt.py
 ```
 
 ## 8. Demo-day checklist
 
-- [ ] Scaled silver + retrained NLLB/mT5 checkpoints loaded
-- [ ] Live Streamlit translate of a real IEBC/MoH-style PSA → SW and Kikuyu
-- [ ] Metrics table (BLEU/chrF) + honesty about silver refs
-- [ ] Human eval sheet status (pending / in progress / done)
+- [x] Fine-tuned NLLB checkpoints on Hub (`iranzi/lughalink-nllb-psa-en-*`)
+- [x] FastAPI + browser UI wired to Hub models (`POST /translate`)
+- [ ] Live HF Space `iranzi/lughalink-mt-api` serving UI
+- [x] Metrics table (BLEU/chrF) + honesty about silver refs
+- [ ] Human eval sheet scores filled
 - [ ] Q&A: PSA Framework filter, synthetic fill, why Kikuyu
+- [ ] (Later) More epochs / mT5 on Navon

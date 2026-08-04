@@ -11,9 +11,11 @@
       --blue: #1565c0;
       --ink: #111;
       --muted: #444;
-      --rule: #cfd8dc;
-      --soft: #f4f7fb;
+      --rule: #d0d7de;
+      --soft: #f5f7fa;
       --accent: #0d47a1;
+      --heading-bg: #e8eef5;
+      --heading-text: #0d47a1;
     }
     * { box-sizing: border-box; }
     @page { size: A3 landscape; margin: 0; }
@@ -23,24 +25,33 @@
       font-family: "Manrope", system-ui, sans-serif;
       color: var(--ink);
       background: #dfe3e8;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .print-hint {
-      width: min(100%, 1180px);
+      width: min(100%, 1400px);
       margin: 8px auto 0;
-      padding: 6px 10px;
-      font-size: 12px;
+      padding: 8px 12px;
+      font-size: 13px;
       color: #555;
       background: #fff;
     }
     @media print {
-      html, body { background: #fff; width: 100%; height: 100%; margin: 0; }
+      html, body {
+        background: #fff !important;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       .print-hint { display: none !important; }
       .stage {
         margin: 0 !important;
-        padding: 0 !important;
         width: 100% !important;
         height: 100% !important;
+        overflow: visible !important;
       }
       .poster {
         width: 100% !important;
@@ -48,116 +59,160 @@
         transform: none !important;
         box-shadow: none !important;
         overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
-      .body { flex: 1 1 auto; min-height: 0; }
-      .col {
-        height: 100%;
-        justify-content: space-between;
-        gap: 0;
+      .banner,
+      .banner * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color: #ffffff !important;
+      }
+      .banner {
+        background: #1565c0 !important;
+        background-color: #1565c0 !important;
+      }
+      .tag {
+        border-color: #ffffff !important;
+        color: #ffffff !important;
+      }
+      .fill { background: #1565c0 !important; background-color: #1565c0 !important; }
+      .fill.alt { background: #2e7d32 !important; background-color: #2e7d32 !important; }
+      .avatar { background: #1565c0 !important; background-color: #1565c0 !important; color: #fff !important; }
+      h2 {
+        background: #e8eef5 !important;
+        background-color: #e8eef5 !important;
+        color: #0d47a1 !important;
+        border-bottom: 2.5px solid #1565c0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      h3 { color: #0d47a1 !important; }
+      .stat, .pipe-step, .track, .soft, .heading-bg {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
     }
 
-    /* Screen: hug content tightly (no empty A3 void) */
     .stage {
-      width: min(100%, 1180px);
+      width: min(100%, 1400px);
       margin: 8px auto 20px;
       position: relative;
+      overflow: visible;
     }
     .poster {
       width: 420mm;
-      height: auto;
+      height: 297mm;
       background: #fff;
+      background-color: #fff;
       box-shadow: 0 2px 14px rgba(0,0,0,0.15);
       display: flex;
       flex-direction: column;
-      overflow: visible;
+      overflow: hidden;
       transform-origin: top left;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .banner {
-      background: var(--blue);
-      color: #fff;
-      padding: 11px 18px 9px;
+      background: #1565c0;
+      background-color: #1565c0;
+      color: #ffffff;
+      padding: 9px 16px 8px;
       flex: 0 0 auto;
+      position: relative;
+      z-index: 2;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     .banner h1 {
       margin: 0;
-      font-size: 21px;
+      font-size: 7.2mm;
       font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.12;
+      line-height: 1.1;
+      color: #ffffff;
     }
     .banner .sub {
-      margin: 3px 0 6px;
-      font-size: 12px;
+      margin: 3px 0 5px;
+      font-size: 4mm;
       font-weight: 600;
-      color: #fff;
-      opacity: 0.92;
+      color: #ffffff;
     }
     .tags { display: flex; flex-wrap: wrap; gap: 5px; }
     .tag {
-      font-size: 10px;
+      font-size: 3.4mm;
       font-weight: 700;
-      border: 1px solid rgba(255,255,255,0.5);
+      border: 1px solid #ffffff;
       padding: 2px 8px;
-      color: #fff;
+      color: #ffffff;
     }
 
     .body {
+      flex: 1 1 auto;
+      min-height: 0;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      align-items: start;
+      align-items: stretch;
       border-bottom: 1px solid var(--rule);
     }
     .col {
-      padding: 10px 14px 12px;
+      height: 100%;
+      padding: 10px 14px 10px;
       border-right: 1px solid var(--rule);
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      gap: 10px;
+      gap: 9px;
+      overflow: hidden;
     }
     .col:last-child { border-right: 0; }
 
     .section { flex: 0 0 auto; }
 
     h2 {
-      margin: 0 0 5px;
-      font-size: 12.5px;
+      margin: 0 0 6px;
+      font-size: 4.2mm;
       font-weight: 800;
-      color: var(--accent);
+      color: var(--heading-text);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding-bottom: 3px;
-      border-bottom: 2px solid var(--blue);
+      letter-spacing: 0.06em;
+      padding: 4px 8px;
+      background: var(--heading-bg);
+      background-color: var(--heading-bg);
+      border-bottom: 2.5px solid var(--blue);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     h3 {
-      margin: 5px 0 3px;
-      font-size: 11.5px;
+      margin: 5px 0 4px;
+      font-size: 3.8mm;
       font-weight: 800;
+      color: var(--accent);
     }
     p, li {
-      margin: 0 0 3px;
-      font-size: 11.5px;
-      line-height: 1.36;
+      margin: 0 0 3.5px;
+      font-size: 3.9mm;
+      line-height: 1.35;
       color: var(--muted);
     }
-    ul { margin: 0; padding-left: 14px; }
+    ul { margin: 0; padding-left: 4.5mm; }
+    code { font-size: 0.95em; }
 
     .kv {
       display: grid;
-      grid-template-columns: 70px 1fr;
+      grid-template-columns: 24mm 1fr;
       gap: 5px 8px;
     }
     .kv b {
       color: var(--ink);
       font-weight: 800;
-      font-size: 11px;
+      font-size: 3.6mm;
       text-transform: uppercase;
       letter-spacing: 0.02em;
       padding-top: 1px;
     }
-    .kv p { margin: 0; }
+    .kv p { margin: 0; font-size: 3.9mm; }
 
     .pipeline {
       display: flex;
@@ -167,8 +222,8 @@
     .pipe-step {
       background: var(--soft);
       border: 1px solid var(--rule);
-      padding: 9px 4px;
-      font-size: 10px;
+      padding: 6px 3px;
+      font-size: 3.4mm;
       font-weight: 700;
       color: var(--accent);
       text-align: center;
@@ -178,7 +233,7 @@
     .pipe-arrow {
       color: var(--blue);
       font-weight: 800;
-      font-size: 14px;
+      font-size: 4.5mm;
       align-self: center;
     }
 
@@ -191,19 +246,19 @@
     .stat {
       background: var(--soft);
       border: 1px solid var(--rule);
-      padding: 9px 8px;
+      padding: 7px 6px;
       text-align: center;
     }
     .stat .n {
       display: block;
-      font-size: 20px;
+      font-size: 6.5mm;
       font-weight: 800;
       color: var(--accent);
       line-height: 1.05;
     }
     .stat .l {
       display: block;
-      font-size: 10px;
+      font-size: 3.3mm;
       color: var(--muted);
       margin-top: 2px;
       font-weight: 600;
@@ -211,43 +266,45 @@
 
     .metric {
       display: grid;
-      grid-template-columns: 86px 1fr 36px;
+      grid-template-columns: 26mm 1fr 12mm;
       align-items: center;
-      gap: 6px;
-      margin: 4px 0;
-      font-size: 11px;
+      gap: 5px;
+      margin: 3.5px 0;
+      font-size: 3.8mm;
+      font-weight: 600;
     }
-    .track { height: 12px; background: #e8eef5; }
+    .track { height: 4.5mm; background: #e8eef5; }
     .fill { height: 100%; background: var(--blue); }
     .fill.alt { background: #2e7d32; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11px;
+      font-size: 3.8mm;
       margin-top: 3px;
     }
     th, td {
       border-bottom: 1px solid var(--rule);
-      padding: 5px 3px;
+      padding: 4px 3px;
       text-align: left;
     }
     th {
       font-weight: 800;
       color: var(--accent);
       border-bottom: 2px solid var(--blue);
+      font-size: 3.6mm;
     }
 
     .sample-row {
       padding: 5px 0;
       border-bottom: 1px solid var(--rule);
-      font-size: 11.5px;
+      font-size: 3.9mm;
       line-height: 1.32;
     }
     .sample-row:last-child { border-bottom: 0; }
     .sample-row .lbl {
       display: block;
-      font-size: 10px;
+      font-size: 3.3mm;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -258,33 +315,33 @@
     .team {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 9px 10px;
+      gap: 7px 10px;
       margin-top: 3px;
     }
     .member {
       display: grid;
-      grid-template-columns: 34px 1fr;
-      gap: 7px;
+      grid-template-columns: 11mm 1fr;
+      gap: 5px;
       align-items: center;
     }
     .avatar {
-      width: 34px;
-      height: 34px;
+      width: 11mm;
+      height: 11mm;
       background: var(--blue);
       color: #fff;
       display: grid;
       place-items: center;
-      font-size: 11px;
+      font-size: 3.5mm;
       font-weight: 800;
     }
-    .member .name { font-size: 11.5px; font-weight: 800; color: var(--ink); margin: 0; }
-    .member .role { font-size: 10px; color: var(--muted); margin: 0; line-height: 1.2; }
+    .member .name { font-size: 3.8mm; font-weight: 800; color: var(--ink); margin: 0; }
+    .member .role { font-size: 3.2mm; color: var(--muted); margin: 0; line-height: 1.2; }
 
     .viz { width: 100%; margin: 4px 0; display: block; }
 
     .note {
       margin-top: 5px;
-      font-size: 10.5px;
+      font-size: 3.4mm;
       color: #6a5200;
       padding-top: 4px;
       border-top: 1px dashed #e0c86a;
@@ -296,8 +353,8 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      padding: 7px 18px;
-      font-size: 10.5px;
+      padding: 6px 16px;
+      font-size: 3.5mm;
       color: var(--muted);
       border-top: 1px solid var(--rule);
     }
@@ -306,15 +363,16 @@
 </head>
 <body>
   <p class="print-hint">
-    Chrome → Print → Save as PDF · <b>Landscape · A3</b> · Margins: <b>None</b> ·
-    Scale: <b>Fit to page</b> (or 100%) · File: <code>DOCS/POSTER_LUGHALINK.html</code>
+    For PDF/print: <b>A3 Landscape</b> · Margins <b>None</b> · Scale <b>100%</b> ·
+    turn <b>Background graphics</b> ON (otherwise the blue header disappears).
+    File: <code>DOCS/POSTER_LUGHALINK.html</code>
   </p>
 
   <div class="stage">
   <article class="poster">
-    <header class="banner">
-      <h1>LughaLink AI: Machine Translation of Kenyan Public Service Announcements</h1>
-      <p class="sub">Few-shot NLLB transfer · English → Kiswahili &amp; Kikuyu · DSA 4020A Natural Language Processing</p>
+    <header class="banner" style="background-color:#1565c0;color:#ffffff;">
+      <h1 style="color:#ffffff;">LughaLink AI: Machine Translation of Kenyan Public Service Announcements</h1>
+      <p class="sub" style="color:#ffffff;">Few-shot NLLB transfer · English → Kiswahili &amp; Kikuyu · DSA 4020A Natural Language Processing</p>
       <div class="tags">
         <span class="tag">Kenya · Public information</span>
         <span class="tag">EN → Kiswahili (pivot)</span>
@@ -335,7 +393,7 @@
             <b>Objective</b>
             <p>Transferable MT for English PSAs → Kiswahili &amp; Kikuyu on a curated Kenyan corpus.</p>
             <b>Approach</b>
-            <p>Framework-filtered PSAs → NLLB silver seed → fine-tune → evaluate → Hub + browser UI.</p>
+            <p>Framework-filtered PSAs → NLLB silver seed → fine-tune → Hub + browser UI.</p>
             <b>Impact</b>
             <p>Open digital public good with honest silver/gold and real/synthetic labeling.</p>
           </div>
@@ -366,29 +424,19 @@
           </div>
           <ul>
             <li>IEBC, MoH, gov/NGO scrapers · PSA Framework gate</li>
-            <li>1,615 real · 3,385 labeled synthetic · PSA-only (no OPUS)</li>
+            <li>1,615 real · 3,385 synthetic · PSA-only (no OPUS)</li>
             <li>Silver seed 10,400 → 9,077 after auto-QC</li>
           </ul>
         </section>
 
         <section class="section">
-          <h2>Prior work &amp; method</h2>
+          <h2>Method &amp; languages</h2>
           <ul>
-            <li>NLLB-200: <code>swh_Latn</code> · <code>kik_Latn</code>; generic MT weak on PSA register</li>
-            <li>Chose Kikuyu over unsupported / weak indigenous codes</li>
+            <li>NLLB-200: <code>eng_Latn</code> → <code>swh_Latn</code> (pivot) · <code>kik_Latn</code> (target)</li>
+            <li>Kikuyu chosen over unsupported / weak indigenous codes</li>
             <li>Normalize · glossary · stratified splits · length/lang QC</li>
-            <li>Hub weights via FastAPI — browser never downloads models</li>
+            <li>Hub weights via FastAPI — no client model download</li>
           </ul>
-        </section>
-
-        <section class="section">
-          <h2>Languages</h2>
-          <table>
-            <tr><th>Role</th><th>Code</th><th>Use</th></tr>
-            <tr><td>Source</td><td><code>eng_Latn</code></td><td>English PSAs</td></tr>
-            <tr><td>Pivot</td><td><code>swh_Latn</code></td><td>Kiswahili</td></tr>
-            <tr><td>Target</td><td><code>kik_Latn</code></td><td>Kikuyu</td></tr>
-          </table>
         </section>
       </div>
 
@@ -396,45 +444,33 @@
       <div class="col">
         <section class="section">
           <h2>EDA (Week 2)</h2>
-          <p><code>week2_eda.ipynb</code> · <code>week2_eda_stats.json</code></p>
           <h3>Domain distribution (n=5,000)</h3>
           <div class="metric"><span>Agriculture</span><div class="track"><div class="fill" style="width:100%"></div></div><span>1,524</span></div>
           <div class="metric"><span>Governance</span><div class="track"><div class="fill" style="width:70%"></div></div><span>1,066</span></div>
           <div class="metric"><span>Education</span><div class="track"><div class="fill" style="width:61%"></div></div><span>924</span></div>
           <div class="metric"><span>Security</span><div class="track"><div class="fill" style="width:50%"></div></div><span>762</span></div>
           <div class="metric"><span>Health</span><div class="track"><div class="fill" style="width:47%"></div></div><span>724</span></div>
-          <svg class="viz" viewBox="0 0 340 68" aria-label="Real vs synthetic">
-            <text x="0" y="12" font-size="11" fill="#0d47a1" font-weight="700" font-family="Manrope,sans-serif">Origin mix</text>
-            <rect x="0" y="20" width="110" height="26" fill="#1565c0"/>
-            <rect x="110" y="20" width="230" height="26" fill="#90caf9"/>
-            <text x="55" y="37" text-anchor="middle" font-size="11" fill="#fff" font-family="Manrope,sans-serif">Real 1,615</text>
-            <text x="225" y="37" text-anchor="middle" font-size="11" fill="#0d47a1" font-family="Manrope,sans-serif">Synthetic 3,385</text>
-            <text x="0" y="62" font-size="10" fill="#555" font-family="Manrope,sans-serif">Tokens: med 34 · mean 115 · vocab 15,467 · en 100%</text>
+          <svg class="viz" viewBox="0 0 340 58" aria-label="Real vs synthetic">
+            <text x="0" y="13" font-size="16" fill="#0d47a1" font-weight="700" font-family="Manrope,sans-serif">Origin mix</text>
+            <rect x="0" y="18" width="110" height="24" fill="#1565c0"/>
+            <rect x="110" y="18" width="230" height="24" fill="#90caf9"/>
+            <text x="55" y="35" text-anchor="middle" font-size="15" fill="#fff" font-family="Manrope,sans-serif">Real 1,615</text>
+            <text x="225" y="35" text-anchor="middle" font-size="15" fill="#0d47a1" font-family="Manrope,sans-serif">Synthetic 3,385</text>
+            <text x="0" y="54" font-size="13" fill="#555" font-family="Manrope,sans-serif">Tokens: med 34 · mean 115 · vocab 15,467 · splits 3,998 / 498 / 504</text>
           </svg>
-          <ul>
-            <li>Doc splits <b>3,998 / 498 / 504</b> · code-switch rare (9)</li>
-          </ul>
         </section>
 
         <section class="section">
           <h2>Model &amp; training</h2>
           <ul>
             <li>Base: <code>facebook/nllb-200-distilled-600M</code></li>
-            <li>Seed EN→SW &amp; EN→Kikuyu · <code>--limit 5200</code></li>
-            <li>Fine-tune 1 epoch · LR 2e-5 · Navon A100 80GB</li>
+            <li>Seed EN→SW &amp; EN→Kikuyu · fine-tune 1 epoch · LR 2e-5 · A100</li>
           </ul>
           <table>
             <tr><th>Pair</th><th>Train</th><th>Train loss</th><th>Eval loss</th></tr>
             <tr><td>en-kik</td><td>~3,591</td><td>~3.37</td><td>~0.19</td></tr>
             <tr><td>en-sw</td><td>~3,670</td><td>~1.82</td><td>~0.07</td></tr>
           </table>
-          <svg class="viz" viewBox="0 0 340 70" aria-label="Training loss sketch">
-            <text x="0" y="12" font-size="11" fill="#0d47a1" font-weight="700" font-family="Manrope,sans-serif">Loss ↓ over 1 epoch</text>
-            <polyline fill="none" stroke="#1565c0" stroke-width="2.5"
-              points="12,56 42,44 72,35 102,28 132,24 162,20 192,18 222,17 252,16 282,15 312,14"/>
-            <line x1="12" y1="60" x2="320" y2="60" stroke="#cfd8dc"/>
-            <line x1="12" y1="14" x2="12" y2="60" stroke="#cfd8dc"/>
-          </svg>
         </section>
 
         <section class="section">
@@ -444,20 +480,6 @@
           <div class="metric"><span>en-sw BLEU</span><div class="track"><div class="fill" style="width:89.6%"></div></div><span>89.6</span></div>
           <div class="metric"><span>en-sw chrF</span><div class="track"><div class="fill alt" style="width:94.7%"></div></div><span>94.7</span></div>
           <p class="note">Silver NLLB refs — relative only, not human gold. Sheet: <code>human_eval_100.csv</code>.</p>
-        </section>
-      </div>
-
-      <!-- RIGHT -->
-      <div class="col">
-        <section class="section">
-          <h2>Results summary</h2>
-          <table>
-            <tr><th>Item</th><th>Value</th></tr>
-            <tr><td>Kept pairs (QC)</td><td>9,077 (SW 4,588 · Kik 4,489)</td></tr>
-            <tr><td>Splits</td><td>7,261 / 906 / 910</td></tr>
-            <tr><td>Checkpoint size</td><td>~2.3 GB each</td></tr>
-            <tr><td>Train time / pair</td><td>~2 min on A100</td></tr>
-          </table>
         </section>
 
         <section class="section">
@@ -475,13 +497,25 @@
             Andũ aingĩ nĩ maraheo ũtaaro wa kũrũmĩrĩra ũtaaro wa thirikari wĩgiĩ ũgima wa mwĩrĩ.
           </div>
         </section>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="col">
+        <section class="section">
+          <h2>Results summary</h2>
+          <table>
+            <tr><th>Item</th><th>Value</th></tr>
+            <tr><td>Kept pairs (QC)</td><td>9,077 (SW 4,588 · Kik 4,489)</td></tr>
+            <tr><td>Splits</td><td>7,261 / 906 / 910</td></tr>
+            <tr><td>Checkpoint</td><td>~2.3 GB each · ~2 min/pair A100</td></tr>
+          </table>
+        </section>
 
         <section class="section">
           <h2>Achievements</h2>
           <ul>
             <li>End-to-end PSA MT: data → train → eval → serve</li>
-            <li>Working EN→SW and EN→Kikuyu fine-tunes</li>
-            <li>Hub models: <code>iranzi/lughalink-nllb-psa-en-*</code></li>
+            <li>EN→SW &amp; EN→Kikuyu fine-tunes on Hub</li>
             <li>FastAPI + browser UI · transparent labeling</li>
           </ul>
         </section>
@@ -522,15 +556,15 @@
             <div class="member">
               <div class="avatar">JK</div>
               <div>
-                <p class="name">Jesca Kimani</p>
-                <p class="role">Security · Agriculture</p>
+                <p class="name">Jessica Kimani</p>
+                <p class="role">Security domain lead</p>
               </div>
             </div>
             <div class="member">
               <div class="avatar">TM</div>
               <div>
                 <p class="name">Tumaini Micheni</p>
-                <p class="role">Team member</p>
+                <p class="role">Agriculture · Data verification</p>
               </div>
             </div>
           </div>

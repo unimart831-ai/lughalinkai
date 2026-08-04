@@ -104,13 +104,23 @@ Interactive docs: `http://127.0.0.1:7860/docs`
 
 ## 3. Deploy UI + API as a Hugging Face Space (Docker)
 
-### 3.1 Create the Space (checklist)
+### 3.1 Create the Space
+
+**Option A — script (after `hf auth login` as `iranzi`):**
+
+```bash
+python scripts/create_hf_space.py
+```
+
+Then in Space Settings → connect GitHub `unimart831-ai/lughalinkai` (root `Dockerfile`) and pick GPU if available.
+
+**Option B — manual checklist:**
 
 1. Open https://huggingface.co/new-space  
 2. **Owner:** `iranzi`  
 3. **Space name:** `lughalink-mt-api`  
 4. **SDK:** **Docker**  
-5. Connect GitHub repo `unimart831-ai/lughalinkai` (root `Dockerfile`)  
+5. Connect GitHub repo `unimart831-ai/lughalinkai` (root `Dockerfile`; root `README.md` has Space YAML)  
 6. Hardware: **GPU** if available (T4/A10). Free CPU is slow/cold for 600M.
 
 ### 3.2 Space variables
@@ -160,13 +170,9 @@ Open `$SPACE/` in a browser and translate a sample PSA.
 
 ---
 
-## 4. Frontend contract (custom UI later)
-
-Your web app should **not** load model weights. It only calls the API.
-
 ### Request
 
-`POST /translate`
+`POST /translate` — used by the built-in UI at `/` (`apps/api/static`).
 
 ```json
 {
@@ -188,22 +194,7 @@ Your web app should **not** load model weights. It only calls the API.
 }
 ```
 
-### Browser `fetch` example
-
-```javascript
-const res = await fetch("https://iranzi-lughalink-mt-api.hf.space/translate", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    text: "IEBC reminds voters to verify their details on the official portal.",
-    target: "sw",
-  }),
-});
-const data = await res.json();
-console.log(data.translation);
-```
-
-Host the UI on Vercel / Netlify / GitHub Pages. Set `LUGHALINK_CORS_ORIGINS` to that origin when you leave prototype mode.
+Host a separate frontend on Vercel / Netlify / GitHub Pages if needed. Set `LUGHALINK_CORS_ORIGINS` to that origin when you leave prototype mode.
 
 ---
 
@@ -212,11 +203,13 @@ Host the UI on Vercel / Netlify / GitHub Pages. Set `LUGHALINK_CORS_ORIGINS` to 
 | Path | Role |
 |------|------|
 | `scripts/push_to_hub.py` | Upload checkpoints + model card |
+| `scripts/create_hf_space.py` | Create Space + set Hub model env vars |
 | `DOCS/model_cards/MODEL_CARD_TEMPLATE.md` | Hub README template |
 | `services/translation/nllb_infer.py` | Shared NLLB generate logic |
 | `apps/api/main.py` | FastAPI app |
 | `apps/api/requirements.txt` | API deps |
 | `Dockerfile` | HF Space / container entry |
+| `README.md` | Space YAML frontmatter + project docs |
 | `DOCS/DEPLOY_HF.md` | This guide |
 
 ---
