@@ -28,11 +28,14 @@ def load_nllb(model_id_or_path: str) -> tuple[Any, Any, str]:
     from transformers import AutoModelForSeq2SeqLM
 
     tok = _load_tokenizer(model_id_or_path)
+    use_cuda = torch.cuda.is_available()
+    dtype = torch.float16 if use_cuda else torch.float32
     model = AutoModelForSeq2SeqLM.from_pretrained(
         model_id_or_path,
         low_cpu_mem_usage=True,
+        torch_dtype=dtype,
     )
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = "cuda" if use_cuda else "cpu"
     model = model.to(device)
     model.eval()
     return tok, model, device
@@ -45,15 +48,26 @@ def translate_nllb(
     text: str,
     target: str,
     *,
-    max_new_tokens: int = 128,
+    max_new_tokens: int = 64,
 ) -> str:
+    import torch
+
     if target not in NLLB_CODES:
         raise ValueError(f"Unsupported target '{target}'. Use one of: {sorted(NLLB_CODES)}")
     tok.src_lang = SRC_CODE
-    inputs = tok(text, return_tensors="pt", truncation=True, max_length=256)
+    inputs = tok(text, return_tensors="pt", truncation=True, max_length=192)
     inputs = {k: v.to(device) for k, v in inputs.items()}
     bos = tok.convert_tokens_to_ids(NLLB_CODES[target])
-    out = model.generate(**inputs, forced_bos_token_id=bos, max_new_tokens=max_new_tokens)
+    # Greedy decode — much faster than beam search for interactive UI.
+    with torch.inference_mode():
+        out = model.generate(
+            **inputs,
+            forced_bos_token_id=bos,
+            max_new_tokens=max_new_tokens,
+            num_beams=1,
+            do_sample=False,
+            use_cache=True,
+        )
     return tok.batch_decode(out, skip_special_tokens=True)[0]
 
 

@@ -43,7 +43,7 @@ TargetLang = Literal["kik", "sw"]
 class TranslateRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=2000)
     target: TargetLang
-    max_new_tokens: int = Field(default=128, ge=16, le=256)
+    max_new_tokens: int = Field(default=64, ge=16, le=256)
 
 
 class TranslateResponse(BaseModel):
@@ -83,6 +83,20 @@ app.add_middleware(
 
 if STATIC_DIR.is_dir():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+@app.on_event("startup")
+def _warmup_models() -> None:
+    """Load both Hub checkpoints once so the first UI request is not cold."""
+    for target in ("sw", "kik"):
+        mid = _model_id(target)  # type: ignore[arg-type]
+        if not mid:
+            continue
+        try:
+            get_cached_nllb(mid)
+        except Exception:  # noqa: BLE001
+            # Keep API up; /translate will surface the error.
+            pass
 
 
 def _render_ui() -> str:

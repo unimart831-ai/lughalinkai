@@ -8,6 +8,7 @@
   --soft: #f7f7f7;
   --try-blue: #4aa3ff;
   --font: "Manrope", "Segoe UI", sans-serif;
+  --topbar-h: 56px;
 }
 
 * {
@@ -27,6 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-top: var(--topbar-h);
 }
 
 .sr-only {
@@ -40,9 +42,14 @@ body {
   border: 0;
 }
 
-/* Top bar — Unimart-style blue header */
+/* Top bar — fixed on scroll */
 .topbar {
-  height: 56px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  height: var(--topbar-h);
   background: var(--orange);
   display: flex;
   align-items: center;
@@ -63,40 +70,26 @@ body {
   flex: 1;
   width: min(720px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: clamp(3.5rem, 12vh, 7rem) 0 2rem;
+  padding: clamp(2.5rem, 8vh, 5rem) 0 3rem;
   text-align: center;
 }
 
-.headline {
-  margin: 0;
-  font-size: clamp(2.4rem, 7vw, 3.4rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  animation: fadeUp 0.55s ease both;
-}
-
-.greeting {
-  margin: 0.85rem 0 0;
-  font-size: 1.35rem;
-  font-weight: 800;
-  animation: fadeUp 0.6s ease 0.05s both;
-}
-
-.support {
-  margin: 0.65rem auto 0;
-  max-width: 28rem;
+.tagline {
+  margin: 0 auto;
+  max-width: 26rem;
   color: var(--muted);
-  font-size: 0.98rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   line-height: 1.45;
-  animation: fadeUp 0.65s ease 0.1s both;
+  letter-spacing: 0.01em;
+  animation: fadeUp 0.45s ease both;
 }
 
 .lang-row {
   display: inline-flex;
   gap: 0.5rem;
-  margin-top: 1.35rem;
-  animation: fadeUp 0.7s ease 0.12s both;
+  margin-top: 1.25rem;
+  animation: fadeUp 0.5s ease 0.04s both;
 }
 
 .lang-pill {
@@ -128,7 +121,7 @@ body {
   border-radius: 999px;
   padding: 0.35rem 0.4rem 0.35rem 1.1rem;
   background: #fff;
-  animation: fadeUp 0.75s ease 0.15s both;
+  animation: fadeUp 0.55s ease 0.06s both;
 }
 
 .composer:focus-within {
@@ -163,6 +156,7 @@ body {
   place-items: center;
   cursor: pointer;
   flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .send:hover:not(:disabled) {
@@ -170,15 +164,20 @@ body {
   color: #fff;
 }
 
-.send:disabled {
-  opacity: 0.6;
+.send:disabled,
+.send.busy {
+  opacity: 0.55;
   cursor: wait;
+}
+
+.send.busy {
+  animation: pulse 0.9s ease infinite;
 }
 
 .try-line {
   margin: 1rem 0 0;
   font-size: 0.95rem;
-  animation: fadeUp 0.8s ease 0.18s both;
+  animation: fadeUp 0.6s ease 0.08s both;
 }
 
 .try-label {
@@ -213,7 +212,7 @@ body {
   border-radius: 18px;
   padding: 1rem 1.1rem 1.15rem;
   background: var(--soft);
-  animation: fadeUp 0.4s ease both;
+  animation: fadeUp 0.35s ease both;
 }
 
 .result-head {
@@ -254,32 +253,6 @@ body {
   color: #b42318;
 }
 
-.bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.25rem 1.25rem;
-  gap: 1rem;
-}
-
-.explore {
-  color: #b0b0b0;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-}
-
-.live {
-  text-decoration: none;
-  color: var(--orange);
-  border: 1px solid var(--orange);
-  border-radius: 999px;
-  padding: 0.45rem 0.9rem;
-  font-size: 0.88rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -291,9 +264,19 @@ body {
   }
 }
 
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
 @media (max-width: 560px) {
-  .support {
-    font-size: 0.92rem;
+  .tagline {
+    font-size: 0.9rem;
   }
 
   .try-line {
@@ -301,9 +284,5 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.25rem 0.35rem;
-  }
-
-  .bottom {
-    padding-inline: 1rem;
   }
 }
