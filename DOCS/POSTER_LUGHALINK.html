@@ -321,6 +321,28 @@
         </section>
 
         <section class="section">
+          <h2>Prior work &amp; gap</h2>
+          <ul>
+            <li>NLLB-200 supports <code>swh_Latn</code> and <code>kik_Latn</code></li>
+            <li>Generic MT weak on directive PSA register</li>
+            <li>Chose Kikuyu over unsupported / weak indigenous codes</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2>Method highlights</h2>
+          <ul>
+            <li>PSA Framework gate: action / advisory tone before any MT</li>
+            <li>Normalize · glossary · stratified doc splits · no OPUS in train</li>
+            <li>Auto-QC on silver pairs (length, lang ID, empty targets)</li>
+            <li>Serve Hub weights via FastAPI — browser never downloads models</li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- CENTER -->
+      <div class="col">
+        <section class="section">
           <h2>EDA (Week 2)</h2>
           <p>Notebook: <code>notebooks/week2_eda.ipynb</code> · stats: <code>week2_eda_stats.json</code></p>
           <h3>Domain distribution (n=5,000)</h3>
@@ -345,18 +367,6 @@
         </section>
 
         <section class="section">
-          <h2>Prior work &amp; gap</h2>
-          <ul>
-            <li>NLLB-200 supports <code>swh_Latn</code> and <code>kik_Latn</code></li>
-            <li>Generic MT weak on directive PSA register</li>
-            <li>Chose Kikuyu over unsupported / weak indigenous codes</li>
-          </ul>
-        </section>
-      </div>
-
-      <!-- CENTER -->
-      <div class="col">
-        <section class="section">
           <h2>Model &amp; training</h2>
           <ul>
             <li>Base: <code>facebook/nllb-200-distilled-600M</code></li>
@@ -369,12 +379,12 @@
             <tr><td>en-kik</td><td>~3,591</td><td>~3.37</td><td>~0.19</td></tr>
             <tr><td>en-sw</td><td>~3,670</td><td>~1.82</td><td>~0.07</td></tr>
           </table>
-          <svg class="viz" viewBox="0 0 340 90" aria-label="Training loss sketch">
+          <svg class="viz" viewBox="0 0 340 70" aria-label="Training loss sketch">
             <text x="0" y="12" font-size="10" fill="#0d47a1" font-weight="700" font-family="Manrope,sans-serif">Loss ↓ over 1 epoch (sketch)</text>
             <polyline fill="none" stroke="#1565c0" stroke-width="2.5"
-              points="10,70 40,55 70,42 100,33 130,28 160,24 190,22 220,20 250,18 280,17 310,16"/>
-            <line x1="10" y1="75" x2="320" y2="75" stroke="#cfd8dc"/>
-            <line x1="10" y1="15" x2="10" y2="75" stroke="#cfd8dc"/>
+              points="10,55 40,44 70,34 100,28 130,24 160,21 190,19 220,18 250,17 280,16 310,15"/>
+            <line x1="10" y1="60" x2="320" y2="60" stroke="#cfd8dc"/>
+            <line x1="10" y1="12" x2="10" y2="60" stroke="#cfd8dc"/>
           </svg>
         </section>
 
@@ -400,6 +410,14 @@
           <div class="sample-row">
             <span class="lbl">Kikuyu</span>
             Andũ aingĩ nĩ maraheo ũtaaro wa kũrũmĩrĩra ũtaaro wa thirikari wĩgiĩ ũgima wa mwĩrĩ.
+          </div>
+          <div class="sample-row">
+            <span class="lbl">English</span>
+            Voters should verify their registration details before election day.
+          </div>
+          <div class="sample-row">
+            <span class="lbl">Kiswahili</span>
+            Wapiga kura wanapaswa kuthibitisha maelezo yao ya usajili kabla ya siku ya uchaguzi.
           </div>
         </section>
       </div>
@@ -434,6 +452,16 @@
             <li>Silver targets until native human review</li>
             <li>One-epoch few-shot; optional mT5 later</li>
             <li>Complete human eval · richer product UI</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2>Contribution</h2>
+          <ul>
+            <li>Curated Kenyan PSA corpus with real/synthetic labels</li>
+            <li>Few-shot NLLB adapted to directive public-notice register</li>
+            <li>Open Hub checkpoints + reproducible train/eval scripts</li>
+            <li>Browser demo without client-side model download</li>
           </ul>
         </section>
 
