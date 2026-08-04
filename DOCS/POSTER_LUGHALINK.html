@@ -321,6 +321,30 @@
         </section>
 
         <section class="section">
+          <h2>EDA (Week 2)</h2>
+          <p>Notebook: <code>notebooks/week2_eda.ipynb</code> · stats: <code>week2_eda_stats.json</code></p>
+          <h3>Domain distribution (n=5,000)</h3>
+          <div class="metric"><span>Agriculture</span><div class="track"><div class="fill" style="width:100%"></div></div><span>1,524</span></div>
+          <div class="metric"><span>Governance</span><div class="track"><div class="fill" style="width:70%"></div></div><span>1,066</span></div>
+          <div class="metric"><span>Education</span><div class="track"><div class="fill" style="width:61%"></div></div><span>924</span></div>
+          <div class="metric"><span>Security</span><div class="track"><div class="fill" style="width:50%"></div></div><span>762</span></div>
+          <div class="metric"><span>Health</span><div class="track"><div class="fill" style="width:47%"></div></div><span>724</span></div>
+          <svg class="viz" viewBox="0 0 340 78" aria-label="Real vs synthetic">
+            <text x="0" y="12" font-size="10" fill="#0d47a1" font-weight="700" font-family="Manrope,sans-serif">Origin mix</text>
+            <rect x="0" y="24" width="110" height="22" fill="#1565c0"/>
+            <rect x="110" y="24" width="230" height="22" fill="#90caf9"/>
+            <text x="55" y="39" text-anchor="middle" font-size="10" fill="#fff" font-family="Manrope,sans-serif">Real 1,615</text>
+            <text x="225" y="39" text-anchor="middle" font-size="10" fill="#0d47a1" font-family="Manrope,sans-serif">Synthetic 3,385</text>
+            <text x="0" y="62" font-size="10" fill="#555" font-family="Manrope,sans-serif">Tokens: median 34 · mean 115 · vocab 15,467 · lang=en (100%)</text>
+          </svg>
+          <ul>
+            <li>PSA document splits: train/dev/test <b>3,998 / 498 / 504</b></li>
+            <li>Code-switch rows rare (9) · Kiswahili column empty pre-MT</li>
+            <li>Preprocess: normalize, glossary, framework gate, stratified splits</li>
+          </ul>
+        </section>
+
+        <section class="section">
           <h2>Prior work &amp; gap</h2>
           <ul>
             <li>NLLB-200 supports <code>swh_Latn</code> and <code>kik_Latn</code></li>
