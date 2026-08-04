@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LughaLink AI — Research Poster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue: #1a5fb4;
+      --blue-dark: #0f3d75;
+      --ink: #1a1a1a;
+      --muted: #444;
+      --line: #d0d7de;
+      --bg: #f5f7fa;
+      --problem: #c64600;
+      --objective: #1a5fb4;
+      --solution: #2a7a3a;
+      --impact: #6b3fa0;
+      --warn: #b8860b;
+    }
+    * { box-sizing: border-box; }
+    @page { size: A0 landscape; margin: 12mm; }
+    body {
+      margin: 0;
+      font-family: "Manrope", system-ui, sans-serif;
+      color: var(--ink);
+      background: #e8ecf0;
+    }
+    .poster {
+      width: 1189px; /* ~A0 scale for screen; print scales */
+      max-width: 100%;
+      margin: 16px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    }
+    @media print {
+      body { background: #fff; }
+      .poster { margin: 0; border: 0; box-shadow: none; width: 100%; }
+      .print-hint { display: none !important; }
+    }
+    .print-hint {
+      max-width: 1189px;
+      margin: 12px auto 0;
+      padding: 0 8px;
+      font-size: 14px;
+      color: #555;
+    }
+    header.banner {
+      background: linear-gradient(90deg, var(--blue-dark), var(--blue));
+      color: #fff;
+      padding: 22px 28px 18px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    header .sub {
+      margin: 8px 0 12px;
+      font-size: 15px;
+      opacity: .95;
+      font-weight: 600;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tag {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      padding: 14px;
+      background: var(--bg);
+    }
+    .col { display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--blue-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+    .card p, .card li { margin: 0 0 6px; font-size: 11.5px; line-height: 1.4; color: var(--muted); }
+    .card ul { margin: 0; padding-left: 16px; }
+    .pill-row { display: grid; gap: 8px; }
+    .pill {
+      border-radius: 8px;
+      padding: 8px 10px;
+      border-left: 5px solid;
+      background: #fafbfc;
+    }
+    .pill.problem { border-color: var(--problem); }
+    .pill.objective { border-color: var(--objective); }
+    .pill.solution { border-color: var(--solution); }
+    .pill.impact { border-color: var(--impact); }
+    .pill h3.problem { color: var(--problem); }
+    .pill h3.objective { color: var(--objective); }
+    .pill h3.solution { color: var(--solution); }
+    .pill h3.impact { color: var(--impact); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 5px 6px;
+      text-align: left;
+    }
+    th { background: #eef3f9; font-weight: 800; color: var(--blue-dark); }
+    .bars { display: grid; gap: 8px; margin-top: 6px; }
+    .bar-row { display: grid; grid-template-columns: 70px 1fr 40px; gap: 6px; align-items: center; font-size: 11px; }
+    .bar-track { height: 12px; background: #e9eef5; border-radius: 6px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 6px; }
+    .bar-fill.bleu { background: var(--blue); }
+    .bar-fill.chrf { background: var(--solution); }
+    .sample {
+      display: grid;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .sample .box {
+      border-radius: 6px;
+      padding: 7px 8px;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .sample .en { background: #eef3f9; border: 1px solid #c5d4e8; }
+    .sample .sw { background: #eef8f0; border: 1px solid #b7d9bf; }
+    .sample .kik { background: #f7f0fa; border: 1px solid #d4c0e0; }
+    .sample strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .stat {
+      background: #eef3f9;
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat b { display: block; font-size: 18px; color: var(--blue-dark); }
+    .stat span { font-size: 10px; color: var(--muted); font-weight: 700; }
+    .note {
+      font-size: 10.5px;
+      color: #7a5b00;
+      background: #fff8e6;
+      border: 1px solid #f0d78c;
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-top: 6px;
+    }
+    footer.banner-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 18px;
+      border-top: 3px solid var(--blue);
+      background: #fff;
+      font-size: 11px;
+    }
+    footer strong { color: var(--blue-dark); }
+  </style>
+</head>
+<body>
+  <p class="print-hint">
+    Open this file in Chrome → <b>Print</b> → Destination <b>Save as PDF</b> → Layout <b>Landscape</b> → Paper <b>A3 or A0</b> · Margins minimal.
+    Path: <code>DOCS/POSTER_LUGHALINK.html</code>
+  </p>
+
+  <article class="poster">
+    <header class="banner">
+      <h1>LughaLink AI: Machine Translation of Kenyan Public Service Announcements</h1>
+      <p class="sub">Few-shot NLLB transfer for English → Kiswahili &amp; Kikuyu · DSA 4020A Natural Language Processing</p>
+      <div class="tags">
+        <span class="tag">Kenya · Public Information</span>
+        <span class="tag">English → Kiswahili (pivot)</span>
+        <span class="tag">English → Kikuyu (indigenous)</span>
+        <span class="tag">NLLB-200 · Navon A100</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <div class="col">
+        <section class="card">
+          <h2>1 · Introduction</h2>
+          <div class="pill-row">
+            <div class="pill problem">
+              <h3 class="problem">Problem</h3>
+              <p>Kenyan PSAs (health, elections, security, agriculture) are often published in English. Communities that prefer Kiswahili or indigenous languages face delayed or incomplete access to action-oriented public information.</p>
+            </div>
+            <div class="pill objective">
+              <h3 class="objective">Objective</h3>
+              <p>Build a proof-of-concept MT system that translates English PSAs into Kiswahili and Kikuyu using transfer learning on a curated, framework-filtered PSA corpus.</p>
+            </div>
+            <div class="pill solution">
+              <h3 class="solution">Solution</h3>
+              <p>Hybrid scrape + PSA Framework filter → 5,000 English PSAs → NLLB silver seeding → fine-tune NLLB-200 → Hub hosting + FastAPI UI for browser access.</p>
+            </div>
+            <div class="pill impact">
+              <h3 class="impact">Impact</h3>
+              <p>A reproducible digital public good path: open models on Hugging Face, documented honesty about silver vs gold, and a deployable translator for demo day.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>2 · Prior work &amp; gap</h2>
+          <ul>
+            <li><b>NLLB-200</b> covers many African languages including Kiswahili (<code>swh_Latn</code>) and Kikuyu (<code>kik_Latn</code>).</li>
+            <li>Generic MT underperforms on <b>directive PSA register</b> (advisories, deadlines, IEBC/MoH tone).</li>
+            <li>Ekegusii / some targets lack reliable NLLB support → we selected <b>Kikuyu</b> as indigenous target.</li>
+            <li><b>Gap:</b> few open, PSA-domain EN↔SW / EN↔Kikuyu systems with transparent data provenance.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>3 · Data collection &amp; preprocessing</h2>
+          <ul>
+            <li><b>Sources:</b> IEBC, MoH, government / NGO sites (registry-driven scrapers).</li>
+            <li><b>Filter:</b> PSA Framework scorer (action-oriented, public advisory tone).</li>
+            <li><b>Freeze:</b> 5,000 English PSAs — <b>1,615 real</b> + <b>3,385</b> framework-valid synthetic (labeled).</li>
+            <li><b>Sentences:</b> 8,409 MT units from the freeze.</li>
+            <li><b>Policy:</b> PSA-only training — OPUS / news bitext excluded.</li>
+            <li><b>Preprocess:</b> dedupe, lang detect, glossary, train/dev/test splits.</li>
+          </ul>
+          <div class="stat-grid" style="margin-top:8px">
+            <div class="stat"><b>5,000</b><span>English PSAs</span></div>
+            <div class="stat"><b>8,409</b><span>MT sentences</span></div>
+            <div class="stat"><b>10,400</b><span>Silver pairs seeded</span></div>
+            <div class="stat"><b>9,077</b><span>Kept after auto-QC</span></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- CENTER -->
+      <div class="col">
+        <section class="card">
+          <h2>4 · Model selection &amp; training</h2>
+          <ul>
+            <li><b>Base:</b> <code>facebook/nllb-200-distilled-600M</code></li>
+            <li><b>Stage A:</b> Zero-shot seed EN→SW &amp; EN→Kikuyu (<code>--limit 5200</code>).</li>
+            <li><b>Stage B:</b> Fine-tune separate checkpoints <code>en-sw</code> and <code>en-kik</code> (1 epoch).</li>
+            <li><b>Platform:</b> Navon / Kinesis Shared · NVIDIA <b>A100 80GB</b> (Helsinki).</li>
+            <li><b>Key HP:</b> LR 2e-5 · batch 4 · grad accum 4 · FP16 · max len 128.</li>
+            <li><b>Tracking:</b> <code>train_meta.json</code> + <code>experiment_log.csv</code>.</li>
+          </ul>
+          <table style="margin-top:8px">
+            <tr><th>Pair</th><th>Train rows</th><th>Train loss</th><th>Eval loss</th></tr>
+            <tr><td>en-kik</td><td>~3,591</td><td>~3.37</td><td>~0.19</td></tr>
+            <tr><td>en-sw</td><td>~3,670</td><td>~1.82</td><td>~0.07</td></tr>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>5 · Evaluation (automatic)</h2>
+          <p>SacreBLEU + chrF on held-out test vs <b>silver</b> references (relative scores).</p>
+          <div class="bars">
+            <div class="bar-row"><span>en-kik BLEU</span><div class="bar-track"><div class="bar-fill bleu" style="width:72.5%"></div></div><span>72.5</span></div>
+            <div class="bar-row"><span>en-kik chrF</span><div class="bar-track"><div class="bar-fill chrf" style="width:84.5%"></div></div><span>84.5</span></div>
+            <div class="bar-row"><span>en-sw BLEU</span><div class="bar-track"><div class="bar-fill bleu" style="width:89.6%"></div></div><span>89.6</span></div>
+            <div class="bar-row"><span>en-sw chrF</span><div class="bar-track"><div class="bar-fill chrf" style="width:94.7%"></div></div><span>94.7</span></div>
+          </div>
+          <p class="note"><b>Caveat:</b> High scores partly reflect agreement with the NLLB silver teacher — not human gold. Human eval sheet ready (<code>human_eval_100.csv</code>).</p>
+        </section>
+
+        <section class="card">
+          <h2>6 · Sample translations (fine-tuned NLLB)</h2>
+          <div class="sample">
+            <div class="box en">
+              <strong>Input (English)</strong>
+              The public is advised to follow official health guidelines.
+            </div>
+            <div class="box sw">
+              <strong>Output · Kiswahili</strong>
+              Umma unashauriwa kufuata miongozo rasmi ya afya.
+            </div>
+            <div class="box kik">
+              <strong>Output · Kikuyu</strong>
+              Andũ aingĩ nĩ maraheo ũtaaro wa kũrũmĩrĩra ũtaaro wa thirikari wĩgiĩ ũgima wa mwĩrĩ.
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="col">
+        <section class="card">
+          <h2>7 · Quantitative summary</h2>
+          <table>
+            <tr><th>Metric</th><th>en-kik</th><th>en-sw</th></tr>
+            <tr><td>Test n</td><td>450</td><td>460</td></tr>
+            <tr><td>BLEU</td><td>72.54</td><td>89.58</td></tr>
+            <tr><td>chrF</td><td>84.55</td><td>94.75</td></tr>
+            <tr><td>Kept pairs (QC)</td><td>4,489</td><td>4,588</td></tr>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>8 · Key achievements</h2>
+          <ul>
+            <li>End-to-end PSA pipeline: scrape → framework filter → seed → fine-tune → eval.</li>
+            <li>Scaled silver bitext (~9k kept) and working EN→SW / EN→Kikuyu models.</li>
+            <li>Checkpoints on Hugging Face Hub (<code>iranzi/lughalink-nllb-psa-en-*</code>).</li>
+            <li>FastAPI + clean browser UI (call Hub models; no client download of weights).</li>
+            <li>Transparent reporting: real vs synthetic; silver vs gold.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>9 · Limitations</h2>
+          <ul>
+            <li>Targets are machine silver until native reviewers complete human eval.</li>
+            <li>Synthetic English PSAs inflate volume (documented separately).</li>
+            <li>One-epoch few-shot fine-tune; risk of overfitting to teacher style.</li>
+            <li>HF free CPU Spaces may be slow; GPU preferred for demos.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>10 · Future work</h2>
+          <ul>
+            <li>Human evaluation (fluency / adequacy / cultural accuracy).</li>
+            <li>Optional second model family (e.g. mT5) for comparison.</li>
+            <li>Richer product UI + feedback loop into gold set.</li>
+            <li>Expand indigenous coverage where models &amp; data allow.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>11 · Deployment &amp; efficiency</h2>
+          <ul>
+            <li><b>Train:</b> ~2 min / pair on A100 (1 epoch, scaled set).</li>
+            <li><b>Artifacts:</b> ~2.3 GB / checkpoint · Hub-hosted.</li>
+            <li><b>Serve:</b> FastAPI Space · UI at <code>/</code> · <code>POST /translate</code>.</li>
+            <li><b>Repos:</b> github.com/unimart831-ai/lughalinkai</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <footer class="banner-foot">
+      <div>
+        <strong>Research team · LughaLink AI</strong><br />
+        Iranzi Innocent (Lead) · Angela Irungu · Leona Kamau · Jesca Kimani<br />
+        Course: DSA 4020A NLP · Supervisor: Dr. Edward Ombui
+      </div>
+      <div style="text-align:right">
+        <strong>Models</strong><br />
+        huggingface.co/iranzi/lughalink-nllb-psa-en-kik<br />
+        huggingface.co/iranzi/lughalink-nllb-psa-en-sw
+      </div>
+    </footer>
+  </article>
+</body>
+</html>
