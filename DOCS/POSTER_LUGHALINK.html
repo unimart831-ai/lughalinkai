@@ -78,6 +78,7 @@
       }
       .fill { background: #1565c0 !important; background-color: #1565c0 !important; }
       .fill.alt { background: #2e7d32 !important; background-color: #2e7d32 !important; }
+      .fill.warn { background: #ef6c00 !important; background-color: #ef6c00 !important; }
       .avatar { background: #1565c0 !important; background-color: #1565c0 !important; color: #fff !important; }
       h2 {
         background: #e8eef5 !important;
@@ -118,7 +119,7 @@
       background: #1565c0;
       background-color: #1565c0;
       color: #ffffff;
-      padding: 9px 16px 8px;
+      padding: 8px 16px 7px;
       flex: 0 0 auto;
       position: relative;
       z-index: 2;
@@ -127,24 +128,24 @@
     }
     .banner h1 {
       margin: 0;
-      font-size: 7.2mm;
+      font-size: 6.8mm;
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.1;
       color: #ffffff;
     }
     .banner .sub {
-      margin: 3px 0 5px;
-      font-size: 4mm;
+      margin: 2px 0 4px;
+      font-size: 3.7mm;
       font-weight: 600;
       color: #ffffff;
     }
-    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; }
     .tag {
-      font-size: 3.4mm;
+      font-size: 3.1mm;
       font-weight: 700;
       border: 1px solid #ffffff;
-      padding: 2px 8px;
+      padding: 1.5px 7px;
       color: #ffffff;
     }
 
@@ -158,12 +159,12 @@
     }
     .col {
       height: 100%;
-      padding: 10px 14px 10px;
+      padding: 8px 12px 8px;
       border-right: 1px solid var(--rule);
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      gap: 9px;
+      gap: 7px;
       overflow: hidden;
     }
     .col:last-child { border-right: 0; }
@@ -171,13 +172,13 @@
     .section { flex: 0 0 auto; }
 
     h2 {
-      margin: 0 0 6px;
-      font-size: 4.2mm;
+      margin: 0 0 4px;
+      font-size: 3.8mm;
       font-weight: 800;
       color: var(--heading-text);
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      padding: 4px 8px;
+      padding: 3px 7px;
       background: var(--heading-bg);
       background-color: var(--heading-bg);
       border-bottom: 2.5px solid var(--blue);
@@ -185,126 +186,127 @@
       print-color-adjust: exact;
     }
     h3 {
-      margin: 5px 0 4px;
-      font-size: 3.8mm;
+      margin: 3px 0 3px;
+      font-size: 3.4mm;
       font-weight: 800;
       color: var(--accent);
     }
     p, li {
-      margin: 0 0 3.5px;
-      font-size: 3.9mm;
-      line-height: 1.35;
+      margin: 0 0 2.5px;
+      font-size: 3.5mm;
+      line-height: 1.3;
       color: var(--muted);
     }
-    ul { margin: 0; padding-left: 4.5mm; }
-    code { font-size: 0.95em; }
+    ul { margin: 0; padding-left: 4mm; }
+    code { font-size: 0.92em; }
 
     .kv {
       display: grid;
-      grid-template-columns: 24mm 1fr;
-      gap: 5px 8px;
+      grid-template-columns: 20mm 1fr;
+      gap: 3px 6px;
     }
     .kv b {
       color: var(--ink);
       font-weight: 800;
-      font-size: 3.6mm;
+      font-size: 3.2mm;
       text-transform: uppercase;
       letter-spacing: 0.02em;
       padding-top: 1px;
     }
-    .kv p { margin: 0; font-size: 3.9mm; }
+    .kv p { margin: 0; font-size: 3.4mm; }
 
     .pipeline {
       display: flex;
       align-items: stretch;
-      gap: 3px;
+      gap: 2px;
     }
     .pipe-step {
       background: var(--soft);
       border: 1px solid var(--rule);
-      padding: 6px 3px;
-      font-size: 3.4mm;
+      padding: 5px 2px;
+      font-size: 3mm;
       font-weight: 700;
       color: var(--accent);
       text-align: center;
-      line-height: 1.2;
+      line-height: 1.15;
       flex: 1;
     }
     .pipe-arrow {
       color: var(--blue);
       font-weight: 800;
-      font-size: 4.5mm;
+      font-size: 3.8mm;
       align-self: center;
     }
 
     .stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 5px;
+      gap: 4px;
+      margin-bottom: 3px;
     }
     .stat {
       background: var(--soft);
       border: 1px solid var(--rule);
-      padding: 7px 6px;
+      padding: 5px 4px;
       text-align: center;
     }
     .stat .n {
       display: block;
-      font-size: 6.5mm;
+      font-size: 5.5mm;
       font-weight: 800;
       color: var(--accent);
       line-height: 1.05;
     }
     .stat .l {
       display: block;
-      font-size: 3.3mm;
+      font-size: 2.9mm;
       color: var(--muted);
-      margin-top: 2px;
+      margin-top: 1px;
       font-weight: 600;
     }
 
     .metric {
       display: grid;
-      grid-template-columns: 26mm 1fr 12mm;
+      grid-template-columns: 28mm 1fr 11mm;
       align-items: center;
-      gap: 5px;
-      margin: 3.5px 0;
-      font-size: 3.8mm;
+      gap: 4px;
+      margin: 2px 0;
+      font-size: 3.3mm;
       font-weight: 600;
     }
-    .track { height: 4.5mm; background: #e8eef5; }
+    .track { height: 3.8mm; background: #e8eef5; }
     .fill { height: 100%; background: var(--blue); }
     .fill.alt { background: #2e7d32; }
+    .fill.warn { background: #ef6c00; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 3.8mm;
-      margin-top: 3px;
+      font-size: 3.2mm;
+      margin-top: 2px;
     }
     th, td {
       border-bottom: 1px solid var(--rule);
-      padding: 4px 3px;
+      padding: 2.5px 2px;
       text-align: left;
     }
     th {
       font-weight: 800;
       color: var(--accent);
       border-bottom: 2px solid var(--blue);
-      font-size: 3.6mm;
+      font-size: 3.1mm;
     }
 
     .sample-row {
-      padding: 5px 0;
+      padding: 3px 0;
       border-bottom: 1px solid var(--rule);
-      font-size: 3.9mm;
-      line-height: 1.32;
+      font-size: 3.3mm;
+      line-height: 1.28;
     }
     .sample-row:last-child { border-bottom: 0; }
     .sample-row .lbl {
       display: block;
-      font-size: 3.3mm;
+      font-size: 2.9mm;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -315,46 +317,56 @@
     .team {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 7px 10px;
-      margin-top: 3px;
+      gap: 5px 8px;
+      margin-top: 2px;
     }
     .member {
       display: grid;
-      grid-template-columns: 11mm 1fr;
-      gap: 5px;
+      grid-template-columns: 9mm 1fr;
+      gap: 4px;
       align-items: center;
     }
     .avatar {
-      width: 11mm;
-      height: 11mm;
+      width: 9mm;
+      height: 9mm;
       background: var(--blue);
       color: #fff;
       display: grid;
       place-items: center;
-      font-size: 3.5mm;
+      font-size: 3mm;
       font-weight: 800;
     }
-    .member .name { font-size: 3.8mm; font-weight: 800; color: var(--ink); margin: 0; }
-    .member .role { font-size: 3.2mm; color: var(--muted); margin: 0; line-height: 1.2; }
+    .member .name { font-size: 3.3mm; font-weight: 800; color: var(--ink); margin: 0; }
+    .member .role { font-size: 2.8mm; color: var(--muted); margin: 0; line-height: 1.15; }
 
-    .viz { width: 100%; margin: 4px 0; display: block; }
+    .viz { width: 100%; margin: 2px 0; display: block; }
 
     .note {
-      margin-top: 5px;
-      font-size: 3.4mm;
+      margin-top: 3px;
+      font-size: 3mm;
       color: #6a5200;
-      padding-top: 4px;
+      padding-top: 3px;
       border-top: 1px dashed #e0c86a;
-      line-height: 1.3;
+      line-height: 1.25;
     }
+
+    .callout {
+      background: #fff8e7;
+      border: 1px solid #e0c86a;
+      padding: 5px 7px;
+      font-size: 3.2mm;
+      line-height: 1.28;
+      color: #444;
+    }
+    .callout strong { color: var(--ink); }
 
     footer {
       flex: 0 0 auto;
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      padding: 6px 16px;
-      font-size: 3.5mm;
+      padding: 5px 16px;
+      font-size: 3.2mm;
       color: var(--muted);
       border-top: 1px solid var(--rule);
     }
@@ -372,13 +384,14 @@
   <article class="poster">
     <header class="banner" style="background-color:#1565c0;color:#ffffff;">
       <h1 style="color:#ffffff;">LughaLink AI: Machine Translation of Kenyan Public Service Announcements</h1>
-      <p class="sub" style="color:#ffffff;">Few-shot NLLB transfer · English → Kiswahili &amp; Kikuyu · DSA 4020A Natural Language Processing</p>
+      <p class="sub" style="color:#ffffff;">Few-shot NLLB · English → Kiswahili · Kikuyu · Ekegusii (<code style="color:#fff;">guz_Latn</code> extension) · DSA 4020A NLP</p>
       <div class="tags">
         <span class="tag">Kenya · Public information</span>
         <span class="tag">EN → Kiswahili (pivot)</span>
-        <span class="tag">EN → Kikuyu (indigenous)</span>
+        <span class="tag">EN → Kikuyu (NLLB-native)</span>
+        <span class="tag">EN → Ekegusii (vocab-extend)</span>
         <span class="tag">NLLB-200 · Navon A100</span>
-        <span class="tag">Hugging Face deploy</span>
+        <span class="tag">FastAPI demo</span>
       </div>
     </header>
 
@@ -391,9 +404,9 @@
             <b>Problem</b>
             <p>English-first PSAs leave Kiswahili and indigenous speakers with weaker access to health, election, and safety notices.</p>
             <b>Objective</b>
-            <p>Transferable MT for English PSAs → Kiswahili &amp; Kikuyu on a curated Kenyan corpus.</p>
+            <p>Transferable MT for English PSAs → Kiswahili, Kikuyu &amp; Ekegusii on a curated Kenyan corpus.</p>
             <b>Approach</b>
-            <p>Framework-filtered PSAs → NLLB silver seed → fine-tune → Hub + browser UI.</p>
+            <p>PSA filter → NLLB silver (SW/Kik) · template silver (Ekegusii) → fine-tune / zero-shot → browser UI.</p>
             <b>Impact</b>
             <p>Open digital public good with honest silver/gold and real/synthetic labeling.</p>
           </div>
@@ -406,11 +419,11 @@
             <span class="pipe-arrow">→</span>
             <div class="pipe-step">Framework<br/>filter</div>
             <span class="pipe-arrow">→</span>
-            <div class="pipe-step">NLLB<br/>seed</div>
+            <div class="pipe-step">Silver /<br/>templates</div>
             <span class="pipe-arrow">→</span>
-            <div class="pipe-step">Fine-<br/>tune</div>
+            <div class="pipe-step">Train /<br/>extend</div>
             <span class="pipe-arrow">→</span>
-            <div class="pipe-step">Eval +<br/>HF UI</div>
+            <div class="pipe-step">Eval +<br/>API UI</div>
           </div>
         </section>
 
@@ -419,23 +432,23 @@
           <div class="stats">
             <div class="stat"><span class="n">5,000</span><span class="l">English PSAs</span></div>
             <div class="stat"><span class="n">8,409</span><span class="l">MT sentences</span></div>
-            <div class="stat"><span class="n">9,077</span><span class="l">QC-kept pairs</span></div>
-            <div class="stat"><span class="n">1,615</span><span class="l">Real sources</span></div>
+            <div class="stat"><span class="n">9,077</span><span class="l">SW+Kik QC pairs</span></div>
+            <div class="stat"><span class="n">4,288</span><span class="l">Ekegusii pairs</span></div>
           </div>
           <ul>
-            <li>IEBC, MoH, gov/NGO scrapers · PSA Framework gate</li>
             <li>1,615 real · 3,385 synthetic · PSA-only (no OPUS)</li>
-            <li>Silver seed 10,400 → 9,077 after auto-QC</li>
+            <li>SW/Kik: NLLB zero-shot seed → auto-QC</li>
+            <li>Ekegusii: PSA template + lexicon (<code>verified=false</code>)</li>
           </ul>
         </section>
 
         <section class="section">
-          <h2>Method &amp; languages</h2>
+          <h2>Languages &amp; <code>guz_Latn</code></h2>
           <ul>
-            <li>NLLB-200: <code>eng_Latn</code> → <code>swh_Latn</code> (pivot) · <code>kik_Latn</code> (target)</li>
-            <li>Kikuyu chosen over unsupported / weak indigenous codes</li>
-            <li>Normalize · glossary · stratified splits · length/lang QC</li>
-            <li>Hub weights via FastAPI — no client model download</li>
+            <li>NLLB codes: <code>eng_Latn</code> → <code>swh_Latn</code> · <code>kik_Latn</code></li>
+            <li>Ekegusii <strong>not</strong> in stock NLLB-200 / FLORES</li>
+            <li>We add token <code>guz_Latn</code> (Ekegusii + Latin), resize embeddings, init from <code>kik_Latn</code>, force as decoder BOS</li>
+            <li>Zero-shot therefore looks Kikuyu-like until few-shot NLLB finishes</li>
           </ul>
         </section>
       </div>
@@ -443,28 +456,25 @@
       <!-- CENTER -->
       <div class="col">
         <section class="section">
-          <h2>EDA (Week 2)</h2>
-          <h3>Domain distribution (n=5,000)</h3>
+          <h2>Corpus EDA (n=5,000)</h2>
           <div class="metric"><span>Agriculture</span><div class="track"><div class="fill" style="width:100%"></div></div><span>1,524</span></div>
           <div class="metric"><span>Governance</span><div class="track"><div class="fill" style="width:70%"></div></div><span>1,066</span></div>
           <div class="metric"><span>Education</span><div class="track"><div class="fill" style="width:61%"></div></div><span>924</span></div>
           <div class="metric"><span>Security</span><div class="track"><div class="fill" style="width:50%"></div></div><span>762</span></div>
           <div class="metric"><span>Health</span><div class="track"><div class="fill" style="width:47%"></div></div><span>724</span></div>
-          <svg class="viz" viewBox="0 0 340 58" aria-label="Real vs synthetic">
-            <text x="0" y="13" font-size="16" fill="#0d47a1" font-weight="700" font-family="Manrope,sans-serif">Origin mix</text>
-            <rect x="0" y="18" width="110" height="24" fill="#1565c0"/>
-            <rect x="110" y="18" width="230" height="24" fill="#90caf9"/>
-            <text x="55" y="35" text-anchor="middle" font-size="15" fill="#fff" font-family="Manrope,sans-serif">Real 1,615</text>
-            <text x="225" y="35" text-anchor="middle" font-size="15" fill="#0d47a1" font-family="Manrope,sans-serif">Synthetic 3,385</text>
-            <text x="0" y="54" font-size="13" fill="#555" font-family="Manrope,sans-serif">Tokens: med 34 · mean 115 · vocab 15,467 · splits 3,998 / 498 / 504</text>
+          <svg class="viz" viewBox="0 0 340 42" aria-label="Real vs synthetic">
+            <rect x="0" y="4" width="110" height="22" fill="#1565c0"/>
+            <rect x="110" y="4" width="230" height="22" fill="#90caf9"/>
+            <text x="55" y="20" text-anchor="middle" font-size="14" fill="#fff" font-family="Manrope,sans-serif">Real 1,615</text>
+            <text x="225" y="20" text-anchor="middle" font-size="14" fill="#0d47a1" font-family="Manrope,sans-serif">Synthetic 3,385</text>
+            <text x="0" y="38" font-size="12" fill="#555" font-family="Manrope,sans-serif">Splits (historical): 7,261 / 906 / 910 · Navon A100</text>
           </svg>
         </section>
 
         <section class="section">
-          <h2>Model &amp; training</h2>
+          <h2>Training (SW &amp; Kikuyu)</h2>
           <ul>
-            <li>Base: <code>facebook/nllb-200-distilled-600M</code></li>
-            <li>Seed EN→SW &amp; EN→Kikuyu · fine-tune 1 epoch · LR 2e-5 · A100</li>
+            <li>Base: <code>facebook/nllb-200-distilled-600M</code> · 1 epoch · LR 2e-5 · A100</li>
           </ul>
           <table>
             <tr><th>Pair</th><th>Train</th><th>Train loss</th><th>Eval loss</th></tr>
@@ -474,14 +484,27 @@
         </section>
 
         <section class="section">
-          <h2>Evaluation</h2>
+          <h2>Scores — what they mean</h2>
+          <p style="margin-bottom:3px;"><strong>BLEU / chrF</strong> = overlap with a reference (word / character n-grams). Higher = closer to that reference.</p>
+          <h3>Fine-tuned NLLB (vs silver NLLB refs)</h3>
           <div class="metric"><span>en-kik BLEU</span><div class="track"><div class="fill" style="width:72.5%"></div></div><span>72.5</span></div>
           <div class="metric"><span>en-kik chrF</span><div class="track"><div class="fill alt" style="width:84.5%"></div></div><span>84.5</span></div>
           <div class="metric"><span>en-sw BLEU</span><div class="track"><div class="fill" style="width:89.6%"></div></div><span>89.6</span></div>
           <div class="metric"><span>en-sw chrF</span><div class="track"><div class="fill alt" style="width:94.7%"></div></div><span>94.7</span></div>
-          <p class="note">Silver NLLB refs — relative only, not human gold. Sheet: <code>human_eval_100.csv</code>.</p>
+          <h3>Ekegusii (vs template silver · n=50 zero-shot)</h3>
+          <table>
+            <tr><th>Setting</th><th>BLEU</th><th>chrF</th></tr>
+            <tr><td>Zero-shot mT5</td><td>0.007</td><td>0.95</td></tr>
+            <tr><td>Zero-shot NLLB + <code>guz_Latn</code> (init kik)</td><td><strong>0.26</strong></td><td><strong>13.0</strong></td></tr>
+            <tr><td>Few-shot mT5 (1 ep)</td><td>0.003</td><td>1.05</td></tr>
+            <tr><td>Few-shot NLLB</td><td colspan="2">blocked — shared A100 OOM</td></tr>
+          </table>
+          <p class="note">High SW/Kik scores = agreement with silver teacher, not human gold. Low Ekegusii scores = expected unsupported-language baseline.</p>
         </section>
+      </div>
 
+      <!-- RIGHT -->
+      <div class="col">
         <section class="section">
           <h2>Sample outputs</h2>
           <div class="sample-row">
@@ -489,43 +512,34 @@
             The public is advised to follow official health guidelines.
           </div>
           <div class="sample-row">
-            <span class="lbl">Kiswahili</span>
+            <span class="lbl">Kiswahili (fine-tuned)</span>
             Umma unashauriwa kufuata miongozo rasmi ya afya.
           </div>
           <div class="sample-row">
-            <span class="lbl">Kikuyu</span>
+            <span class="lbl">Kikuyu (fine-tuned)</span>
             Andũ aingĩ nĩ maraheo ũtaaro wa kũrũmĩrĩra ũtaaro wa thirikari wĩgiĩ ũgima wa mwĩrĩ.
           </div>
-        </section>
-      </div>
-
-      <!-- RIGHT -->
-      <div class="col">
-        <section class="section">
-          <h2>Results summary</h2>
-          <table>
-            <tr><th>Item</th><th>Value</th></tr>
-            <tr><td>Kept pairs (QC)</td><td>9,077 (SW 4,588 · Kik 4,489)</td></tr>
-            <tr><td>Splits</td><td>7,261 / 906 / 910</td></tr>
-            <tr><td>Checkpoint</td><td>~2.3 GB each · ~2 min/pair A100</td></tr>
-          </table>
+          <div class="callout">
+            <strong>Ekegusii live demo:</strong> neural zero-shot NLLB with <code>guz_Latn</code> (init from Kikuyu) — outputs resemble Kikuyu until few-shot NLLB completes. Honest baseline, not templates.
+          </div>
         </section>
 
         <section class="section">
           <h2>Achievements</h2>
           <ul>
-            <li>End-to-end PSA MT: data → train → eval → serve</li>
-            <li>EN→SW &amp; EN→Kikuyu fine-tunes on Hub</li>
-            <li>FastAPI + browser UI · transparent labeling</li>
+            <li>End-to-end PSA MT: data → train → eval → three-language UI</li>
+            <li>EN→SW &amp; EN→Kikuyu few-shot NLLB on Hub / Navon</li>
+            <li>Ekegusii path: <code>guz_Latn</code> extension + zero-/few-shot experiments</li>
+            <li>Transparent silver/synthetic labeling throughout</li>
           </ul>
         </section>
 
         <section class="section">
           <h2>Limits &amp; next</h2>
           <ul>
-            <li>Silver targets until native human review</li>
-            <li>One-epoch few-shot; optional mT5 later</li>
-            <li>Complete human eval · richer product UI</li>
+            <li>Silver / template refs until native human review</li>
+            <li>Ekegusii few-shot NLLB pending free GPU</li>
+            <li>Complete <code>human_eval_100.csv</code> · publish guz FT when ready</li>
           </ul>
         </section>
 
@@ -556,15 +570,8 @@
             <div class="member">
               <div class="avatar">JK</div>
               <div>
-                <p class="name">Jessica Kimani</p>
-                <p class="role">Security domain lead</p>
-              </div>
-            </div>
-            <div class="member">
-              <div class="avatar">TM</div>
-              <div>
-                <p class="name">Tumaini Micheni</p>
-                <p class="role">Agriculture · Data verification</p>
+                <p class="name">Jesca Kimani</p>
+                <p class="role">Security · Agriculture</p>
               </div>
             </div>
           </div>
@@ -573,9 +580,9 @@
         <section class="section">
           <h2>Deploy</h2>
           <ul>
-            <li>HF: iranzi/lughalink-nllb-psa-en-kik</li>
-            <li>HF: iranzi/lughalink-nllb-psa-en-sw</li>
-            <li>UI/API: FastAPI Space · <code>POST /translate</code></li>
+            <li>HF: iranzi/lughalink-nllb-psa-en-sw · en-kik</li>
+            <li>UI: FastAPI · targets <code>sw</code> | <code>kik</code> | <code>guz</code></li>
+            <li>Live Ekegusii: NLLB zero-shot + <code>guz_Latn</code></li>
             <li>Code: github.com/unimart831-ai/lughalinkai</li>
           </ul>
         </section>
@@ -588,8 +595,8 @@
         Supervisor: Dr. Edward Ombui · United States International University–Africa
       </div>
       <div style="text-align:right">
-        <strong>Open artifacts</strong><br />
-        Modelling report · human_eval_100 · Hub checkpoints
+        <strong>Artifacts</strong><br />
+        Modelling report · EKEGUSII_NOTE · Hub · human_eval_100
       </div>
     </footer>
   </article>

@@ -3,7 +3,9 @@
 **Course:** DSA 4020A Natural Language Processing  
 **Project:** Machine Translation of Public Service Announcements (Kenya)  
 **Team product:** LughaLink AI  
-**Languages:** English (source) · Kiswahili (pivot) · Kikuyu (indigenous target)
+**Languages:** English (source) · Kiswahili (pivot) · Kikuyu · Ekegusii  
+
+**Detailed modelling write-up:** [MODELLING_AND_TRAINING_REPORT.md](MODELLING_AND_TRAINING_REPORT.md)
 
 ---
 
@@ -11,98 +13,99 @@
 
 Kenyan PSAs (health, elections, agriculture, security, governance) are often published in English. Citizens who prefer Kiswahili or indigenous languages need accurate, action-oriented translations. LughaLink is a proof-of-concept **digital public good**: scrape/curate PSAs → build parallel data → few-shot fine-tune multilingual MT → evaluate → deploy a web demo.
 
-## 2. Sub-objective 1 — Dataset
+---
+
+## 2. Dataset
 
 | Item | Result |
 |------|--------|
-| English PSA freeze | **5,000** rows (`datasets/processed/week2_ready_psas.csv`) |
-| Real strict PSAs | **1,615** (`synthetic=false`) |
-| Framework-valid synthetic PSAs | **3,385** (documented in `DOCS/SYNTHETIC_PSA_NOTE.md`) |
-| MT sentence candidates | **8,409** (`week2_mt_sentences.csv`) |
-| Parallel policy | **PSA-only** (OPUS / news bitext excluded from training) |
-| Indigenous language | **Kikuyu** (`kik_Latn` in NLLB-200) |
+| English PSA freeze | **5,000** (`week2_ready_psas.csv`) |
+| Real strict PSAs | **1,615** |
+| Framework-valid synthetic | **3,385** (see `SYNTHETIC_PSA_NOTE.md`) |
+| MT sentence candidates | **8,409** |
+| Policy | PSA-only (no OPUS/news in training) |
+| SW/Kikuyu silver after QC | **9,077** pairs (historical NLLB seed) |
+| Ekegusii template pairs after QC | **4,288** (`guz_psa_template`) |
 
-**Scale-up target:** seed `--limit 5200` on Navon for EN→SW and EN→Kikuyu to approach ≥5,000 pairs per language after auto-QC (`scripts/navon_scale_and_train.sh`).
+Machine targets remain **silver** (`verified=false`) until human review.
 
-**Honesty:** Machine translations are **silver** (`verified=false`) until human reviewers complete `datasets/gold/human_eval_100.csv`.
+---
 
-## 3. Sub-objective 2 — Modeling (few-shot transfer)
+## 3. Modelling
 
-| Model | Role | Train entrypoint |
-|-------|------|------------------|
-| `facebook/nllb-200-distilled-600M` | Primary multilingual MT | `python scripts/train_baseline.py --model nllb --pair en-kik` |
-| `google/mt5-small` | Second pretrained family | `python scripts/train_baseline.py --model mt5 --pair en-kik` |
+| Direction | Approach |
+|-----------|----------|
+| EN→Kiswahili | NLLB-200 fine-tuned on PSA silver (`swh_Latn`) |
+| EN→Kikuyu | NLLB-200 fine-tuned on PSA silver (`kik_Latn`) |
+| EN→Ekegusii | NLLB **vocab extension** with custom token **`guz_Latn`** (init from `kik_Latn`); zero-shot neural baseline; few-shot NLLB pending GPU; mT5 few-shot attempted |
 
-- Platform: Navon / Kinesis Shared A100 (Helsinki).
-- Checkpoints: `artifacts/mt_baseline/{en-kik,en-sw,mt5-en-kik,mt5-en-sw}/final` (not in git; local backup under `model/`).
-- Tracking: `artifacts/*/train_meta.json` + `datasets/interim/experiment_log.csv`.
-- Inference CLI: `python scripts/infer_mt.py --pair en-kik --text "..."`.
+**What `guz_Latn` is:** our extended NLLB language token for Ekegusii (ISO `guz`) in Latin script. Stock NLLB-200 has no Ekegusii code; we register the token, resize embeddings, copy Kikuyu’s vector as initialisation, and force it as decoder BOS. Zero-shot outputs therefore resemble Kikuyu until few-shot fine-tuning on Ekegusii pairs succeeds. Full explanation: modelling report §5.
 
-**Ablation:** zero-shot NLLB silver references vs fine-tuned hypotheses via `evaluate_mt.py --write-ablation`.
+Secondary family: `google/mt5-small` (used in Ekegusii zero-/few-shot experiments).
 
-## 4. Sub-objective 3 — Evaluation
+---
 
-| Track | Method |
-|-------|--------|
-| Automatic | SacreBLEU + chrF (`scripts/evaluate_mt.py`) → `mt_eval_results.json` |
-| Human | Sheet + guide ready; scores filled when reviewers available |
-| Caveat | Test references are silver unless humans edit — scores are **relative** |
+## 4. Evaluation
 
-Human pack:
+### 4.1 Kiswahili and Kikuyu (fine-tuned NLLB vs silver refs)
 
-- `datasets/gold/human_eval_100.csv`
-- `DOCS/HUMAN_EVAL_GUIDE.md` (fluency / adequacy / cultural accuracy, 1–5)
+| Pair | BLEU | chrF | n |
+|------|-----:|-----:|--:|
+| en-kik | **72.5** | **84.5** | 450 |
+| en-sw | **89.6** | **94.7** | 460 |
 
-## 5. Sub-objective 4 — Deployment
+### 4.2 Ekegusii (vs template silver refs)
 
-**Shipped path:** Hub checkpoints + FastAPI + browser UI (no client weight download).
+| Setting | Model | BLEU | chrF | n |
+|---------|--------|-----:|-----:|--:|
+| Zero-shot | mT5-small | 0.007 | 0.95 | 50 |
+| Zero-shot | NLLB + `guz_Latn` (init `kik_Latn`) | **0.26** | **13.0** | 50 |
+| Zero-shot ablation | NLLB + `guz_Latn` (init `swh_Latn`) | 0.16 | 11.9 | 50 |
+| Few-shot | mT5 1 epoch | 0.003 | 1.05 | 430 |
+| Few-shot | NLLB | *not completed (GPU OOM on shared A100)* | — | — |
+
+**Meaning of scores:** BLEU/chrF measure overlap with **silver** references, not human gold. High SW/Kikuyu figures show agreement with the NLLB teacher; low Ekegusii figures are expected for an unsupported language in zero-shot. See modelling report §6.
+
+Human pack: `datasets/gold/human_eval_100.csv`, `DOCS/HUMAN_EVAL_GUIDE.md`.
+
+---
+
+## 5. Deployment
 
 | Piece | Location |
 |-------|----------|
-| EN→Kikuyu model | https://huggingface.co/iranzi/lughalink-nllb-psa-en-kik |
-| EN→Kiswahili model | https://huggingface.co/iranzi/lughalink-nllb-psa-en-sw |
-| EN→Ekegusii (NLLB extend / mT5) | See [EKEGUSII_NOTE.md](EKEGUSII_NOTE.md) · `scripts/navon_train_ekegusii.sh` |
-| API + UI | `apps/api/main.py` + `apps/api/static/` (targets: `sw` \| `kik` \| `guz`) |
-| Space deploy | [DOCS/DEPLOY_HF.md](DEPLOY_HF.md) · Space `iranzi/lughalink-mt-api` |
+| EN→Kikuyu | Hub / local `en-kik` NLLB |
+| EN→Kiswahili | Hub / local `en-sw` NLLB |
+| EN→Ekegusii (live demo) | Neural zero-shot NLLB + `guz_Latn` |
+| API + UI | `apps/api/` — targets `sw` \| `kik` \| `guz` |
+| Notes | `DOCS/EKEGUSII_NOTE.md`, `DOCS/DEPLOY_HF.md` |
 
-```bash
-# Local demo (loads public Hub models)
-pip install -r apps/api/requirements.txt
-uvicorn apps.api.main:app --host 0.0.0.0 --port 7860
-# UI: http://127.0.0.1:7860/   API: POST /translate
+Demo: FastAPI on Navon + public tunnel (ngrok) when Spaces PRO is unavailable.
 
-# Optional CLI
-python scripts/infer_mt.py --pair en-kik --text "The public is advised to follow official health guidelines."
-```
-
-`app/streamlit_mt.py` is a leftover stub and is **not** the product UI. Further Navon epochs / mT5 are deferred until this Hub+UI path is live.
+---
 
 ## 6. Limitations
 
-1. Parallel Kikuyu/SW training used silver NLLB targets (`verified=false`); not human gold.
-2. Synthetic English PSAs inflate monolingual count; reported separately from real scrapes.
-3. Automatic BLEU/chrF used silver refs — relative comparison only.
-4. Ekegusii/Dholuo/Somali examples in the brief were replaced by Kikuyu for NLLB support.
-5. Large weights stay on Hugging Face Hub (~2.3 GB each), not in GitHub.
+1. Silver targets and silver/template evaluation refs.  
+2. Synthetic English PSAs labelled separately from real scrapes.  
+3. Ekegusii outside stock NLLB-200; zero-shot tracks Kikuyu prior.  
+4. Ekegusii few-shot NLLB blocked by shared-GPU memory.  
+5. Human cultural review still pending.  
+6. Large weights on Hub / Navon artefacts, not in Git.
 
-## 7. Reproducibility (short)
+---
 
-```bash
-git pull
-pip install -r apps/api/requirements.txt
-uvicorn apps.api.main:app --host 0.0.0.0 --port 7860
-# On Navon GPU (later: more epochs / mT5):
-# bash scripts/navon_scale_and_train.sh
-python scripts/evaluate_mt.py --pair en-kik --model nllb --write-ablation
-python scripts/prepare_human_eval.py
-```
+## 7. Conclusions
 
-## 8. Demo-day checklist
+LughaLink demonstrates a full PSA MT pipeline: curated data, few-shot NLLB for Kiswahili and Kikuyu with a working three-language UI, and a documented Ekegusii extension (`guz_Latn`) with honest zero-shot scores and unfinished few-shot NLLB. Low Ekegusii automatic metrics are reported as baselines, not concealed.
 
-- [x] Fine-tuned NLLB checkpoints on Hub (`iranzi/lughalink-nllb-psa-en-*`)
-- [x] FastAPI + browser UI wired to Hub models (`POST /translate`)
-- [ ] Live HF Space `iranzi/lughalink-mt-api` serving UI
-- [x] Metrics table (BLEU/chrF) + honesty about silver refs
-- [ ] Human eval sheet scores filled
-- [ ] Q&A: PSA Framework filter, synthetic fill, why Kikuyu
-- [ ] (Later) More epochs / mT5 on Navon
+---
+
+## 8. Demo checklist
+
+- [x] Fine-tuned NLLB for SW and Kikuyu  
+- [x] FastAPI UI with three targets  
+- [x] Ekegusii `guz_Latn` extension + zero-shot metrics  
+- [x] Honesty about silver refs and Kikuyu-like zero-shot  
+- [ ] Human eval scores filled  
+- [ ] Ekegusii few-shot NLLB when GPU is free  

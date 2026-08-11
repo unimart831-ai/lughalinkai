@@ -95,13 +95,15 @@ python scripts/infer_mt.py --pair en-kik --text "The public is advised to follow
 
 ---
 
-## Local demo (after you have checkpoints)
+## Verify the model (after train — CLI only)
 
 ```bash
-# extract backup so en-kik/final is visible, then:
-set LUGHALINK_MODEL_DIR=D:\path\to\lugha_ckpt
-streamlit run app/streamlit_mt.py
+python scripts/infer_mt.py --pair en-kik --text "The public is advised to follow official health guidelines."
+python scripts/infer_mt.py --pair en-sw --text "The public is advised to follow official health guidelines."
+python scripts/evaluate_mt.py --pair en-kik --model nllb --write-ablation
 ```
+
+Product UI comes later. Do not block on Streamlit.
 
 ---
 
