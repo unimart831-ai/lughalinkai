@@ -6,9 +6,9 @@ The browser only calls /translate — weights stay on the server.
 Env:
   LUGHALINK_MODEL_KIK=iranzi/lughalink-nllb-psa-en-kik
   LUGHALINK_MODEL_SW=iranzi/lughalink-nllb-psa-en-sw
-  LUGHALINK_MODEL_GUZ=iranzi/lughalink-nllb-psa-en-guz
-  LUGHALINK_MODEL_GUZ_MT5=iranzi/lughalink-mt5-psa-en-guz   # fallback if NLLB unset
-  LUGHALINK_GUZ_BACKEND=nllb|mt5   # default: nllb if MODEL_GUZ set else mt5
+  LUGHALINK_MODEL_GUZ=facebook/nllb-200-distilled-600M
+  LUGHALINK_MODEL_GUZ_MT5=iranzi/lughalink-mt5-psa-en-guz
+  LUGHALINK_GUZ_BACKEND=template|nllb|mt5   # default: template (distinct Ekegusii PSA text)
   HF_TOKEN=...   # only if repos are private
   LUGHALINK_CORS_ORIGINS=*
 
@@ -33,6 +33,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from services.translation.guz_template_infer import translate_guz_template  # noqa: E402
 from services.translation.mt5_infer import get_cached_mt5, translate_mt5  # noqa: E402
 from services.translation.nllb_infer import get_cached_nllb, translate_nllb  # noqa: E402
 
@@ -65,6 +66,8 @@ def _model_id(target: TargetLang) -> str:
         return os.environ.get("LUGHALINK_MODEL_KIK", DEFAULT_KIK).strip()
     if target == "guz":
         backend = _guz_backend()
+        if backend == "template":
+            return "guz_psa_template"
         if backend == "mt5":
             return os.environ.get("LUGHALINK_MODEL_GUZ_MT5", DEFAULT_GUZ_MT5).strip()
         return os.environ.get("LUGHALINK_MODEL_GUZ", DEFAULT_GUZ_NLLB).strip()
@@ -72,15 +75,10 @@ def _model_id(target: TargetLang) -> str:
 
 
 def _guz_backend() -> str:
-    raw = os.environ.get("LUGHALINK_GUZ_BACKEND", "").strip().lower()
-    if raw in ("nllb", "mt5"):
+    raw = os.environ.get("LUGHALINK_GUZ_BACKEND", "template").strip().lower()
+    if raw in ("template", "nllb", "mt5"):
         return raw
-    # Prefer NLLB when explicitly configured; else mt5 if that env is set
-    if os.environ.get("LUGHALINK_MODEL_GUZ", "").strip():
-        return "nllb"
-    if os.environ.get("LUGHALINK_MODEL_GUZ_MT5", "").strip():
-        return "mt5"
-    return "nllb"
+    return "template"
 
 
 def _cors_origins() -> list[str]:
@@ -120,16 +118,17 @@ def _warmup_models() -> None:
             get_cached_nllb(mid)
         except Exception:  # noqa: BLE001
             pass
-    # Guz warmup is optional — checkpoint may not exist yet during Phase A
-    try:
-        mid = _model_id("guz")
-        if mid:
-            if _guz_backend() == "mt5":
-                get_cached_mt5(mid)
-            else:
-                get_cached_nllb(mid)
-    except Exception:  # noqa: BLE001
-        pass
+    # Guz neural warmup optional; template backend needs no weights
+    if _guz_backend() in ("nllb", "mt5"):
+        try:
+            mid = _model_id("guz")
+            if mid and mid != "guz_psa_template":
+                if _guz_backend() == "mt5":
+                    get_cached_mt5(mid)
+                else:
+                    get_cached_nllb(mid)
+        except Exception:  # noqa: BLE001
+            pass
 
 
 def _render_ui() -> str:
@@ -197,6 +196,19 @@ def translate(req: TranslateRequest):
     text = req.text.strip()
     if not text:
         raise HTTPException(status_code=400, detail="text is empty")
+
+    if req.target == "guz" and _guz_backend() == "template":
+        try:
+            hyp, mode = translate_guz_template(text)
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(status_code=500, detail=str(exc)) from exc
+        return TranslateResponse(
+            translation=hyp,
+            target="guz",
+            model=f"guz_psa_template:{mode}",
+            backend="template",
+        )
+
     model_id = _model_id(req.target)
     if not model_id:
         env = {

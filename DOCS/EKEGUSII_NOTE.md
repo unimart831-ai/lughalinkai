@@ -43,8 +43,16 @@ One-shot Navon: `bash scripts/navon_train_ekegusii.sh`
 - Backend: `LUGHALINK_GUZ_BACKEND=nllb` or `mt5`
 - UI pills: Kiswahili · Kikuyu · Ekegusii
 
-## Honesty
+## Live UI note (pre-few-shot)
 
-- Template targets ≠ native-speaker gold.
-- Automatic BLEU/chrF vs template refs are **relative** (esp. useful for zero-shot vs few-shot ablation).
-- Existing EN→SW and EN→Kikuyu NLLB Hub models remain the product path for those languages.
+Zero-shot NLLB with `guz_Latn` init from **Kikuyu** → Kikuyu-like text.  
+Init from **Swahili** → Kiswahili text.  
+
+For the public demo until few-shot NLLB is trained, set:
+
+```bash
+export LUGHALINK_GUZ_BACKEND=template
+```
+
+This serves **Ekegusii PSA templates** from `configs/ekegusii_psa_lexicon.yaml` (silver / synthetic, not human gold). Research zero-shot numbers still live in `mt_eval_ekegusii_zeroshot.json`.
+
