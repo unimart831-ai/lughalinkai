@@ -1,18 +1,22 @@
 {
-  "generated_at": "2026-08-01T23:25:39.530027+00:00",
+  "generated_at": "2026-08-11T19:10:38.368075+00:00",
   "policy": "psa_only",
   "human_reviewed": false,
   "note": "PSA-only silver/auto-QC. External OPUS excluded. Not human gold. Train only after NLLB PSA seeding on Navon.",
   "psa_sentence_candidates": 8409,
-  "parallel_raw_rows": 15,
-  "rejected_or_filtered": 15,
-  "kept_pairs": 0,
-  "by_method": {},
-  "by_target_lang": {},
+  "parallel_raw_rows": 5215,
+  "rejected_or_filtered": 927,
+  "kept_pairs": 4288,
+  "by_method": {
+    "guz_psa_template": 4288
+  },
+  "by_target_lang": {
+    "guz": 4288
+  },
   "splits": {
-    "train": 0,
-    "dev": 0,
-    "test": 0
+    "train": 3430,
+    "dev": 428,
+    "test": 430
   },
   "outputs": {
     "sentences": "datasets\\interim\\week2_mt_sentences.csv",

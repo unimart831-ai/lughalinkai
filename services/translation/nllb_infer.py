@@ -5,8 +5,9 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Any
 
-NLLB_CODES = {"sw": "swh_Latn", "kik": "kik_Latn"}
+NLLB_CODES = {"sw": "swh_Latn", "kik": "kik_Latn", "guz": "guz_Latn"}
 SRC_CODE = "eng_Latn"
+# guz_Latn requires vocab extension (see nllb_extend.py) unless checkpoint already has it.
 # Fine-tunes keep the base NLLB vocabulary; load tokenizer from here when Hub
 # tokenizer_config is incompatible with the installed transformers version.
 BASE_NLLB_TOKENIZER = "facebook/nllb-200-distilled-600M"
@@ -50,14 +51,24 @@ def translate_nllb(
     *,
     max_new_tokens: int = 64,
 ) -> str:
-    import torch
-
     if target not in NLLB_CODES:
         raise ValueError(f"Unsupported target '{target}'. Use one of: {sorted(NLLB_CODES)}")
+
+    import torch
+
     tok.src_lang = SRC_CODE
     inputs = tok(text, return_tensors="pt", truncation=True, max_length=192)
     inputs = {k: v.to(device) for k, v in inputs.items()}
-    bos = tok.convert_tokens_to_ids(NLLB_CODES[target])
+    code = NLLB_CODES[target]
+    bos = tok.convert_tokens_to_ids(code)
+    unk = getattr(tok, "unk_token_id", None)
+    if bos is None or bos == unk or tok.convert_ids_to_tokens(bos) != code:
+        if target == "guz":
+            from services.translation.nllb_extend import ensure_nllb_lang_token
+
+            bos = ensure_nllb_lang_token(tok, model, lang_token=code, init_from="kik_Latn")
+        else:
+            raise ValueError(f"NLLB language code missing in tokenizer: {code}")
     # Greedy decode — much faster than beam search for interactive UI.
     with torch.inference_mode():
         out = model.generate(

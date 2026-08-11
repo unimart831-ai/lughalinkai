@@ -61,7 +61,8 @@ Human pack:
 |-------|----------|
 | EN→Kikuyu model | https://huggingface.co/iranzi/lughalink-nllb-psa-en-kik |
 | EN→Kiswahili model | https://huggingface.co/iranzi/lughalink-nllb-psa-en-sw |
-| API + UI | `apps/api/main.py` + `apps/api/static/` |
+| EN→Ekegusii (NLLB extend / mT5) | See [EKEGUSII_NOTE.md](EKEGUSII_NOTE.md) · `scripts/navon_train_ekegusii.sh` |
+| API + UI | `apps/api/main.py` + `apps/api/static/` (targets: `sw` \| `kik` \| `guz`) |
 | Space deploy | [DOCS/DEPLOY_HF.md](DEPLOY_HF.md) · Space `iranzi/lughalink-mt-api` |
 
 ```bash

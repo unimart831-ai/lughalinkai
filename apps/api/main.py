@@ -1,11 +1,14 @@
 """LughaLink PSA translation API + web UI (FastAPI).
 
-Loads fine-tuned NLLB checkpoints from Hugging Face Hub (or local paths).
+Loads fine-tuned NLLB / mT5 checkpoints from Hugging Face Hub (or local paths).
 The browser only calls /translate — weights stay on the server.
 
 Env:
   LUGHALINK_MODEL_KIK=iranzi/lughalink-nllb-psa-en-kik
   LUGHALINK_MODEL_SW=iranzi/lughalink-nllb-psa-en-sw
+  LUGHALINK_MODEL_GUZ=iranzi/lughalink-nllb-psa-en-guz
+  LUGHALINK_MODEL_GUZ_MT5=iranzi/lughalink-mt5-psa-en-guz   # fallback if NLLB unset
+  LUGHALINK_GUZ_BACKEND=nllb|mt5   # default: nllb if MODEL_GUZ set else mt5
   HF_TOKEN=...   # only if repos are private
   LUGHALINK_CORS_ORIGINS=*
 
@@ -30,14 +33,17 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from services.translation.mt5_infer import get_cached_mt5, translate_mt5  # noqa: E402
 from services.translation.nllb_infer import get_cached_nllb, translate_nllb  # noqa: E402
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 DEFAULT_KIK = "iranzi/lughalink-nllb-psa-en-kik"
 DEFAULT_SW = "iranzi/lughalink-nllb-psa-en-sw"
+DEFAULT_GUZ_NLLB = "iranzi/lughalink-nllb-psa-en-guz"
+DEFAULT_GUZ_MT5 = "iranzi/lughalink-mt5-psa-en-guz"
 
-TargetLang = Literal["kik", "sw"]
+TargetLang = Literal["kik", "sw", "guz"]
 
 
 class TranslateRequest(BaseModel):
@@ -51,12 +57,30 @@ class TranslateResponse(BaseModel):
     target: TargetLang
     model: str
     source_lang: str = "en"
+    backend: str = "nllb"
 
 
 def _model_id(target: TargetLang) -> str:
     if target == "kik":
         return os.environ.get("LUGHALINK_MODEL_KIK", DEFAULT_KIK).strip()
+    if target == "guz":
+        backend = _guz_backend()
+        if backend == "mt5":
+            return os.environ.get("LUGHALINK_MODEL_GUZ_MT5", DEFAULT_GUZ_MT5).strip()
+        return os.environ.get("LUGHALINK_MODEL_GUZ", DEFAULT_GUZ_NLLB).strip()
     return os.environ.get("LUGHALINK_MODEL_SW", DEFAULT_SW).strip()
+
+
+def _guz_backend() -> str:
+    raw = os.environ.get("LUGHALINK_GUZ_BACKEND", "").strip().lower()
+    if raw in ("nllb", "mt5"):
+        return raw
+    # Prefer NLLB when explicitly configured; else mt5 if that env is set
+    if os.environ.get("LUGHALINK_MODEL_GUZ", "").strip():
+        return "nllb"
+    if os.environ.get("LUGHALINK_MODEL_GUZ_MT5", "").strip():
+        return "mt5"
+    return "nllb"
 
 
 def _cors_origins() -> list[str]:
@@ -68,8 +92,8 @@ def _cors_origins() -> list[str]:
 
 app = FastAPI(
     title="LughaLink PSA MT API",
-    description="English → Kiswahili / Kikuyu PSA translation (fine-tuned NLLB).",
-    version="0.2.0",
+    description="English → Kiswahili / Kikuyu / Ekegusii PSA translation.",
+    version="0.3.0",
 )
 
 _origins = _cors_origins()
@@ -87,7 +111,7 @@ if STATIC_DIR.is_dir():
 
 @app.on_event("startup")
 def _warmup_models() -> None:
-    """Load both Hub checkpoints once so the first UI request is not cold."""
+    """Load configured Hub checkpoints once so the first UI request is not cold."""
     for target in ("sw", "kik"):
         mid = _model_id(target)  # type: ignore[arg-type]
         if not mid:
@@ -95,8 +119,17 @@ def _warmup_models() -> None:
         try:
             get_cached_nllb(mid)
         except Exception:  # noqa: BLE001
-            # Keep API up; /translate will surface the error.
             pass
+    # Guz warmup is optional — checkpoint may not exist yet during Phase A
+    try:
+        mid = _model_id("guz")
+        if mid:
+            if _guz_backend() == "mt5":
+                get_cached_mt5(mid)
+            else:
+                get_cached_nllb(mid)
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def _render_ui() -> str:
@@ -131,7 +164,12 @@ def api_info():
         "docs": "/docs",
         "health": "/health",
         "translate": "POST /translate",
-        "models": {"kik": _model_id("kik"), "sw": _model_id("sw")},
+        "models": {
+            "kik": _model_id("kik"),
+            "sw": _model_id("sw"),
+            "guz": _model_id("guz"),
+            "guz_backend": _guz_backend(),
+        },
     }
 
 
@@ -139,14 +177,18 @@ def api_info():
 def health():
     kik = _model_id("kik")
     sw = _model_id("sw")
+    guz = _model_id("guz")
     return {
-        "status": "ok" if (kik or sw) else "misconfigured",
+        "status": "ok" if (kik or sw or guz) else "misconfigured",
         "device_hint": "cuda_if_available",
         "models": {
             "kik": kik or None,
             "sw": sw or None,
+            "guz": guz or None,
+            "guz_backend": _guz_backend(),
         },
-        "loaded_cache_size": get_cached_nllb.cache_info().currsize,
+        "loaded_cache_size": get_cached_nllb.cache_info().currsize
+        + get_cached_mt5.cache_info().currsize,
     }
 
 
@@ -157,13 +199,27 @@ def translate(req: TranslateRequest):
         raise HTTPException(status_code=400, detail="text is empty")
     model_id = _model_id(req.target)
     if not model_id:
-        env = "LUGHALINK_MODEL_KIK" if req.target == "kik" else "LUGHALINK_MODEL_SW"
+        env = {
+            "kik": "LUGHALINK_MODEL_KIK",
+            "sw": "LUGHALINK_MODEL_SW",
+            "guz": "LUGHALINK_MODEL_GUZ or LUGHALINK_MODEL_GUZ_MT5",
+        }[req.target]
         raise HTTPException(status_code=503, detail=f"Set {env} to a Hub repo or local path")
+    backend = "nllb"
     try:
-        tok, model, device = get_cached_nllb(model_id)
-        hyp = translate_nllb(
-            tok, model, device, text, req.target, max_new_tokens=req.max_new_tokens
-        )
+        if req.target == "guz" and _guz_backend() == "mt5":
+            backend = "mt5"
+            tok, model, device = get_cached_mt5(model_id)
+            hyp = translate_mt5(
+                tok, model, device, text, "guz", max_new_tokens=req.max_new_tokens
+            )
+        else:
+            tok, model, device = get_cached_nllb(model_id)
+            hyp = translate_nllb(
+                tok, model, device, text, req.target, max_new_tokens=req.max_new_tokens
+            )
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=str(exc)) from exc
-    return TranslateResponse(translation=hyp, target=req.target, model=model_id)
+    return TranslateResponse(
+        translation=hyp, target=req.target, model=model_id, backend=backend
+    )

@@ -20,8 +20,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 CFG_PATH = ROOT / "configs" / "mt_train.yaml"
-TARGET_NAMES = {"sw": "Swahili", "kik": "Kikuyu"}
-NLLB_CODES = {"sw": "swh_Latn", "kik": "kik_Latn"}
+TARGET_NAMES = {"sw": "Swahili", "kik": "Kikuyu", "guz": "Ekegusii"}
+NLLB_CODES = {"sw": "swh_Latn", "kik": "kik_Latn", "guz": "guz_Latn"}
+# guz_Latn is not stock NLLB — fine-tuned/extended checkpoints only.
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,7 +71,16 @@ def translate_one(tok, model, device, text: str, family: str, tgt: str, max_new:
         tok.src_lang = "eng_Latn"
         inputs = tok(text, return_tensors="pt", truncation=True, max_length=256)
         inputs = {k: v.to(device) for k, v in inputs.items()}
-        bos = tok.convert_tokens_to_ids(NLLB_CODES[tgt])
+        code = NLLB_CODES[tgt]
+        bos = tok.convert_tokens_to_ids(code)
+        unk = getattr(tok, "unk_token_id", None)
+        if bos is None or bos == unk or tok.convert_ids_to_tokens(bos) != code:
+            if tgt == "guz":
+                from services.translation.nllb_extend import ensure_nllb_lang_token
+
+                bos = ensure_nllb_lang_token(tok, model, lang_token=code, init_from="kik_Latn")
+            else:
+                raise SystemExit(f"NLLB language code missing in tokenizer: {code}")
         out = model.generate(**inputs, forced_bos_token_id=bos, max_new_tokens=max_new)
     return tok.batch_decode(out, skip_special_tokens=True)[0]
 

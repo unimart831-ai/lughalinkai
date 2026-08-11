@@ -18,6 +18,13 @@ def test_mt5_prefix():
     tb = _load("train_baseline", "scripts/train_baseline.py")
     assert tb.mt5_prefix("Hello", "kik").startswith("translate English to Kikuyu:")
     assert tb.mt5_prefix("Hello", "sw").startswith("translate English to Swahili:")
+    assert tb.mt5_prefix("Hello", "guz").startswith("translate English to Ekegusii:")
+
+
+def test_mt5_infer_prefix():
+    from services.translation.mt5_infer import mt5_prefix
+
+    assert mt5_prefix("Wash hands.", "guz").startswith("translate English to Ekegusii:")
 
 
 def test_resolve_model_name():

@@ -25,7 +25,7 @@ if str(ROOT) not in sys.path:
 CFG_PATH = ROOT / "configs" / "mt_train.yaml"
 EXPERIMENT_LOG = ROOT / "datasets" / "interim" / "experiment_log.csv"
 
-TARGET_NAMES = {"sw": "Swahili", "kik": "Kikuyu"}
+TARGET_NAMES = {"sw": "Swahili", "kik": "Kikuyu", "guz": "Ekegusii"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -257,11 +257,30 @@ def train_real(
     if max_eval:
         dev_rows = dev_rows[: int(max_eval)]
 
-    print(f"Loading {model_name} ({model_family}) for {pair} …")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
     src_code = cfg["languages"]["source_nllb"]
-    tgt_code = pair_cfg["target_nllb"]
+    tgt_code = pair_cfg.get("target_nllb")
+    extend = bool(pair_cfg.get("nllb_vocab_extend"))
+    init_from = pair_cfg.get("nllb_init_from") or "kik_Latn"
+
+    if model_family == "nllb" and extend:
+        if not tgt_code:
+            raise SystemExit(f"Pair {pair} needs target_nllb for NLLB vocab extend")
+        print(f"Loading {model_name} with vocab extend {tgt_code} (init {init_from}) …")
+        from services.translation.nllb_extend import ensure_nllb_lang_token
+
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+        ensure_nllb_lang_token(
+            tokenizer, model, lang_token=tgt_code, init_from=init_from
+        )
+    elif model_family == "nllb" and not tgt_code:
+        raise SystemExit(
+            f"Pair {pair} has no target_nllb. Use --model mt5 or set nllb_vocab_extend."
+        )
+    else:
+        print(f"Loading {model_name} ({model_family}) for {pair} …")
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
     if model_family == "nllb":
         tokenizer.src_lang = src_code
@@ -322,6 +341,8 @@ def train_real(
         "epochs": epochs,
         "device": "cuda" if torch.cuda.is_available() else "cpu",
         "silver_only": True,
+        "nllb_vocab_extend": extend if model_family == "nllb" else False,
+        "target_nllb": tgt_code,
         "train_loss": getattr(train_out, "training_loss", None),
         "saved_at": datetime.now(timezone.utc).isoformat(),
     }

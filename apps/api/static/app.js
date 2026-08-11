@@ -11,10 +11,11 @@
   const langButtons = [...document.querySelectorAll(".lang-pill")];
   const tryLinks = [...document.querySelectorAll(".try-link")];
 
-  const labels = { sw: "Kiswahili", kik: "Kikuyu" };
+  const labels = { sw: "Kiswahili", kik: "Kikuyu", guz: "Ekegusii" };
   const taglines = {
     sw: "Arifa za umma — kwa Kiswahili",
     kik: "Ũhoro wa umma — kwa Gĩkũyũ",
+    guz: "Amachiko a abanto — kwa Ekegusii",
   };
   let target = "sw";
 

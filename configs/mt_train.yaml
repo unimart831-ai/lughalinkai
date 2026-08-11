@@ -1,6 +1,6 @@
-# Machine translation training config (Week 3 baseline)
+# Machine translation training config
 # PSA-only silver data until human gold exists.
-# Languages: English (source) · Kiswahili (pivot) · Kikuyu (indigenous target)
+# Languages: English · Kiswahili · Kikuyu · Ekegusii (mT5 + NLLB vocab-extend)
 
 model:
   name: facebook/nllb-200-distilled-600M
@@ -18,6 +18,11 @@ languages:
     - source: en
       target: kik
       target_nllb: kik_Latn
+    - source: en
+      target: guz
+      target_nllb: guz_Latn
+      nllb_vocab_extend: true
+      nllb_init_from: kik_Latn
 
 data:
   train: datasets/mt/train.csv

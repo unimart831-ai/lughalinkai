@@ -168,7 +168,8 @@ def normalize_pair(
             return None
 
     tgt_lang = (row.get("target_lang") or "sw").strip()
-    expected = "sw" if tgt_lang == "sw" else None
+    # Pass lang id so guz/kik get template-friendly QC; sw keeps LID checks.
+    expected = tgt_lang if tgt_lang in {"sw", "guz", "kik"} else None
     qc = auto_qc_pair(src, tgt, expected_tgt_lang=expected)
     if not qc["auto_qc_pass"]:
         return None

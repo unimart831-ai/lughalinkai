@@ -1,0 +1,138 @@
+# Ekegusii (guz) PSA-oriented lexicon for template parallel generation.
+# Labels: synthetic / silver only — not native-speaker gold.
+# Proper nouns (IEBC, MoH, …) stay in English.
+
+language:
+  id: guz
+  name: Ekegusii
+  iso_639_3: guz
+
+orgs:
+  Governance:
+    - IEBC
+    - EACC
+    - Huduma Kenya
+    - Kenya Revenue Authority
+    - Public Service Commission
+  Health:
+    - Ministry of Health
+    - Social Health Authority
+    - County Department of Health
+    - Kenya Red Cross
+  Security:
+    - National Police Service
+    - NDMA
+    - Kenya Meteorological Department
+    - NTSA
+    - Ministry of Interior
+  Education:
+    - Ministry of Education
+    - KNEC
+    - HELB
+    - KUCCPS
+    - TSC
+  Agriculture:
+    - Ministry of Agriculture
+    - KEPHIS
+    - KALRO
+    - NDMA
+    - County Department of Agriculture
+
+audiences:
+  Governance:
+    - abanto bonsi
+    - abanto ba chinsa
+    - abarori
+    - abakori ba emebero
+  Health:
+    - abanto bonsi
+    - ababeri na abaremi
+    - abarwaria
+    - abakungu barete
+  Security:
+    - abarori ba emechoro
+    - abanto ba chisukuru
+    - abanto bonsi
+    - abari ba emechoro
+  Education:
+    - abanyeshomi
+    - ababeri na abarori
+    - abakuru ba chisuomi
+    - abakori ba emebero
+  Agriculture:
+    - abahini
+    - abaremi ba ching'ombe
+    - abagori
+    - abanto ba chikooperati
+
+# English verb_phrase (substring match) -> Ekegusii fragment
+verb_map:
+  wash hands regularly with soap and clean water: korwa amaboko buna na sabuluni na amache male
+  seek medical care immediately if symptoms appear: gosa oborwaria bwango buna oborware bwabwate
+  complete routine immunization for children under five: korusia obokomi bwa chinsa chia abana baika iga
+  boil drinking water during the current advisory period: gosia amache a goinywa goika orokoro rwa rero
+  verify their details via the official portal: korusia ebirengo viao goika portal ya goseka
+  report corruption through the official hotline: gotera oborimo goika hotline ya goseka
+  renew expired licences before the deadline: kobwata licence chiria chiasa mbere ya rituko
+  plant drought-tolerant varieties recommended for this season: goserera ebirimo bikonyora omuya bw'omwaka oyo
+  report pest outbreaks to the nearest agricultural officer: gotera ebirware bia ebirimo goika omorori bw'obuhini
+  observe the road safety rules and avoid overspeeding: gokora amachiko a emechoro na gotiga gotanga
+  evacuate low-lying areas when flood alerts are issued: gotuma chisukuru chiria chiina amache buna alert yabwate
+  confirm school placement results on the official portal: korusia ebirengo bia chisuomi goika portal ya goseka
+  complete HELB loan applications before the deadline: korusia application chia HELB mbere ya rituko
+  store harvested produce in dry, secure facilities: kobeka ebirimo birete goika chisukuru chirekeire
+  vaccinate livestock according to the county schedule: kobwata chinsa chia ching'ombe buna schedule ya county
+  follow official weather advisories before travel: gokora amachiko a ombe a goseka mbere ya gotema
+  register for SHA cover through official channels only: kobwata SHA goika chinsa chia goseka buna
+  ignore unverified social media claims and rely on official notices: gotiga amajambo a social media na gokora amachiko a goseka
+
+action_stems:
+  - "{org} nigo ekoragereria {audience} go {verb}."
+  - "{org} nigo ekoransia {audience} go {verb}."
+  - "{org} nigo ekoiria {audience} go {verb}."
+  - "ALERT. {org} nigo ekoransia {audience} go {verb} goika {location}."
+  - "ADVISORY. {org} nigo ekoiria {audience} go {verb}."
+
+deadlines:
+  - "Rituko: {day} {month} 2026."
+  - "Ororagererio rwa rero rwatangire buna."
+  - "Korusia goika chinsa 7."
+  - "Kobwata gotanga {day} {month} 2026."
+
+closers:
+  - "Goika amachiko male, genda website ya goseka na gokora social media egoseka buna."
+  - "Abanto bonsi nigo barekania gotiga amajambo atari a goseka."
+  - "Amachiko ande nigo agochia goika chinsa chia goseka."
+  - "Gotiga gokora nigo gokonya amachiko a chinsa."
+
+months:
+  - January
+  - February
+  - March
+  - April
+  - May
+  - June
+  - July
+  - August
+  - September
+  - October
+  - November
+  - December
+
+locations:
+  - Nairobi County
+  - Mombasa County
+  - Kisumu County
+  - Nakuru County
+  - Kisii County
+  - Nyamira County
+  - Kakamega County
+  - Machakos County
+
+# Full sentence templates when English line cannot be mapped (domain fallback)
+domain_fallback_verbs:
+  Governance: korusia ebirengo viao goika portal ya goseka
+  Health: korwa amaboko buna na sabuluni na amache male
+  Security: gokora amachiko a emechoro na gotiga gotanga
+  Education: korusia ebirengo bia chisuomi goika portal ya goseka
+  Agriculture: goserera ebirimo bikonyora omuya bw'omwaka oyo

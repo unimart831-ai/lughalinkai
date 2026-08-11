@@ -52,6 +52,11 @@ def auto_qc_pair(
     tgt = WS_RE.sub(" ", (target_text or "").strip())
     reasons: list[str] = []
 
+    # Template Ekegusii is often longer; glossary EN terms may not map 1:1.
+    skip_glossary = expected_tgt_lang in {"guz", "kik"}
+    if expected_tgt_lang == "guz":
+        min_ratio, max_ratio = 0.35, 3.5
+
     src_tok = len(src.split())
     tgt_tok = len(tgt.split())
     if src_tok < min_src_tokens:
@@ -71,7 +76,7 @@ def auto_qc_pair(
         reasons.append("near_copy")
 
     gloss = glossary_preservation_score(src, tgt) if tgt else 0.0
-    if tgt and gloss < 0.5:
+    if tgt and not skip_glossary and gloss < 0.5:
         reasons.append("glossary_dropped")
 
     lang = detect_language(tgt) if tgt and not tgt.startswith("[DRY_RUN") else None
