@@ -162,20 +162,33 @@ def _import_hf_dataset_class():
     return Dataset
 
 
-def _training_arguments(Seq2SeqTrainingArguments, tcfg, out_dir, epochs, use_fp16):
+def _training_arguments(
+    Seq2SeqTrainingArguments,
+    tcfg,
+    out_dir,
+    epochs,
+    use_fp16,
+    *,
+    use_bf16: bool = False,
+    model_family: str = "nllb",
+):
     ta_params = inspect.signature(Seq2SeqTrainingArguments.__init__).parameters
     eval_key = "eval_strategy" if "eval_strategy" in ta_params else "evaluation_strategy"
+    lr = float(tcfg["learning_rate"])
+    if model_family == "mt5":
+        # Slightly higher LR is common for mT5; keep modest to avoid NaNs
+        lr = max(lr, 5.0e-5)
     train_args = {
         "output_dir": str(out_dir),
         "num_train_epochs": epochs,
-        "learning_rate": float(tcfg["learning_rate"]),
+        "learning_rate": lr,
         "per_device_train_batch_size": int(tcfg["train_batch_size"]),
         "per_device_eval_batch_size": int(tcfg["eval_batch_size"]),
         "weight_decay": float(tcfg["weight_decay"]),
         "warmup_ratio": float(tcfg["warmup_ratio"]),
         "gradient_accumulation_steps": int(tcfg["gradient_accumulation_steps"]),
         "fp16": use_fp16,
-        "predict_with_generate": True,
+        "predict_with_generate": False,
         eval_key: "steps",
         "eval_steps": int(tcfg["eval_steps"]),
         "save_steps": int(tcfg["save_steps"]),
@@ -184,6 +197,8 @@ def _training_arguments(Seq2SeqTrainingArguments, tcfg, out_dir, epochs, use_fp1
         "seed": int(tcfg["seed"]),
         "report_to": [],
     }
+    if "bf16" in ta_params:
+        train_args["bf16"] = use_bf16
     if "save_strategy" in ta_params:
         train_args["save_strategy"] = "steps"
     return Seq2SeqTrainingArguments(**train_args)
@@ -309,7 +324,13 @@ def train_real(
             truncation=True,
             padding=False,
         )
-        model_inputs["labels"] = labels["input_ids"]
+        label_ids = labels["input_ids"]
+        pad_id = tokenizer.pad_token_id
+        if pad_id is not None:
+            label_ids = [
+                [(tok if tok != pad_id else -100) for tok in seq] for seq in label_ids
+            ]
+        model_inputs["labels"] = label_ids
         return model_inputs
 
     train_ds = to_ds(train_rows).map(
@@ -320,9 +341,24 @@ def train_real(
     )
 
     tcfg = cfg["train"]
-    use_fp16 = bool(tcfg.get("fp16")) and torch.cuda.is_available()
-    args_tr = _training_arguments(Seq2SeqTrainingArguments, tcfg, out_dir, epochs, use_fp16)
-    collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
+    # mT5 is unstable in fp16 on many stacks (loss 0 / grad_norm nan). Prefer bf16 or fp32.
+    use_fp16 = bool(tcfg.get("fp16")) and torch.cuda.is_available() and model_family != "mt5"
+    use_bf16 = (
+        model_family == "mt5"
+        and torch.cuda.is_available()
+        and hasattr(torch.cuda, "is_bf16_supported")
+        and torch.cuda.is_bf16_supported()
+    )
+    args_tr = _training_arguments(
+        Seq2SeqTrainingArguments,
+        tcfg,
+        out_dir,
+        epochs,
+        use_fp16,
+        use_bf16=use_bf16,
+        model_family=model_family,
+    )
+    collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model, label_pad_token_id=-100)
     if model_family == "nllb":
         model.generation_config.forced_bos_token_id = tokenizer.convert_tokens_to_ids(tgt_code)
 
