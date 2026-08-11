@@ -8,7 +8,7 @@ Ekegusii (`guz`) is **not** in stock NLLB-200 / FLORES-200 (no native `guz_Latn`
 We still use **NLLB-200** by:
 
 1. Adding a language token `guz_Latn`
-2. Initializing its embedding from related Bantu `kik_Latn`
+2. Initializing its embedding from the Kiswahili pivot `swh_Latn` (less Kikuyu-biased than `kik_Latn`)
 3. Measuring **zero-shot** (no PSA fine-tune) then **few-shot** (1-epoch PSA fine-tune)
 
 This is vocabulary extension + transfer — not Meta-native Ekegusii support.

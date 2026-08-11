@@ -92,7 +92,7 @@ def run_nllb(rows: list[dict], max_new: int) -> dict:
     tok, model, device, _bos = load_nllb_maybe_extended(
         "facebook/nllb-200-distilled-600M",
         extend_lang="guz_Latn",
-        init_from="kik_Latn",
+        init_from="swh_Latn",
     )
     hyps, refs = [], []
     for row in rows:
@@ -107,7 +107,7 @@ def run_nllb(rows: list[dict], max_new: int) -> dict:
             "family": "nllb",
             "setting": "zero_shot",
             "model": "facebook/nllb-200-distilled-600M",
-            "note": "guz_Latn vocab-extend init from kik_Latn; no PSA fine-tune",
+            "note": "guz_Latn vocab-extend init from swh_Latn; no PSA fine-tune",
         }
     )
     return metrics
