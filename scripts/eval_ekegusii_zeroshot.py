@@ -121,18 +121,29 @@ def main() -> None:
         "test": str(args.test),
         "limit": args.limit,
         "runs": [],
+        "errors": [],
     }
     if args.family in ("mt5", "both"):
         print("Zero-shot mT5 …")
-        results["runs"].append(run_mt5(rows, args.max_new_tokens))
+        try:
+            results["runs"].append(run_mt5(rows, args.max_new_tokens))
+        except Exception as exc:  # noqa: BLE001
+            results["errors"].append({"family": "mt5", "error": str(exc)})
+            print(f"mT5 zero-shot FAILED: {exc}")
     if args.family in ("nllb", "both"):
         print("Zero-shot NLLB+guz_Latn …")
-        results["runs"].append(run_nllb(rows, args.max_new_tokens))
+        try:
+            results["runs"].append(run_nllb(rows, args.max_new_tokens))
+        except Exception as exc:  # noqa: BLE001
+            results["errors"].append({"family": "nllb", "error": str(exc)})
+            print(f"NLLB zero-shot FAILED: {exc}")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(results, indent=2), encoding="utf-8")
     print(json.dumps(results, indent=2))
     print(f"Wrote {args.output}")
+    if results["errors"] and not results["runs"]:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

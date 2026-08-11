@@ -13,6 +13,20 @@ GUZ_TOKEN = "guz_Latn"
 DEFAULT_INIT_FROM = "kik_Latn"
 
 
+def _token_id(tokenizer: Any, token: str) -> int | None:
+    unk = getattr(tokenizer, "unk_token_id", None)
+    tid = tokenizer.convert_tokens_to_ids(token)
+    if tid is None or tid == unk:
+        return None
+    # Some tokenizers map unknown strings to unk without raising
+    try:
+        if tokenizer.convert_ids_to_tokens(tid) != token:
+            return None
+    except Exception:  # noqa: BLE001
+        return None
+    return int(tid)
+
+
 def ensure_nllb_lang_token(
     tokenizer: Any,
     model: Any,
@@ -26,35 +40,32 @@ def ensure_nllb_lang_token(
     """
     import torch
 
-    existing = tokenizer.convert_tokens_to_ids(lang_token)
-    unk = getattr(tokenizer, "unk_token_id", None)
-    # convert_tokens_to_ids returns unk when missing
-    if existing is not None and existing != unk and tokenizer.convert_ids_to_tokens(existing) == lang_token:
-        return int(existing)
+    existing = _token_id(tokenizer, lang_token)
+    if existing is not None:
+        return existing
 
-    special = list(tokenizer.additional_special_tokens or [])
-    if lang_token not in special:
-        special.append(lang_token)
-    tokenizer.add_special_tokens({"additional_special_tokens": special})
-
-    # Some NLLB tokenizers also track lang codes separately
-    if hasattr(tokenizer, "add_tokens"):
-        # already added via additional_special_tokens; ensure id resolves
-        pass
+    # NllbTokenizer may not expose .additional_special_tokens as an attribute;
+    # add_special_tokens / add_tokens are the supported APIs.
+    added = 0
+    try:
+        added = int(tokenizer.add_special_tokens({"additional_special_tokens": [lang_token]}))
+    except Exception:  # noqa: BLE001
+        added = 0
+    if added == 0 and _token_id(tokenizer, lang_token) is None:
+        added = int(tokenizer.add_tokens([lang_token], special_tokens=True))
 
     model.resize_token_embeddings(len(tokenizer))
-    new_id = tokenizer.convert_tokens_to_ids(lang_token)
-    if new_id is None or new_id == unk:
+    new_id = _token_id(tokenizer, lang_token)
+    if new_id is None:
         raise RuntimeError(f"Failed to register language token {lang_token}")
 
-    init_id = tokenizer.convert_tokens_to_ids(init_from)
-    if init_id is None or init_id == unk:
+    init_id = _token_id(tokenizer, init_from)
+    if init_id is None:
         raise RuntimeError(f"Init token {init_from} not found in NLLB tokenizer")
 
     with torch.no_grad():
         emb = model.get_input_embeddings()
         emb.weight[new_id] = emb.weight[init_id].clone()
-        # Tie / output embeddings if present
         out_emb = model.get_output_embeddings()
         if out_emb is not None and out_emb.weight.shape[0] > new_id:
             out_emb.weight[new_id] = out_emb.weight[init_id].clone()
@@ -75,7 +86,7 @@ def load_nllb_maybe_extended(
     import torch
     from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-    from services.translation.nllb_infer import BASE_NLLB_TOKENIZER, _load_tokenizer
+    from services.translation.nllb_infer import _load_tokenizer
 
     try:
         tok = AutoTokenizer.from_pretrained(model_id_or_path)
@@ -91,17 +102,9 @@ def load_nllb_maybe_extended(
     )
     bos_id = None
     if extend_lang:
-        # Prefer base tokenizer vocab for init_from if loading a fresh hub model
-        if model_id_or_path != BASE_NLLB_TOKENIZER:
-            # Ensure init_from exists — if loading already-extended ckpt, skip resize
-            tid = tok.convert_tokens_to_ids(extend_lang)
-            unk = getattr(tok, "unk_token_id", None)
-            if tid is not None and tid != unk and tok.convert_ids_to_tokens(tid) == extend_lang:
-                bos_id = int(tid)
-            else:
-                bos_id = ensure_nllb_lang_token(
-                    tok, model, lang_token=extend_lang, init_from=init_from
-                )
+        existing = _token_id(tok, extend_lang)
+        if existing is not None:
+            bos_id = existing
         else:
             bos_id = ensure_nllb_lang_token(
                 tok, model, lang_token=extend_lang, init_from=init_from
