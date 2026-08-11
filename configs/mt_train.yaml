@@ -22,7 +22,7 @@ languages:
       target: guz
       target_nllb: guz_Latn
       nllb_vocab_extend: true
-      nllb_init_from: swh_Latn
+      nllb_init_from: kik_Latn
 
 data:
   train: datasets/mt/train.csv

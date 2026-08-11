@@ -66,7 +66,7 @@ def translate_nllb(
         if target == "guz":
             from services.translation.nllb_extend import ensure_nllb_lang_token
 
-            bos = ensure_nllb_lang_token(tok, model, lang_token=code, init_from="swh_Latn")
+            bos = ensure_nllb_lang_token(tok, model, lang_token=code, init_from="kik_Latn")
         else:
             raise ValueError(f"NLLB language code missing in tokenizer: {code}")
     # Greedy decode — much faster than beam search for interactive UI.

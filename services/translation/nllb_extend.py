@@ -10,7 +10,7 @@ from typing import Any
 
 
 GUZ_TOKEN = "guz_Latn"
-DEFAULT_INIT_FROM = "swh_Latn"
+DEFAULT_INIT_FROM = "kik_Latn"
 
 
 def _token_id(tokenizer: Any, token: str) -> int | None:

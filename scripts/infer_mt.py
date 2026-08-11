@@ -78,7 +78,7 @@ def translate_one(tok, model, device, text: str, family: str, tgt: str, max_new:
             if tgt == "guz":
                 from services.translation.nllb_extend import ensure_nllb_lang_token
 
-                bos = ensure_nllb_lang_token(tok, model, lang_token=code, init_from="swh_Latn")
+                bos = ensure_nllb_lang_token(tok, model, lang_token=code, init_from="kik_Latn")
             else:
                 raise SystemExit(f"NLLB language code missing in tokenizer: {code}")
         out = model.generate(**inputs, forced_bos_token_id=bos, max_new_tokens=max_new)

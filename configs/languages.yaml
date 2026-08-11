@@ -28,8 +28,8 @@ languages:
     # Not in stock NLLB-200; added via tokenizer extension (init from kik_Latn).
     nllb: guz_Latn
     nllb_vocab_extend: true
-    # Init from Kiswahili (pivot) so zero-shot guz is less Kikuyu-biased.
-    nllb_init_from: swh_Latn
+    # Init from Kikuyu (related Bantu) for zero-shot guz; Swahili init collapses to SW.
+    nllb_init_from: kik_Latn
     role: target
 
 seed_defaults:

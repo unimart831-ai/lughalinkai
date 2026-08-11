@@ -8,7 +8,7 @@ Env:
   LUGHALINK_MODEL_SW=iranzi/lughalink-nllb-psa-en-sw
   LUGHALINK_MODEL_GUZ=facebook/nllb-200-distilled-600M
   LUGHALINK_MODEL_GUZ_MT5=iranzi/lughalink-mt5-psa-en-guz
-  LUGHALINK_GUZ_BACKEND=template|nllb|mt5   # default: template (distinct Ekegusii PSA text)
+  LUGHALINK_GUZ_BACKEND=nllb|mt5|template   # default: nllb (zero-shot / few-shot neural)
   HF_TOKEN=...   # only if repos are private
   LUGHALINK_CORS_ORIGINS=*
 
@@ -75,10 +75,10 @@ def _model_id(target: TargetLang) -> str:
 
 
 def _guz_backend() -> str:
-    raw = os.environ.get("LUGHALINK_GUZ_BACKEND", "template").strip().lower()
+    raw = os.environ.get("LUGHALINK_GUZ_BACKEND", "nllb").strip().lower()
     if raw in ("template", "nllb", "mt5"):
         return raw
-    return "template"
+    return "nllb"
 
 
 def _cors_origins() -> list[str]:

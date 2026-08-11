@@ -8,7 +8,7 @@ Ekegusii (`guz`) is **not** in stock NLLB-200 / FLORES-200 (no native `guz_Latn`
 We still use **NLLB-200** by:
 
 1. Adding a language token `guz_Latn`
-2. Initializing its embedding from the Kiswahili pivot `swh_Latn` (less Kikuyu-biased than `kik_Latn`)
+2. Initializing its embedding from related Bantu `kik_Latn`
 3. Measuring **zero-shot** (no PSA fine-tune) then **few-shot** (1-epoch PSA fine-tune)
 
 This is vocabulary extension + transfer — not Meta-native Ekegusii support.
@@ -45,14 +45,12 @@ One-shot Navon: `bash scripts/navon_train_ekegusii.sh`
 
 ## Live UI note (pre-few-shot)
 
-Zero-shot NLLB with `guz_Latn` init from **Kikuyu** → Kikuyu-like text.  
-Init from **Swahili** → Kiswahili text.  
-
-For the public demo until few-shot NLLB is trained, set:
+Live Ekegusii uses **neural** NLLB zero-shot with vocab-extended `guz_Latn` (init from `swh_Latn` or `kik_Latn`). Scores may be near zero / output may resemble the init language — that is an honest baseline until few-shot NLLB finishes.
 
 ```bash
-export LUGHALINK_GUZ_BACKEND=template
+export LUGHALINK_GUZ_BACKEND=nllb
+export LUGHALINK_MODEL_GUZ=facebook/nllb-200-distilled-600M
 ```
 
-This serves **Ekegusii PSA templates** from `configs/ekegusii_psa_lexicon.yaml` (silver / synthetic, not human gold). Research zero-shot numbers still live in `mt_eval_ekegusii_zeroshot.json`.
+Optional demo-only: `LUGHALINK_GUZ_BACKEND=template` (not the preferred product path).
 

@@ -275,7 +275,7 @@ def train_real(
     src_code = cfg["languages"]["source_nllb"]
     tgt_code = pair_cfg.get("target_nllb")
     extend = bool(pair_cfg.get("nllb_vocab_extend"))
-    init_from = pair_cfg.get("nllb_init_from") or "swh_Latn"
+    init_from = pair_cfg.get("nllb_init_from") or "kik_Latn"
 
     if model_family == "nllb" and extend:
         if not tgt_code:
